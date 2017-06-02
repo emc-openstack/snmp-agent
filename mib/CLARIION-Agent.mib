@@ -1,0 +1,1376 @@
+CLARIION-MIB DEFINITIONS ::= BEGIN
+
+IMPORTS
+	Unsigned32, OBJECT-TYPE, DisplayString			
+	FROM RFC1213-MIB;
+
+	-- 1.3
+	org OBJECT IDENTIFIER ::= { iso 3 }
+	
+	-- 1.3.6
+	dod OBJECT IDENTIFIER ::= { org 6 }
+	
+	-- 1.3.6.1
+	internet OBJECT IDENTIFIER ::= { dod 1 }
+	
+	-- 1.3.6.1.4
+	private OBJECT IDENTIFIER ::= { internet 4 }
+	
+	-- 1.3.6.1.4.1
+	enterprises OBJECT IDENTIFIER ::= { private 1 }
+
+	-- 1.3.6.1.4.1.1981
+	clariion OBJECT IDENTIFIER ::= { enterprises 1981 }
+	
+	-- 1.3.6.1.4.1.1981.2
+	clarStorageObjects OBJECT IDENTIFIER ::= { clariion 2 }
+	
+	-- 1.3.6.1.4.1.1981.2.1
+	agentVersion OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Version of VNX SNMP Agent."
+		::= { clarStorageObjects 1 }
+	
+	-- 1.3.6.1.4.1.1981.2.2
+	mibVersion OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { clarStorageObjects 2 }
+	
+	-- 1.3.6.1.4.1.1981.2.3
+	manufacturer OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { clarStorageObjects 3 }
+	
+	-- 1.3.6.1.4.1.1981.2.4
+	model OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { clarStorageObjects 4 }
+	
+	-- 1.3.6.1.4.1.1981.2.5
+	serialNumber OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { clarStorageObjects 5 }
+	
+	-- 1.3.6.1.4.1.1981.2.6
+	operationEnvironmentVersion OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { clarStorageObjects 6 }
+	
+	-- 1.3.6.1.4.1.1981.2.7
+	numberOfController OBJECT-TYPE
+		SYNTAX Unsigned32
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { clarStorageObjects 7 }
+	
+	-- 1.3.6.1.4.1.1981.2.8
+	numberOfPowerSupply OBJECT-TYPE
+		SYNTAX Unsigned32
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { clarStorageObjects 8 }
+	
+	-- 1.3.6.1.4.1.1981.2.9
+	numberOfPhysicalDisk OBJECT-TYPE
+		SYNTAX Unsigned32
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { clarStorageObjects 9 }
+	
+	-- 1.3.6.1.4.1.1981.2.10
+	totalCapacity OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: GB."
+		::= { clarStorageObjects 10 }
+	
+	-- 1.3.6.1.4.1.1981.2.11
+	usedCapacity OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: GB."
+		::= { clarStorageObjects 11 }
+	
+	-- 1.3.6.1.4.1.1981.2.12
+	freeCapacity OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: GB."
+		::= { clarStorageObjects 12 }
+	
+	-- 1.3.6.1.4.1.1981.2.13
+	totalThroughput OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: IO/s."
+		::= { clarStorageObjects 13 }
+	
+	-- 1.3.6.1.4.1.1981.2.14
+	readThroughput OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: IO/s."
+		::= { clarStorageObjects 14 }
+	
+	-- 1.3.6.1.4.1.1981.2.15
+	writeThroughput OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: IO/s."
+		::= { clarStorageObjects 15 }
+		
+	-- 1.3.6.1.4.1.1981.2.16
+	totalBandwidth OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: MB/s."
+		::= { clarStorageObjects 16 }
+	
+	-- 1.3.6.1.4.1.1981.2.17
+	readBandwidth OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: MB/s."
+		::= { clarStorageObjects 17 }
+	
+	-- 1.3.6.1.4.1.1981.2.18
+	writeBandwidth OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: MB/s."
+		::= { clarStorageObjects 18 }
+	
+	-- 1.3.6.1.4.1.1981.2.19
+	clarStorageControllerTable OBJECT-TYPE
+		SYNTAX SEQUENCE OF ClarStorageControllerEntry
+		ACCESS not-accessible
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { clarStorageObjects 19 }
+	
+	-- 1.3.6.1.4.1.1981.2.19.1
+	clarStorageControllerEntry OBJECT-TYPE
+		SYNTAX ClarStorageControllerEntry
+		ACCESS not-accessible
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		INDEX { controllerName }
+		::= { clarStorageControllerTable 1 }
+	
+	ClarStorageControllerEntry ::=
+		SEQUENCE { 
+			controllerName
+				DisplayString,
+			controllerManagementIP
+				DisplayString,
+			controllerSerialNumber
+				DisplayString,
+			controllerNumberOfDAE
+				Unsigned32,
+			controllerNumberOfFrontendPort
+				Unsigned32,
+			controllerNumberOfBackendPort
+				Unsigned32,
+			controllerOperationalState
+				DisplayString,
+			controllerCpuUtilization
+				DisplayString,
+		    controllerTotalThroughput
+				DisplayString,
+			controllerReadThroughput
+				DisplayString,
+			controllerWriteThroughput
+				DisplayString,
+			controllerTotalBandwidth
+				DisplayString,
+			controllerReadBandwidth
+				DisplayString,
+			controllerWriteBandwidth
+				DisplayString,
+			controllerDirtyCachePagesAmount
+				DisplayString,
+			controllerPercentDirtyCachePages
+				DisplayString,
+			controllerReadCacheState
+				DisplayString,
+			controllerWriteCacheState
+				DisplayString
+		 }
+	
+	-- 1.3.6.1.4.1.1981.2.19.1.1
+	controllerName OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { clarStorageControllerEntry 1 }
+	
+	-- 1.3.6.1.4.1.1981.2.19.1.2
+	controllerManagementIP OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { clarStorageControllerEntry 2 }
+	
+	-- 1.3.6.1.4.1.1981.2.19.1.3
+	controllerSerialNumber OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { clarStorageControllerEntry 3 }
+	
+	-- 1.3.6.1.4.1.1981.2.19.1.4
+	controllerNumberOfDAE OBJECT-TYPE
+		SYNTAX Unsigned32
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { clarStorageControllerEntry 4 }
+	
+	-- 1.3.6.1.4.1.1981.2.19.1.5
+	controllerNumberOfFrontendPort OBJECT-TYPE
+		SYNTAX Unsigned32
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { clarStorageControllerEntry 5 }
+	
+	-- 1.3.6.1.4.1.1981.2.19.1.6
+	controllerNumberOfBackendPort OBJECT-TYPE
+		SYNTAX Unsigned32
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { clarStorageControllerEntry 6 }
+	
+	-- 1.3.6.1.4.1.1981.2.19.1.7
+	controllerOperationalState OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { clarStorageControllerEntry 7 }
+	
+	-- 1.3.6.1.4.1.1981.2.19.1.8
+	controllerCpuUtilization OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { clarStorageControllerEntry 8 }
+
+	-- 1.3.6.1.4.1.1981.2.19.1.9
+	controllerTotalThroughput OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: IO/s."
+		::= { clarStorageControllerEntry 9 }
+
+	-- 1.3.6.1.4.1.1981.2.19.1.10
+	controllerReadThroughput OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: IO/s."
+		::= { clarStorageControllerEntry 10 }
+
+	-- 1.3.6.1.4.1.1981.2.19.1.11
+	controllerWriteThroughput OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: IO/s."
+		::= { clarStorageControllerEntry 11 }
+
+	-- 1.3.6.1.4.1.1981.2.19.1.12
+	controllerTotalBandwidth OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: MB/s."
+		::= { clarStorageControllerEntry 12 }
+
+	-- 1.3.6.1.4.1.1981.2.19.1.13
+	controllerReadBandwidth OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: MB/s."
+		::= { clarStorageControllerEntry 13 }
+
+	-- 1.3.6.1.4.1.1981.2.19.1.14
+	controllerWriteBandwidth OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: MB/s."
+		::= { clarStorageControllerEntry 14 }
+
+	-- 1.3.6.1.4.1.1981.2.19.1.15
+	controllerDirtyCachePagesAmount OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: MB."
+		::= { clarStorageControllerEntry 15 }
+		
+	-- 1.3.6.1.4.1.1981.2.19.1.16
+	controllerPercentDirtyCachePages OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { clarStorageControllerEntry 16 }
+	
+	-- 1.3.6.1.4.1.1981.2.19.1.17
+	controllerReadCacheState OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { clarStorageControllerEntry 17 }
+	
+	-- 1.3.6.1.4.1.1981.2.19.1.18
+	controllerWriteCacheState OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { clarStorageControllerEntry 18 }
+	
+	-- 1.3.6.1.4.1.1981.2.20
+	clarStoragePoolTable OBJECT-TYPE
+		SYNTAX SEQUENCE OF ClarStoragePoolEntry
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { clarStorageObjects 20 }
+	
+	-- 1.3.6.1.4.1.1981.2.20.1
+	clarStoragePoolEntry OBJECT-TYPE
+		SYNTAX ClarStoragePoolEntry
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		INDEX { poolName }
+		::= { clarStoragePoolTable 1 }
+	
+	ClarStoragePoolEntry ::=
+		SEQUENCE { 
+			poolName
+				DisplayString,
+			poolDiskTypes
+				DisplayString,
+			poolRaidLevel
+				DisplayString,
+			poolFastCacheStatus
+				DisplayString,
+			poolNumberOfPhysicalDisk
+				Unsigned32,
+			poolTotalCapacity
+				DisplayString,
+			poolRemainingCapacity
+				DisplayString,
+			poolUsedSpace
+				DisplayString,
+			poolCapacityUtilization
+				DisplayString
+		 }
+
+	-- 1.3.6.1.4.1.1981.2.20.1.1
+	poolName OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { clarStoragePoolEntry 1 }
+	
+	-- 1.3.6.1.4.1.1981.2.20.1.2
+	poolDiskTypes OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { clarStoragePoolEntry 2 }
+	
+	-- 1.3.6.1.4.1.1981.2.20.1.3
+	poolRaidLevel OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { clarStoragePoolEntry 3 }
+	
+	-- 1.3.6.1.4.1.1981.2.20.1.4
+	poolFastCacheStatus OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { clarStoragePoolEntry 4 }
+	
+	-- 1.3.6.1.4.1.1981.2.20.1.5
+	poolNumberOfPhysicalDisk OBJECT-TYPE
+		SYNTAX Unsigned32
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { clarStoragePoolEntry 5 }
+	
+	-- 1.3.6.1.4.1.1981.2.20.1.6
+	poolTotalCapacity OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: GB."
+		::= { clarStoragePoolEntry 6 }
+	
+	-- 1.3.6.1.4.1.1981.2.20.1.7
+	poolRemainingCapacity OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: GB."
+		::= { clarStoragePoolEntry 7 }
+	
+	-- 1.3.6.1.4.1.1981.2.20.1.8
+	poolUsedSpace OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: GB."
+		::= { clarStoragePoolEntry 8 }
+	
+	-- 1.3.6.1.4.1.1981.2.20.1.9
+	poolCapacityUtilization OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { clarStoragePoolEntry 9 }
+	
+	-- 1.3.6.1.4.1.1981.2.21
+	clarStorageVolumeTable OBJECT-TYPE
+		SYNTAX SEQUENCE OF ClarStorageVolumeEntry
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { clarStorageObjects 21 }
+	
+	-- 1.3.6.1.4.1.1981.2.21.1
+	clarStorageVolumeEntry OBJECT-TYPE
+		SYNTAX ClarStorageVolumeEntry
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		INDEX { volumeId }
+		::= { clarStorageVolumeTable 1 }
+	
+	ClarStorageVolumeEntry ::=
+		SEQUENCE { 
+			volumeId
+				DisplayString,
+			volumeName
+				DisplayString,
+			volumeRaidLevel
+				DisplayString,
+			volumeSize
+				DisplayString,
+			volumeNumberOfPhysicalDisk
+				Unsigned32,
+			volumeOperationalState
+				DisplayString,
+			volumeFastCacheState
+				DisplayString,
+			volumeDefaultController
+				DisplayString,
+			volumeCurrentController
+				DisplayString,
+			volumeResponseTime
+				DisplayString,
+			volumeQueueLength
+				DisplayString,
+			volumeTotalThroughput
+				DisplayString,
+			volumeReadThroughput
+				DisplayString,
+			volumeWriteThroughput
+				DisplayString,
+			volumeFastCacheReadHitIOs
+				DisplayString,
+			volumeFastCacheWriteHitIOs
+				DisplayString,
+			volumeTotalBandwidth
+				DisplayString,
+			volumeReadBandwidth
+				DisplayString,
+			volumeWriteBandwidth
+				DisplayString,
+			volumeFastCacheReadHitRate
+				DisplayString,
+			volumeFastCacheWriteHitRate
+				DisplayString,
+			volumeUtilization
+				DisplayString,
+			volumeHostInfo
+				DisplayString
+		 }
+
+	-- 1.3.6.1.4.1.1981.2.21.1.1
+	volumeId OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { clarStorageVolumeEntry 1 }
+		
+	-- 1.3.6.1.4.1.1981.2.21.1.2
+	volumeName OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { clarStorageVolumeEntry 2 }
+	
+	-- 1.3.6.1.4.1.1981.2.21.1.3
+	volumeRaidLevel OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { clarStorageVolumeEntry 3 }
+	
+	-- 1.3.6.1.4.1.1981.2.21.1.4
+	volumeSize OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: GB."
+		::= { clarStorageVolumeEntry 4 }
+	
+	-- 1.3.6.1.4.1.1981.2.21.1.5
+	volumeNumberOfPhysicalDisk OBJECT-TYPE
+		SYNTAX Unsigned32
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { clarStorageVolumeEntry 5 }
+	
+	-- 1.3.6.1.4.1.1981.2.21.1.6
+	volumeOperationalState OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { clarStorageVolumeEntry 6 }
+	
+	-- 1.3.6.1.4.1.1981.2.21.1.7
+	volumeFastCacheState OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { clarStorageVolumeEntry 7 }
+	
+	-- 1.3.6.1.4.1.1981.2.21.1.8
+	volumeDefaultController OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { clarStorageVolumeEntry 8 }
+	
+	-- 1.3.6.1.4.1.1981.2.21.1.9
+	volumeCurrentController OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { clarStorageVolumeEntry 9 }
+	
+	-- 1.3.6.1.4.1.1981.2.21.1.10
+	volumeResponseTime OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: ms."
+		::= { clarStorageVolumeEntry 10 }
+	
+	-- 1.3.6.1.4.1.1981.2.21.1.11
+	volumeQueueLength OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { clarStorageVolumeEntry 11 }	
+	
+	-- 1.3.6.1.4.1.1981.2.21.1.12
+	volumeTotalThroughput OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: IO/s."
+		::= { clarStorageVolumeEntry 12 }
+	
+	-- 1.3.6.1.4.1.1981.2.21.1.13
+	volumeReadThroughput OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: IO/s."
+		::= { clarStorageVolumeEntry 13 }
+	
+	-- 1.3.6.1.4.1.1981.2.21.1.14
+	volumeWriteThroughput OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: IO/s."
+		::= { clarStorageVolumeEntry 14 }
+	
+	-- 1.3.6.1.4.1.1981.2.21.1.15
+	volumeFastCacheReadHitIOs OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: IO."
+		::= { clarStorageVolumeEntry 15 }
+	
+	-- 1.3.6.1.4.1.1981.2.21.1.16
+	volumeFastCacheWriteHitIOs OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: IO."
+		::= { clarStorageVolumeEntry 16 }
+	
+	-- 1.3.6.1.4.1.1981.2.21.1.17
+	volumeTotalBandwidth OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: MB/s."
+		::= { clarStorageVolumeEntry 17 }
+	
+	-- 1.3.6.1.4.1.1981.2.21.1.18
+	volumeReadBandwidth OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: MB/s."
+		::= { clarStorageVolumeEntry 18 }
+	
+	-- 1.3.6.1.4.1.1981.2.21.1.19
+	volumeWriteBandwidth OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: MB/s."
+		::= { clarStorageVolumeEntry 19 }
+	
+	-- 1.3.6.1.4.1.1981.2.21.1.20
+	volumeFastCacheReadHitRate OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { clarStorageVolumeEntry 20 }
+	
+	-- 1.3.6.1.4.1.1981.2.21.1.21
+	volumeFastCacheWriteHitRate OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { clarStorageVolumeEntry 21 }
+	
+	-- 1.3.6.1.4.1.1981.2.21.1.22
+	volumeUtilization OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { clarStorageVolumeEntry 22 }
+		
+	-- 1.3.6.1.4.1.1981.2.21.1.23
+	volumeHostInfo OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { clarStorageVolumeEntry 23 }
+	
+	-- 1.3.6.1.4.1.1981.2.22
+	clarStorageDiskTable OBJECT-TYPE
+		SYNTAX SEQUENCE OF ClarStorageDiskEntry
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { clarStorageObjects 22 }
+	
+	-- 1.3.6.1.4.1.1981.2.22.1
+	clarStorageDiskEntry OBJECT-TYPE
+		SYNTAX ClarStorageDiskEntry
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		INDEX { diskName }
+		::= { clarStorageDiskTable 1 }
+	
+	ClarStorageDiskEntry ::=
+		SEQUENCE { 
+			diskName
+				DisplayString,
+			diskModel
+				DisplayString,
+			diskSerialNumber
+				DisplayString,
+			diskFirmwareVersion
+				DisplayString,
+			diskType
+				DisplayString,
+			diskPhysicalLocation
+				DisplayString,
+			diskStatus
+				DisplayString,
+			diskRawCapacity
+				DisplayString,
+			diskCurrentPool
+				DisplayString,
+			diskResponseTime
+				DisplayString,
+			diskQueueLength
+				DisplayString,
+			diskTotalThroughput
+				DisplayString,
+			diskReadThroughput
+				DisplayString,
+			diskWriteThroughput
+				DisplayString,
+			diskTotalBandwidth
+				DisplayString,
+			diskReadBandwidth
+				DisplayString,
+			diskWriteBandwidth
+				DisplayString,
+			diskUtilization
+				DisplayString
+		 }
+
+	-- 1.3.6.1.4.1.1981.2.22.1.1
+	diskName OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { clarStorageDiskEntry 1 }
+	
+	-- 1.3.6.1.4.1.1981.2.22.1.2
+	diskModel OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { clarStorageDiskEntry 2 }
+	
+	-- 1.3.6.1.4.1.1981.2.22.1.3
+	diskSerialNumber OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { clarStorageDiskEntry 3 }
+	
+	-- 1.3.6.1.4.1.1981.2.22.1.4
+	diskFirmwareVersion OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { clarStorageDiskEntry 4 }
+	
+	-- 1.3.6.1.4.1.1981.2.22.1.5
+	diskType OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { clarStorageDiskEntry 5 }
+	
+	-- 1.3.6.1.4.1.1981.2.22.1.6
+	diskPhysicalLocation OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { clarStorageDiskEntry 6 }
+	
+	-- 1.3.6.1.4.1.1981.2.22.1.7
+	diskStatus OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { clarStorageDiskEntry 7 }
+	
+	-- 1.3.6.1.4.1.1981.2.22.1.8
+	diskRawCapacity OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { clarStorageDiskEntry 8 }
+	
+	-- 1.3.6.1.4.1.1981.2.22.1.9
+	diskCurrentPool OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { clarStorageDiskEntry 9 }
+	
+	-- 1.3.6.1.4.1.1981.2.22.1.10
+	diskResponseTime OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: ms."
+		::= { clarStorageDiskEntry 10 }
+	
+	-- 1.3.6.1.4.1.1981.2.22.1.11
+	diskQueueLength OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { clarStorageDiskEntry 11 }
+	
+	-- 1.3.6.1.4.1.1981.2.22.1.12
+	diskTotalThroughput OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: IO/s."
+		::= { clarStorageDiskEntry 12 }
+	
+	-- 1.3.6.1.4.1.1981.2.22.1.13
+	diskReadThroughput OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: IO/s."
+		::= { clarStorageDiskEntry 13 }
+	
+	-- 1.3.6.1.4.1.1981.2.22.1.14
+	diskWriteThroughput OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: IO/s."
+		::= { clarStorageDiskEntry 14 }
+	
+	-- 1.3.6.1.4.1.1981.2.22.1.15
+	diskTotalBandwidth OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: MB/s."
+		::= { clarStorageDiskEntry 15 }
+	
+	-- 1.3.6.1.4.1.1981.2.22.1.16
+	diskReadBandwidth OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: MB/s."
+		::= { clarStorageDiskEntry 16 }
+	
+	-- 1.3.6.1.4.1.1981.2.22.1.17
+	diskWriteBandwidth OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: MB/s."
+		::= { clarStorageDiskEntry 17 }
+	
+	-- 1.3.6.1.4.1.1981.2.22.1.18
+	diskUtilization OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { clarStorageDiskEntry 18 }
+	
+	-- 1.3.6.1.4.1.1981.2.23
+	clarStoragePortTable OBJECT-TYPE
+		SYNTAX SEQUENCE OF ClarStoragePortEntry
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { clarStorageObjects 23 }
+	
+	-- 1.3.6.1.4.1.1981.2.23.1
+	clarStoragePortEntry OBJECT-TYPE
+		SYNTAX ClarStoragePortEntry
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		INDEX { portId }
+		::= { clarStoragePortTable 1 }
+	
+	ClarStoragePortEntry ::=
+		SEQUENCE { 
+			portId
+				Unsigned32,
+			portName
+				DisplayString,
+			portAddress
+				DisplayString,
+			portType
+				DisplayString,
+			portCurrentSpeed
+				DisplayString,
+			portSupportedSpeed
+				DisplayString,
+			portStatus
+				DisplayString,
+			portTotalThroughput
+				DisplayString,
+			portReadThroughput
+				DisplayString,
+			portWriteThroughput
+				DisplayString,
+			portTotalBandwidth
+				DisplayString,
+			portReadBandwidth
+				DisplayString,
+			portWriteBandwidth
+				DisplayString
+		 }
+
+	-- 1.3.6.1.4.1.1981.2.23.1.1
+	portId OBJECT-TYPE
+		SYNTAX Unsigned32
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { clarStoragePortEntry 1 }
+	
+	-- 1.3.6.1.4.1.1981.2.23.1.2
+	portName OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { clarStoragePortEntry 2 }
+	
+	-- 1.3.6.1.4.1.1981.2.23.1.3
+	portAddress OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { clarStoragePortEntry 3 }
+	
+	-- 1.3.6.1.4.1.1981.2.23.1.4
+	portType OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { clarStoragePortEntry 4 }
+	
+	-- 1.3.6.1.4.1.1981.2.23.1.5
+	portCurrentSpeed OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { clarStoragePortEntry 5 }
+	
+	-- 1.3.6.1.4.1.1981.2.23.1.6
+	portSupportedSpeed OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { clarStoragePortEntry 6 }
+	
+	-- 1.3.6.1.4.1.1981.2.23.1.7
+	portStatus OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { clarStoragePortEntry 7 }
+
+	-- 1.3.6.1.4.1.1981.2.23.1.8
+	portTotalThroughput OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: IO/s."
+		::= { clarStoragePortEntry 8 }
+		
+	-- 1.3.6.1.4.1.1981.2.23.1.9
+	portReadThroughput OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: IO/s."
+		::= { clarStoragePortEntry 9 }
+	
+	-- 1.3.6.1.4.1.1981.2.23.1.10
+	portWriteThroughput OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: IO/s."
+		::= { clarStoragePortEntry 10 }
+
+	-- 1.3.6.1.4.1.1981.2.23.1.11
+	portTotalBandwidth OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: MB/s."
+		::= { clarStoragePortEntry 11 }
+	
+	-- 1.3.6.1.4.1.1981.2.23.1.12
+	portReadBandwidth OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: MB/s"
+		::= { clarStoragePortEntry 12 }
+	
+	-- 1.3.6.1.4.1.1981.2.23.1.13
+	portWriteBandwidth OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: MB/s."
+		::= { clarStoragePortEntry 13 }
+	
+	-- 1.3.6.1.4.1.1981.2.24
+	clarStorageHostTable OBJECT-TYPE
+		SYNTAX SEQUENCE OF ClarStorageHostEntry
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { clarStorageObjects 24 }
+	
+	-- 1.3.6.1.4.1.1981.2.24.1
+	clarStorageHostEntry OBJECT-TYPE
+		SYNTAX ClarStorageHostEntry
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		INDEX { hostHBAWWN }
+		::= { clarStorageHostTable 1 }
+	
+	ClarStorageHostEntry ::=
+		SEQUENCE { 
+			hostName
+				DisplayString,
+			hostNetworkAddress
+				DisplayString,
+			hostHBAWWN
+				DisplayString,
+			hostOperationSystemVersion
+				DisplayString,
+			hostAssignedStorageVolumes
+				DisplayString
+		 }
+	
+	-- 1.3.6.1.4.1.1981.2.24.1.1
+	hostName OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { clarStorageHostEntry 1 }
+	
+	-- 1.3.6.1.4.1.1981.2.24.1.2
+	hostNetworkAddress OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { clarStorageHostEntry 2 }
+	
+	-- 1.3.6.1.4.1.1981.2.24.1.3
+	hostHBAWWN OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { clarStorageHostEntry 3 }
+	
+	-- 1.3.6.1.4.1.1981.2.24.1.4
+	hostOperationSystemVersion OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { clarStorageHostEntry 4 }
+	
+	-- 1.3.6.1.4.1.1981.2.24.1.5
+	hostAssignedStorageVolumes OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { clarStorageHostEntry 5 }
+
+
+	-- 1.3.6.1.4.1.1981.2.25
+	clarDeviceTable OBJECT-TYPE
+		SYNTAX SEQUENCE OF clarDeviceEntry
+		ACCESS not-accessible
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { clarStorageObjects 25 }
+	
+	-- 1.3.6.1.4.1.1981.2.25.1
+	clarDeviceEntry OBJECT-TYPE
+		SYNTAX clarDeviceEntry
+		ACCESS not-accessible
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		INDEX { deviceName }
+		::= { clarDeviceTable 1 }
+	
+	clarDeviceEntry ::=
+		SEQUENCE { 
+			deviceName
+				DisplayString,
+			deviceState
+				DisplayString
+		 }
+	
+	-- 1.3.6.1.4.1.1981.2.25.1.1
+	deviceName OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { clarDeviceEntry 1 }
+	
+	-- 1.3.6.1.4.1.1981.2.25.1.2
+	deviceState OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { clarDeviceEntry 2 }
+
+	-- 1.3.6.1.4.1.1981.2.26
+	clarEnclosureTable OBJECT-TYPE
+		SYNTAX SEQUENCE OF clarEnclosureEntry
+		ACCESS not-accessible
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { clarStorageObjects 26 }
+	
+	-- 1.3.6.1.4.1.1981.2.26.1
+	clarEnclosureEntry OBJECT-TYPE
+		SYNTAX clarEnclosureEntry
+		ACCESS not-accessible
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		INDEX { enclosureName }
+		::= { clarEnclosureTable 1 }
+	
+	clarEnclosureEntry ::=
+		SEQUENCE { 
+			enclosureName
+				DisplayString,
+			enclosureTemperature
+				DisplayString,
+			enclosureInputPower
+				DisplayString
+		 }
+	
+	-- 1.3.6.1.4.1.1981.2.26.1.1
+	enclosureName OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { clarEnclosureEntry 1 }
+	
+	-- 1.3.6.1.4.1.1981.2.26.1.2
+	enclosureTemperature OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { clarEnclosureEntry 2 }
+
+	-- 1.3.6.1.4.1.1981.2.26.1.3
+	enclosureInputPower OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { clarEnclosureEntry 3 }			
+
+END
