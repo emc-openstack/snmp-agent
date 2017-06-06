@@ -192,7 +192,7 @@ IMPORTS
 	
 	-- 1.3.6.1.4.1.1139.103.2.19
 	unityStorageControllerTable OBJECT-TYPE
-		SYNTAX SEQUENCE OF ClarStorageControllerEntry
+		SYNTAX SEQUENCE OF UnityStorageControllerEntry
 		ACCESS not-accessible
 		STATUS mandatory
 		DESCRIPTION
@@ -201,7 +201,7 @@ IMPORTS
 	
 	-- 1.3.6.1.4.1.1139.103.2.19.1
 	unityStorageControllerEntry OBJECT-TYPE
-		SYNTAX ClarStorageControllerEntry
+		SYNTAX UnityStorageControllerEntry
 		ACCESS not-accessible
 		STATUS mandatory
 		DESCRIPTION
@@ -209,7 +209,7 @@ IMPORTS
 		INDEX { controllerName }
 		::= { unityStorageControllerTable 1 }
 	
-	ClarStorageControllerEntry ::=
+	UnityStorageControllerEntry ::=
 		SEQUENCE { 
 			controllerName
 				DisplayString,
@@ -413,7 +413,7 @@ IMPORTS
 	
 	-- 1.3.6.1.4.1.1139.103.2.20
 	unityStoragePoolTable OBJECT-TYPE
-		SYNTAX SEQUENCE OF ClarStoragePoolEntry
+		SYNTAX SEQUENCE OF UnityStoragePoolEntry
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
@@ -422,7 +422,7 @@ IMPORTS
 	
 	-- 1.3.6.1.4.1.1139.103.2.20.1
 	unityStoragePoolEntry OBJECT-TYPE
-		SYNTAX ClarStoragePoolEntry
+		SYNTAX UnityStoragePoolEntry
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
@@ -430,7 +430,7 @@ IMPORTS
 		INDEX { poolName }
 		::= { unityStoragePoolTable 1 }
 	
-	ClarStoragePoolEntry ::=
+	UnityStoragePoolEntry ::=
 		SEQUENCE { 
 			poolName
 				DisplayString,
@@ -535,7 +535,7 @@ IMPORTS
 	
 	-- 1.3.6.1.4.1.1139.103.2.21
 	unityStorageVolumeTable OBJECT-TYPE
-		SYNTAX SEQUENCE OF ClarStorageVolumeEntry
+		SYNTAX SEQUENCE OF UnityStorageVolumeEntry
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
@@ -544,7 +544,7 @@ IMPORTS
 	
 	-- 1.3.6.1.4.1.1139.103.2.21.1
 	unityStorageVolumeEntry OBJECT-TYPE
-		SYNTAX ClarStorageVolumeEntry
+		SYNTAX UnityStorageVolumeEntry
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
@@ -552,7 +552,7 @@ IMPORTS
 		INDEX { volumeId }
 		::= { unityStorageVolumeTable 1 }
 	
-	ClarStorageVolumeEntry ::=
+	UnityStorageVolumeEntry ::=
 		SEQUENCE { 
 			volumeId
 				DisplayString,
@@ -811,7 +811,7 @@ IMPORTS
 	
 	-- 1.3.6.1.4.1.1139.103.2.22
 	unityStorageDiskTable OBJECT-TYPE
-		SYNTAX SEQUENCE OF ClarStorageDiskEntry
+		SYNTAX SEQUENCE OF UnityStorageDiskEntry
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
@@ -820,7 +820,7 @@ IMPORTS
 	
 	-- 1.3.6.1.4.1.1139.103.2.22.1
 	unityStorageDiskEntry OBJECT-TYPE
-		SYNTAX ClarStorageDiskEntry
+		SYNTAX UnityStorageDiskEntry
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
@@ -828,7 +828,7 @@ IMPORTS
 		INDEX { diskName }
 		::= { unityStorageDiskTable 1 }
 	
-	ClarStorageDiskEntry ::=
+	UnityStorageDiskEntry ::=
 		SEQUENCE { 
 			diskName
 				DisplayString,
@@ -1032,7 +1032,7 @@ IMPORTS
 	
 	-- 1.3.6.1.4.1.1139.103.2.23
 	unityStoragePortTable OBJECT-TYPE
-		SYNTAX SEQUENCE OF ClarStoragePortEntry
+		SYNTAX SEQUENCE OF UnityStoragePortEntry
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
@@ -1041,7 +1041,7 @@ IMPORTS
 	
 	-- 1.3.6.1.4.1.1139.103.2.23.1
 	unityStoragePortEntry OBJECT-TYPE
-		SYNTAX ClarStoragePortEntry
+		SYNTAX UnityStoragePortEntry
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
@@ -1049,7 +1049,7 @@ IMPORTS
 		INDEX { portId }
 		::= { unityStoragePortTable 1 }
 	
-	ClarStoragePortEntry ::=
+	UnityStoragePortEntry ::=
 		SEQUENCE { 
 			portId
 				Unsigned32,
@@ -1198,7 +1198,7 @@ IMPORTS
 	
 	-- 1.3.6.1.4.1.1139.103.2.24
 	unityStorageHostTable OBJECT-TYPE
-		SYNTAX SEQUENCE OF ClarStorageHostEntry
+		SYNTAX SEQUENCE OF UnityStorageHostEntry
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
@@ -1207,7 +1207,7 @@ IMPORTS
 	
 	-- 1.3.6.1.4.1.1139.103.2.24.1
 	unityStorageHostEntry OBJECT-TYPE
-		SYNTAX ClarStorageHostEntry
+		SYNTAX UnityStorageHostEntry
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
@@ -1215,7 +1215,7 @@ IMPORTS
 		INDEX { hostHBAWWN }
 		::= { unityStorageHostTable 1 }
 	
-	ClarStorageHostEntry ::=
+	UnityStorageHostEntry ::=
 		SEQUENCE { 
 			hostName
 				DisplayString,
@@ -1277,7 +1277,7 @@ IMPORTS
 
 	-- 1.3.6.1.4.1.1139.103.2.25
 	unityDeviceTable OBJECT-TYPE
-		SYNTAX SEQUENCE OF unityDeviceEntry
+		SYNTAX SEQUENCE OF UnityDeviceEntry
 		ACCESS not-accessible
 		STATUS mandatory
 		DESCRIPTION
@@ -1286,7 +1286,7 @@ IMPORTS
 	
 	-- 1.3.6.1.4.1.1139.103.2.25.1
 	unityDeviceEntry OBJECT-TYPE
-		SYNTAX unityDeviceEntry
+		SYNTAX UnityDeviceEntry
 		ACCESS not-accessible
 		STATUS mandatory
 		DESCRIPTION
@@ -1294,7 +1294,7 @@ IMPORTS
 		INDEX { deviceName }
 		::= { unityDeviceTable 1 }
 	
-	unityDeviceEntry ::=
+	UnityDeviceEntry ::=
 		SEQUENCE { 
 			deviceName
 				DisplayString,
@@ -1322,7 +1322,7 @@ IMPORTS
 
 	-- 1.3.6.1.4.1.1139.103.2.26
 	unityEnclosureTable OBJECT-TYPE
-		SYNTAX SEQUENCE OF unityEnclosureEntry
+		SYNTAX SEQUENCE OF UnityEnclosureEntry
 		ACCESS not-accessible
 		STATUS mandatory
 		DESCRIPTION
@@ -1331,7 +1331,7 @@ IMPORTS
 	
 	-- 1.3.6.1.4.1.1139.103.2.26.1
 	unityEnclosureEntry OBJECT-TYPE
-		SYNTAX unityEnclosureEntry
+		SYNTAX UnityEnclosureEntry
 		ACCESS not-accessible
 		STATUS mandatory
 		DESCRIPTION
@@ -1339,7 +1339,7 @@ IMPORTS
 		INDEX { enclosureName }
 		::= { unityEnclosureTable 1 }
 	
-	unityEnclosureEntry ::=
+	UnityEnclosureEntry ::=
 		SEQUENCE { 
 			enclosureName
 				DisplayString,
