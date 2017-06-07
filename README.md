@@ -10,5 +10,5 @@ Currently, Unity is the first product supported by this agent. Here are the expe
 * Support SNMP v2c and v3 protocol  
 * Platform independent, that is, support both Windows and Linux
 * Capability to deploy and install without internet access.
- 
+* Encrypt/Decrypt the configure file of the agent
 
