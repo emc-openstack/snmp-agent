@@ -1,12 +1,10 @@
+import factory
+from pysnmp import debug
+from pysnmp.carrier.asyncore.dgram import udp
 from pysnmp.entity import engine, config
 from pysnmp.entity.rfc3413 import cmdrsp, context
-from pysnmp.carrier.asyncore.dgram import udp
 from pysnmp.proto.api import v2c
 from pysnmp.smi import builder
-from pysnmp import debug
-
-import agent
-import factory
 
 debug.setLogger(debug.Debug('all'))
 
@@ -23,17 +21,17 @@ class SNMPEngine(object):
         # self.mib_builder.setMibSources(*mibSources)
 
         mibSources = self.mib_builder.getMibSources()
-        self.mib_builder.setMibSources(builder.DirMibSource('.'), *mibSources)
+        self.mib_builder.setMibSources(builder.DirMibSource('./mibs/'), *mibSources)
 
         self.MibScalar, self.MibScalarInstance = self.mib_builder.importSymbols(
             'SNMPv2-SMI', 'MibScalar', 'MibScalarInstance'
         )
 
-    def addTransport(self, ip, port):
+    def addTransport(self, ip, port, idx=0):
         # Transport setup
         # UDP over IPv4
         config.addTransport(self.snmp_engine,
-                            udp.domainName,
+                            udp.domainName + (idx,),
                             udp.UdpTransport().openServerMode((ip, port)))
 
     def addV3User(self, user_name, auth_protocol, auth_key,
@@ -43,12 +41,22 @@ class SNMPEngine(object):
                          priv_protocol, priv_key, security_engineId,
                          security_name)
 
+    def addV1System(self, community_index, community_name,
+                    context_engine_id=None, context_name=None,
+                    transport_tag=None, security_name=None):
+        config.addV1System(self.snmp_engine, community_index, community_name,
+                           context_engine_id, context_name,
+                           transport_tag, security_name)
+
     def addVacmUser(self, security_model, security_name, security_level,
                     read_sub_tree=(), write_sub_tree=(), notify_sub_tree=()):
         # Allow read MIB access for this user / securityModels at VACM
         config.addVacmUser(self.snmp_engine, security_model, security_name,
                            security_level, read_sub_tree, write_sub_tree,
                            notify_sub_tree)
+
+    def registerTransportDispatcher(self, transportDispatcher, recvId=None):
+        self.snmp_engine.registerTransportDispatcher(transportDispatcher, recvId)
 
     def create_managed_object_instance(self):
 
@@ -102,7 +110,6 @@ class SNMPEngine(object):
             self.snmp_engine.transportDispatcher.closeDispatcher()
             raise
 
-
     def get_agent_version(self, name, idx):
         return 'Agent Version: v2.0'
 
@@ -113,7 +120,7 @@ class SNMPEngine(object):
 if __name__ == "__main__":
     engine = SNMPEngine()
 
-    engine.addTransport('10.32.179.148', 161)
+    engine.addTransport('192.168.56.1', 161)
 
     # SNMPv3/USM setup
     # user: usr-md5-des, auth: MD5, priv DES
@@ -131,6 +138,10 @@ if __name__ == "__main__":
 
     engine.addV3User(user_name, config.usmHMACMD5AuthProtocol, auth_key,
                      config.usmDESPrivProtocol, priv_key)
+
+    # snmpget -v2c -c public 192.168.56.1 1.3.6.1.4.1.1139.103.2.1.0
+    engine.addV1System(user_name, 'public')
+    engine.addVacmUser(2, user_name, 'noAuthNoPriv', read_sub_tree)
 
     engine.create_managed_object_instance()
 

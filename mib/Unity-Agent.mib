@@ -1,8 +1,11 @@
 Unity-MIB DEFINITIONS ::= BEGIN
 
 IMPORTS
-	Unsigned32, OBJECT-TYPE, DisplayString			
-	FROM RFC1213-MIB;
+	Unsigned32, OBJECT-TYPE
+	FROM SNMPv2-SMI
+
+	DisplayString
+	FROM SNMPv2-TC;
 
 	-- 1.3
 	org OBJECT IDENTIFIER ::= { iso 3 }
