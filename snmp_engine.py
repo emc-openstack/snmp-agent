@@ -52,9 +52,7 @@ class SNMPEngine(object):
 
     def create_managed_object_instance(self):
 
-        (unityStorageObjects,
-         agentVersion,
-         mibVersion) = self.mib_builder.importSymbols(
+        mib_scala_list = self.mib_builder.importSymbols(
             'Unity-MIB',
             'unityStorageObjects',
             'agentVersion',

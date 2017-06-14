@@ -1,8 +1,9 @@
 Unity-MIB DEFINITIONS ::= BEGIN
 
 IMPORTS
-	Unsigned32, OBJECT-TYPE, DisplayString			
-	FROM RFC1213-MIB;
+	UInteger32, OBJECT-TYPE FROM SNMPv2-SMI
+
+    DisplayString FROM SNMPv2-TC;
 
 	-- 1.3
 	org OBJECT IDENTIFIER ::= { iso 3 }
@@ -84,7 +85,7 @@ IMPORTS
 	
 	-- 1.3.6.1.4.1.1139.103.2.7
 	numberOfController OBJECT-TYPE
-		SYNTAX Unsigned32
+		SYNTAX UInteger32
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
@@ -93,7 +94,7 @@ IMPORTS
 	
 	-- 1.3.6.1.4.1.1139.103.2.8
 	numberOfPowerSupply OBJECT-TYPE
-		SYNTAX Unsigned32
+		SYNTAX UInteger32
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
@@ -102,7 +103,7 @@ IMPORTS
 	
 	-- 1.3.6.1.4.1.1139.103.2.9
 	numberOfPhysicalDisk OBJECT-TYPE
-		SYNTAX Unsigned32
+		SYNTAX UInteger32
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
@@ -218,11 +219,11 @@ IMPORTS
 			controllerSerialNumber
 				DisplayString,
 			controllerNumberOfDAE
-				Unsigned32,
+				UInteger32,
 			controllerNumberOfFrontendPort
-				Unsigned32,
+				UInteger32,
 			controllerNumberOfBackendPort
-				Unsigned32,
+				UInteger32,
 			controllerOperationalState
 				DisplayString,
 			controllerCpuUtilization
@@ -278,7 +279,7 @@ IMPORTS
 	
 	-- 1.3.6.1.4.1.1139.103.2.19.1.4
 	controllerNumberOfDAE OBJECT-TYPE
-		SYNTAX Unsigned32
+		SYNTAX UInteger32
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
@@ -287,7 +288,7 @@ IMPORTS
 	
 	-- 1.3.6.1.4.1.1139.103.2.19.1.5
 	controllerNumberOfFrontendPort OBJECT-TYPE
-		SYNTAX Unsigned32
+		SYNTAX UInteger32
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
@@ -296,7 +297,7 @@ IMPORTS
 	
 	-- 1.3.6.1.4.1.1139.103.2.19.1.6
 	controllerNumberOfBackendPort OBJECT-TYPE
-		SYNTAX Unsigned32
+		SYNTAX UInteger32
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
@@ -441,7 +442,7 @@ IMPORTS
 			poolFastCacheStatus
 				DisplayString,
 			poolNumberOfPhysicalDisk
-				Unsigned32,
+				UInteger32,
 			poolTotalCapacity
 				DisplayString,
 			poolRemainingCapacity
@@ -490,7 +491,7 @@ IMPORTS
 	
 	-- 1.3.6.1.4.1.1139.103.2.20.1.5
 	poolNumberOfPhysicalDisk OBJECT-TYPE
-		SYNTAX Unsigned32
+		SYNTAX UInteger32
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
@@ -563,7 +564,7 @@ IMPORTS
 			volumeSize
 				DisplayString,
 			volumeNumberOfPhysicalDisk
-				Unsigned32,
+				UInteger32,
 			volumeOperationalState
 				DisplayString,
 			volumeFastCacheState
@@ -640,7 +641,7 @@ IMPORTS
 	
 	-- 1.3.6.1.4.1.1139.103.2.21.1.5
 	volumeNumberOfPhysicalDisk OBJECT-TYPE
-		SYNTAX Unsigned32
+		SYNTAX UInteger32
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
@@ -1052,7 +1053,7 @@ IMPORTS
 	UnityStoragePortEntry ::=
 		SEQUENCE { 
 			portId
-				Unsigned32,
+				UInteger32,
 			portName
 				DisplayString,
 			portAddress
@@ -1081,7 +1082,7 @@ IMPORTS
 
 	-- 1.3.6.1.4.1.1139.103.2.23.1.1
 	portId OBJECT-TYPE
-		SYNTAX Unsigned32
+		SYNTAX UInteger32
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
