@@ -8,7 +8,7 @@ class ScalarInstanceFactory(object):
 
         def __get_value__(self, name, idx):
             return self.getSyntax().clone(
-                self.class_impl().__getattribute__(self.method_get_value)(
+                self.class_impl.__getattribute__(self.method_get_value)(
                     name, idx)
             )
 
