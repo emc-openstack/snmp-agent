@@ -1,11 +1,12 @@
 import os
 
-import config_parser
-import snmp_engine
 from pysnmp import debug
 from pysnmp.carrier.asyncore.dgram import udp
 from pysnmp.carrier.asyncore.dispatch import AsyncoreDispatcher
 from pysnmp.entity import config
+
+import snmp_engine
+from snmpagent.parser import config_parser
 
 debug.setLogger(debug.Debug('all'))
 

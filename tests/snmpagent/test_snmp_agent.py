@@ -1,5 +1,5 @@
 from nose.tools import *
-import snmpagent
+import tests.snmpagent
 
 def setup():
     print "SETUP!"
