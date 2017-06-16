@@ -1,14 +1,14 @@
 class ScalarInstanceFactory(object):
     @staticmethod
-    def build(name, class_impl, method_get_value, base_class):
+    def build(name, base_class, impl_class, get_value):
         def __init__(self, *args, **kwargs):
-            self.class_impl = class_impl
-            self.method_get_value = method_get_value
+            self.impl_class = impl_class
+            self.method_get_value = get_value
             base_class.__init__(self, *args, **kwargs)
 
         def __get_value__(self, name, idx):
             return self.getSyntax().clone(
-                self.class_impl.__getattribute__(self.method_get_value)(
+                self.impl_class().__getattribute__(self.method_get_value)(
                     name, idx)
             )
 

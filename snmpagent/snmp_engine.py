@@ -1,10 +1,12 @@
-import factory
 from pysnmp import debug
 from pysnmp.carrier.asyncore.dgram import udp
 from pysnmp.entity import engine, config
 from pysnmp.entity.rfc3413 import cmdrsp, context
 from pysnmp.proto.api import v2c
 from pysnmp.smi import builder
+
+import factory
+from agent_info import AgentInfo
 
 debug.setLogger(debug.Debug('all'))
 
@@ -21,7 +23,8 @@ class SNMPEngine(object):
         # self.mib_builder.setMibSources(*mibSources)
 
         mibSources = self.mib_builder.getMibSources()
-        self.mib_builder.setMibSources(builder.DirMibSource('./mibs/'), *mibSources)
+        self.mib_builder.setMibSources(builder.DirMibSource('./mibs/'),
+                                       *mibSources)
 
         self.MibScalar, self.MibScalarInstance = self.mib_builder.importSymbols(
             'SNMPv2-SMI', 'MibScalar', 'MibScalarInstance'
@@ -56,11 +59,13 @@ class SNMPEngine(object):
                            notify_sub_tree)
 
     def registerTransportDispatcher(self, transportDispatcher, recvId=None):
-        self.snmp_engine.registerTransportDispatcher(transportDispatcher, recvId)
+        self.snmp_engine.registerTransportDispatcher(transportDispatcher,
+                                                     recvId)
 
     def create_managed_object_instance(self):
 
-        mib_scala_list = self.mib_builder.importSymbols(
+        (unityStorageObjects, agentVersion,
+         mibVersion) = self.mib_builder.importSymbols(
             'Unity-MIB',
             'unityStorageObjects',
             'agentVersion',
@@ -68,14 +73,16 @@ class SNMPEngine(object):
         )
 
         AgentVersionScalarInstance = factory.ScalarInstanceFactory.build(
-            agentVersion.label, class_impl=self,
-            method_get_value="get_agent_version",
-            base_class=self.MibScalarInstance)
+            agentVersion.label, base_class=self.MibScalarInstance,
+            impl_class=AgentInfo,
+            get_value="get_agent_version",
+        )
 
         MibVersionScalarInstance = factory.ScalarInstanceFactory.build(
-            mibVersion.label, class_impl=self,
-            method_get_value="get_mib_version",
-            base_class=self.MibScalarInstance)
+            mibVersion.label, base_class=self.MibScalarInstance,
+            impl_class=AgentInfo,
+            get_value="get_mib_version",
+        )
 
         self.mib_builder.exportSymbols(
             '__Unity_MIB',
@@ -108,17 +115,13 @@ class SNMPEngine(object):
             self.snmp_engine.transportDispatcher.closeDispatcher()
             raise
 
-    def get_agent_version(self, name, idx):
-        return 'Agent Version: v2.0'
 
-    def get_mib_version(self, name, idx):
-        return 'MIB Version: v1.0'
 
 
 if __name__ == "__main__":
     engine = SNMPEngine()
 
-    engine.addTransport('192.168.56.1', 161)
+    engine.addTransport('10.32.179.148', 161)
 
     # SNMPv3/USM setup
     # user: usr-md5-des, auth: MD5, priv DES
