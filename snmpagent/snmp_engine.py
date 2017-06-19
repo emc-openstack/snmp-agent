@@ -7,6 +7,7 @@ from pysnmp.smi import builder
 
 import factory
 from agent_info import AgentInfo
+from snmpagent.parser.mib_parser import get_mib_symbols
 
 debug.setLogger(debug.Debug('all'))
 
@@ -64,33 +65,31 @@ class SNMPEngine(object):
 
     def create_managed_object_instance(self):
 
-        (unityStorageObjects, agentVersion,
-         mibVersion) = self.mib_builder.importSymbols(
-            'Unity-MIB',
-            'unityStorageObjects',
-            'agentVersion',
-            'mibVersion'
-        )
+        mib_symbols = [item[0] for item in get_mib_symbols().get("Unity-MIB")]
+        mib_symbols.insert(0, "Unity-MIB")
 
-        AgentVersionScalarInstance = factory.ScalarInstanceFactory.build(
-            agentVersion.label, base_class=self.MibScalarInstance,
-            impl_class=AgentInfo,
-            get_value="get_agent_version",
-        )
+        mib_scala_list = self.mib_builder.importSymbols(*mib_symbols)
+        print "x"
 
-        MibVersionScalarInstance = factory.ScalarInstanceFactory.build(
-            mibVersion.label, base_class=self.MibScalarInstance,
-            impl_class=AgentInfo,
-            get_value="get_mib_version",
-        )
-
-        self.mib_builder.exportSymbols(
-            '__Unity_MIB',
-            self.MibScalar(unityStorageObjects.name, v2c.OctetString()),
-            AgentVersionScalarInstance(agentVersion.name, (0,),
-                                       v2c.OctetString()),
-            MibVersionScalarInstance(mibVersion.name, (0,), v2c.OctetString())
-        )
+        # AgentVersionScalarInstance = factory.ScalarInstanceFactory.build(
+        #     agentVersion.label, base_class=self.MibScalarInstance,
+        #     impl_class=AgentInfo,
+        #     get_value="get_agent_version",
+        # )
+        #
+        # MibVersionScalarInstance = factory.ScalarInstanceFactory.build(
+        #     mibVersion.label, base_class=self.MibScalarInstance,
+        #     impl_class=AgentInfo,
+        #     get_value="get_mib_version",
+        # )
+        #
+        # self.mib_builder.exportSymbols(
+        #     '__Unity_MIB',
+        #     self.MibScalar(unityStorageObjects.name, v2c.OctetString()),
+        #     AgentVersionScalarInstance(agentVersion.name, (0,),
+        #                                v2c.OctetString()),
+        #     MibVersionScalarInstance(mibVersion.name, (0,), v2c.OctetString())
+        # )
 
         # --- end of Managed Object Instance initialization ----
 
