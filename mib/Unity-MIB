@@ -459,7 +459,7 @@ IMPORTS
 		STATUS mandatory
 		DESCRIPTION
 			"Description."
-		::= { unityStorageObjects 23 }
+		::= { unityStorageObjects 27 }
 	
 	-- 1.3.6.1.4.1.1139.103.2.27.1
 	poolEntry OBJECT-TYPE
@@ -581,7 +581,7 @@ IMPORTS
 		STATUS mandatory
 		DESCRIPTION
 			"Description."
-		::= { unityStorageObjects 24 }
+		::= { unityStorageObjects 28 }
 	
 	-- 1.3.6.1.4.1.1139.103.2.28.1
 	volumeEntry OBJECT-TYPE
@@ -1316,7 +1316,7 @@ IMPORTS
 		::= { backendPortEntry 3 }
 		
 	-- 1.3.6.1.4.1.1139.103.2.31.1.4
-	backendPortType OBJECT-TYPE
+	backendPortPortNumber OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
@@ -1421,7 +1421,7 @@ IMPORTS
 		STATUS mandatory
 		DESCRIPTION
 			"Description."
-		::= { unityStorageObjects 27 }
+		::= { unityStorageObjects 32 }
 	
 	-- 1.3.6.1.4.1.1139.103.2.32.1
 	hostEntry OBJECT-TYPE
@@ -1499,7 +1499,7 @@ IMPORTS
 		STATUS mandatory
 		DESCRIPTION
 			"Description."
-		::= { unityStorageObjects 28 }
+		::= { unityStorageObjects 33 }
 	
 	-- 1.3.6.1.4.1.1139.103.2.33.1
 	enclosureEntry OBJECT-TYPE
@@ -1632,7 +1632,7 @@ IMPORTS
 		STATUS mandatory
 		DESCRIPTION
 			"Description."
-		::= { unityStorageObjects 29 }
+		::= { unityStorageObjects 34 }
 
 	-- 1.3.6.1.4.1.1139.103.2.34.1
 	powerSupplyEntry OBJECT-TYPE
@@ -1732,7 +1732,7 @@ IMPORTS
 		STATUS mandatory
 		DESCRIPTION
 			"Description."
-		::= { unityStorageObjects 30}
+		::= { unityStorageObjects 35}
 
 	-- 1.3.6.1.4.1.1139.103.2.35.1
 	fanEntry OBJECT-TYPE
@@ -1799,7 +1799,7 @@ IMPORTS
 		STATUS mandatory
 		DESCRIPTION
 			"Description."
-		::= { unityStorageObjects 31}
+		::= { unityStorageObjects 36}
 
 	-- 1.3.6.1.4.1.1139.103.2.36.1
 	bbuEntry OBJECT-TYPE
