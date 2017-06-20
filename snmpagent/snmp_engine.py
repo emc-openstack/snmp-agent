@@ -6,8 +6,12 @@ from pysnmp.proto.api import v2c
 from pysnmp.smi import builder
 
 import factory
+from parsers import mib_parser
+
 from agent_info import AgentInfo
-from snmpagent.parser.mib_parser import get_mib_symbols
+from unityImpl.enclosure_table import EnclosureTableInfo
+
+from datetime import datetime
 
 debug.setLogger(debug.Debug('all'))
 
@@ -27,8 +31,8 @@ class SNMPEngine(object):
         self.mib_builder.setMibSources(builder.DirMibSource('./mibs/'),
                                        *mibSources)
 
-        self.MibScalar, self.MibScalarInstance = self.mib_builder.importSymbols(
-            'SNMPv2-SMI', 'MibScalar', 'MibScalarInstance'
+        self.MibScalar, self.MibTableColumn, self.MibScalarInstance = self.mib_builder.importSymbols(
+            'SNMPv2-SMI', 'MibScalar', 'MibTableColumn', 'MibScalarInstance'
         )
 
     def addTransport(self, ip, port, idx=0):
@@ -65,33 +69,82 @@ class SNMPEngine(object):
 
     def create_managed_object_instance(self):
 
-        mib_symbols = [item[0] for item in get_mib_symbols().get("Unity-MIB")]
+        mib_symbols = [item[0] for item in mib_parser.get_mib_symbols().get("Unity-MIB")]
         mib_symbols.insert(0, "Unity-MIB")
 
-        mib_scala_list = self.mib_builder.importSymbols(*mib_symbols)
-        print "x"
+        # mib_scalar_list = self.mib_builder.importSymbols(*mib_symbols)
 
-        # AgentVersionScalarInstance = factory.ScalarInstanceFactory.build(
-        #     agentVersion.label, base_class=self.MibScalarInstance,
-        #     impl_class=AgentInfo,
-        #     get_value="get_agent_version",
-        # )
-        #
-        # MibVersionScalarInstance = factory.ScalarInstanceFactory.build(
-        #     mibVersion.label, base_class=self.MibScalarInstance,
-        #     impl_class=AgentInfo,
-        #     get_value="get_mib_version",
-        # )
-        #
-        # self.mib_builder.exportSymbols(
-        #     '__Unity_MIB',
-        #     self.MibScalar(unityStorageObjects.name, v2c.OctetString()),
-        #     AgentVersionScalarInstance(agentVersion.name, (0,),
-        #                                v2c.OctetString()),
-        #     MibVersionScalarInstance(mibVersion.name, (0,), v2c.OctetString())
-        # )
+        (
+            agentVersion,
+            mibVersion,
+            enclosureTable,
+            enclosureEntry,
+            enclosureModel,
+            enclosureSerialNumber,
+        ) = self.mib_builder.importSymbols(
+            'Unity-MIB',
+            'agentVersion',
+            'mibVersion',
+            'enclosureTable',
+            'enclosureEntry',
+            'enclosureModel',
+            'enclosureSerialNumber',
+        )
 
-        # --- end of Managed Object Instance initialization ----
+        AgentVersionScalarInstance = factory.ScalarInstanceFactory.build(
+            agentVersion.label, base_class=self.MibScalarInstance,
+            impl_class=AgentInfo,
+            get_value="get_agent_version",
+        )
+
+        MibVersionScalarInstance = factory.ScalarInstanceFactory.build(
+            mibVersion.label, base_class=self.MibScalarInstance,
+            impl_class=AgentInfo,
+            get_value="get_mib_version",
+        )
+
+        EnclosureModelScalarInstance = factory.ScalarInstanceFactory.build(
+            enclosureModel.label, base_class=self.MibScalarInstance,
+            impl_class=EnclosureTableInfo,
+            get_value="get_enclosure_model",
+        )
+
+        EnclosureSerialNumberScalarInstance = factory.ScalarInstanceFactory.build(
+            enclosureSerialNumber.label, base_class=self.MibScalarInstance,
+            impl_class=EnclosureTableInfo,
+            get_value="get_enclosure_serial_number",
+        )
+
+        enclosure_names = ['c1', 'c2', 'c3']
+
+        EnclosureModelColumnInstance = factory.TableColumnInstanceFactory.build(
+            enclosureModel.label, base_class=self.MibTableColumn,
+            proto_inst=EnclosureModelScalarInstance,
+            row_list=enclosure_names,
+            entry=enclosureEntry,
+        )
+
+        EnclosureSerialNumberColumnInstance = factory.TableColumnInstanceFactory.build(
+            enclosureSerialNumber.label, base_class=self.MibTableColumn,
+            proto_inst=EnclosureSerialNumberScalarInstance,
+            row_list=enclosure_names,
+            entry=enclosureEntry,
+        )
+
+        agentVersionScalarInstance = AgentVersionScalarInstance(agentVersion.name, (0,), v2c.OctetString())
+        mibVersionScalarInstance = MibVersionScalarInstance(mibVersion.name, (0,), v2c.OctetString())
+
+        enclosureModelColumnInstance = EnclosureModelColumnInstance(enclosureModel.name, v2c.OctetString())
+        enclosureSerialNumberColumnInstance = EnclosureSerialNumberColumnInstance(enclosureSerialNumber.name,
+                                                                                  v2c.OctetString())
+
+        self.mib_builder.exportSymbols(
+            'Unity-MIB',
+            agentVersionScalarInstance,
+            mibVersionScalarInstance,
+            enclosureModelColumnInstance,
+            enclosureSerialNumberColumnInstance,
+        )
 
     def register_snmp_application(self):
 
@@ -99,6 +152,7 @@ class SNMPEngine(object):
 
         # Register SNMP Applications at the SNMP engine for particular SNMP context
         cmdrsp.GetCommandResponder(self.snmp_engine, snmp_context)
+        cmdrsp.SetCommandResponder(self.snmp_engine, snmp_context)
         cmdrsp.NextCommandResponder(self.snmp_engine, snmp_context)
         cmdrsp.BulkCommandResponder(self.snmp_engine, snmp_context)
 
@@ -115,12 +169,10 @@ class SNMPEngine(object):
             raise
 
 
-
-
 if __name__ == "__main__":
     engine = SNMPEngine()
 
-    engine.addTransport('10.32.179.148', 161)
+    engine.addTransport('0.0.0.0', 161)
 
     # SNMPv3/USM setup
     # user: usr-md5-des, auth: MD5, priv DES

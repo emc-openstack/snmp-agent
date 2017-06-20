@@ -6,7 +6,7 @@ from pysnmp.carrier.asyncore.dispatch import AsyncoreDispatcher
 from pysnmp.entity import config
 
 import snmp_engine
-from snmpagent.parser import config_parser
+from parsers import config_parser
 
 debug.setLogger(debug.Debug('all'))
 
@@ -73,14 +73,14 @@ class SNMPAgent(object):
             # read_sub_tree = (1, 3, 6, 1, 4, 1, 1139, 103, 2)
             read_sub_tree = (1, 3, 6)
 
-            engine.addV3User(user_name, config.usmHMACMD5AuthProtocol, auth_key,
-                             config.usmDESPrivProtocol, priv_key)
-            engine.addVacmUser(3, user_name, security_level, read_sub_tree)
+            # engine.addV3User(user_name, config.usmHMACMD5AuthProtocol, auth_key,
+            #                  config.usmDESPrivProtocol, priv_key)
+            # engine.addVacmUser(3, user_name, security_level, read_sub_tree)
 
             # Add v1/v2c user
             # snmpget -v2c -c public 192.168.56.1 1.3.6.1.4.1.1139.103.2.1.0
-            # engine.addV1System(user_name, 'public')
-            # engine.addVacmUser(2, user_name, 'noAuthNoPriv', read_sub_tree)
+            engine.addV1System(user_name, 'public')
+            engine.addVacmUser(2, user_name, 'noAuthNoPriv', read_sub_tree, read_sub_tree)
 
             engine.create_managed_object_instance()
             engine.register_snmp_application()

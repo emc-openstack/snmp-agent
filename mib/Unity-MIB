@@ -1,7 +1,7 @@
 Unity-MIB DEFINITIONS ::= BEGIN
 
 IMPORTS
-	UInteger32, OBJECT-TYPE FROM SNMPv2-SMI
+	Integer32, OBJECT-TYPE FROM SNMPv2-SMI
     DisplayString FROM SNMPv2-TC;
 
 	-- 1.3
@@ -111,7 +111,7 @@ IMPORTS
 	
 	-- 1.3.6.1.4.1.1139.103.2.10
 	numberOfstorageProcessor OBJECT-TYPE
-		SYNTAX UInteger32
+		SYNTAX Integer32
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
@@ -120,7 +120,7 @@ IMPORTS
 	
 	-- 1.3.6.1.4.1.1139.103.2.11
 	numberOfEnclosure OBJECT-TYPE
-		SYNTAX UInteger32
+		SYNTAX Integer32
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
@@ -129,7 +129,7 @@ IMPORTS
 	
 	-- 1.3.6.1.4.1.1139.103.2.12
 	numberOfPowerSupply OBJECT-TYPE
-		SYNTAX UInteger32
+		SYNTAX Integer32
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
@@ -138,7 +138,7 @@ IMPORTS
 		
 	-- 1.3.6.1.4.1.1139.103.2.13
 	numberOfFan OBJECT-TYPE
-		SYNTAX UInteger32
+		SYNTAX Integer32
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
@@ -147,7 +147,7 @@ IMPORTS
 		
 	-- 1.3.6.1.4.1.1139.103.2.14
 	numberOfPhysicalDisk OBJECT-TYPE
-		SYNTAX UInteger32
+		SYNTAX Integer32
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
@@ -156,7 +156,7 @@ IMPORTS
 		
 	-- 1.3.6.1.4.1.1139.103.2.15
 	numberOfFrontendPort OBJECT-TYPE
-		SYNTAX UInteger32
+		SYNTAX Integer32
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
@@ -165,7 +165,7 @@ IMPORTS
 		
 	-- 1.3.6.1.4.1.1139.103.2.16
 	numberOfBackendPort OBJECT-TYPE
-		SYNTAX UInteger32
+		SYNTAX Integer32
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
@@ -279,9 +279,9 @@ IMPORTS
 			storageProcessorSerialNumber
 				DisplayString,
 			storageProcessorNumberOfFrontendPort
-				UInteger32,
+				Integer32,
 			storageProcessorNumberOfBackendPort
-				UInteger32,
+				Integer32,
 			storageProcessorOperationalState
 				DisplayString,
 			storageProcessorCpuUtilization
@@ -328,7 +328,7 @@ IMPORTS
 	
 	-- 1.3.6.1.4.1.1139.103.2.26.1.3
 	storageProcessorNumberOfFrontendPort OBJECT-TYPE
-		SYNTAX UInteger32
+		SYNTAX Integer32
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
@@ -337,7 +337,7 @@ IMPORTS
 	
 	-- 1.3.6.1.4.1.1139.103.2.26.1.4
 	storageProcessorNumberOfBackendPort OBJECT-TYPE
-		SYNTAX UInteger32
+		SYNTAX Integer32
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
@@ -482,7 +482,7 @@ IMPORTS
 			poolFastCacheStatus
 				DisplayString,
 			poolNumberOfPhysicalDisk
-				UInteger32,
+				Integer32,
 			poolTotalCapacity
 				DisplayString,
 			poolRemainingCapacity
@@ -531,7 +531,7 @@ IMPORTS
 	
 	-- 1.3.6.1.4.1.1139.103.2.27.1.5
 	poolNumberOfPhysicalDisk OBJECT-TYPE
-		SYNTAX UInteger32
+		SYNTAX Integer32
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
@@ -604,7 +604,7 @@ IMPORTS
 			volumeSize
 				DisplayString,
 			volumeNumberOfPhysicalDisk
-				UInteger32,
+				Integer32,
 			volumeOperationalState
 				DisplayString,
 			volumeFastCacheState
@@ -681,7 +681,7 @@ IMPORTS
 	
 	-- 1.3.6.1.4.1.1139.103.2.28.1.5
 	volumeNumberOfPhysicalDisk OBJECT-TYPE
-		SYNTAX UInteger32
+		SYNTAX Integer32
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
@@ -1093,7 +1093,7 @@ IMPORTS
 	FrontendPortEntry ::=
 		SEQUENCE { 
 			frontendPortId
-				UInteger32,
+				Integer32,
 			frontendPortName
 				DisplayString,
 			frontendPortAddress
@@ -1122,7 +1122,7 @@ IMPORTS
 
 	-- 1.3.6.1.4.1.1139.103.2.30.1.1
 	frontendPortId OBJECT-TYPE
-		SYNTAX UInteger32
+		SYNTAX Integer32
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
@@ -1259,7 +1259,7 @@ IMPORTS
 	BackendPortEntry ::=
 		SEQUENCE { 
 			backendPortId
-				UInteger32,
+				Integer32,
 			backendPortName
 				DisplayString,
 			backendPortType
@@ -1290,7 +1290,7 @@ IMPORTS
 
 	-- 1.3.6.1.4.1.1139.103.2.31.1.1
 	backendPortId OBJECT-TYPE
-		SYNTAX UInteger32
+		SYNTAX Integer32
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION

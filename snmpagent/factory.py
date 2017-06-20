@@ -16,3 +16,29 @@ class ScalarInstanceFactory(object):
                         {"__init__": __init__,
                          "getValue": __get_value__})
         return newclass
+
+
+class TableColumnInstanceFactory(object):
+    @staticmethod
+    def build(name, base_class, proto_inst, row_list, entry):
+        def __init__(self, *args, **kwargs):
+            self.row_list = row_list
+            self.entry = entry
+            self.maxAccess = 'readcreate'
+            base_class.__init__(self, *args, **kwargs)
+
+        def __read_getnext__(self, name, val, idx, acInfo, oName=None):
+            if self.name == name:
+                for row in self.row_list:
+                    row_instance_id = self.entry.getInstIdFromIndices(row)
+                    # TODO: destory subtree first?
+                    self.createTest(name + row_instance_id, val, idx, acInfo)
+                    self.createCommit(name + row_instance_id, val, idx, acInfo)
+            next_node = self.getNextNode(name, idx)
+            return next_node.readGet(next_node.name, val, idx, acInfo)
+
+        newclass = type(name + "ColumnInstance", (base_class,),
+                        {"__init__": __init__,
+                         "protoInstance": proto_inst,
+                         "readGetNext": __read_getnext__})
+        return newclass
