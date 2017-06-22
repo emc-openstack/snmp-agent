@@ -1,15 +1,13 @@
 class ScalarInstanceFactory(object):
     @staticmethod
-    def build(name, base_class, impl_class, get_value):
+    def build(name, base_class, impl_class):
         def __init__(self, *args, **kwargs):
             self.impl_class = impl_class
-            self.method_get_value = get_value
             base_class.__init__(self, *args, **kwargs)
 
         def __get_value__(self, name, idx):
             return self.getSyntax().clone(
-                self.impl_class().__getattribute__(self.method_get_value)(
-                    name, idx)
+                self.impl_class().get_value(name, idx)
             )
 
         newclass = type(name + "ScalarInstance", (base_class,),
@@ -20,16 +18,17 @@ class ScalarInstanceFactory(object):
 
 class TableColumnInstanceFactory(object):
     @staticmethod
-    def build(name, base_class, proto_inst, row_list, entry):
+    def build(name, base_class, proto_inst, entry):
         def __init__(self, *args, **kwargs):
-            self.row_list = row_list
             self.entry = entry
             self.maxAccess = 'readcreate'
             base_class.__init__(self, *args, **kwargs)
 
         def __read_getnext__(self, name, val, idx, acInfo, oName=None):
             if self.name == name:
-                for row in self.row_list:
+                # TODO: need to get row_list first
+                row_list = ['a', 'b', 'c']
+                for row in row_list:
                     row_instance_id = self.entry.getInstIdFromIndices(row)
                     # TODO: destory subtree first?
                     self.createTest(name + row_instance_id, val, idx, acInfo)
