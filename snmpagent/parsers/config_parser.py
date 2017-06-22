@@ -101,7 +101,7 @@ class AuthConfig(object):
 
     def _parse_user_info(self, line):
         check_info = lambda x: x if x != '-' else None
-        user_info = [check_info(x) for x in re.split(r'[\s\t]+', line)]
+        user_info = [check_info(x) for x in re.split(r'\s+', line)]
         model = user_info[0].lower()
         if model == 'snmpv3' and len(user_info) >= 8:
             return UserInfo(model, *user_info[1:8])

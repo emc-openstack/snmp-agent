@@ -1,4 +1,5 @@
 import os
+import logging
 
 import snmp_engine
 from parsers import config_parser
@@ -6,8 +7,6 @@ from pysnmp import debug
 from pysnmp.carrier.asyncore.dgram import udp
 from pysnmp.carrier.asyncore.dispatch import AsyncoreDispatcher
 from pysnmp.entity import config
-
-debug.setLogger(debug.Debug('all'))
 
 
 class SNMPAgent(object):
@@ -86,6 +85,12 @@ class SNMPAgent(object):
 
 
 if __name__ == '__main__':
+    # set logger
+    # log_file = os.path.abspath('../logs/pysnmp.log')
+    # printer = debug.Printer(handler=logging.FileHandler(log_file))
+    # debug.setLogger(debug.Debug('all', printer=printer))
+
+    debug.setLogger(debug.Debug('all'))
     config_file = os.path.abspath('../etc/snmpagent.conf')
     auth_config_file = os.path.abspath('../etc/access.conf')
     agent = SNMPAgent(config_file, auth_config_file)
