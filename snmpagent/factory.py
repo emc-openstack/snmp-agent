@@ -5,14 +5,15 @@ class ScalarInstanceFactory(object):
             self.impl_class = impl_class
             base_class.__init__(self, *args, **kwargs)
 
-        def __get_value__(self, name, idx):
-            return self.getSyntax().clone(
-                self.impl_class().get_value(name, idx)
+        def __read_get__(self, name, val, idx, acInfo):
+            return name, self.getSyntax().clone(
+                self.impl_class().read_get(name, idx, acInfo[1].storage_context)
             )
 
         newclass = type(name + "ScalarInstance", (base_class,),
                         {"__init__": __init__,
-                         "getValue": __get_value__})
+                         "readGet": __read_get__
+                         })
         return newclass
 
 

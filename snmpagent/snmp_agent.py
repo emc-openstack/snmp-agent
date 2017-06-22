@@ -63,7 +63,7 @@ class SNMPAgent(object):
 
         for idx, unity in enumerate(self.unity_config):
             transport_domain = udp.domainName + (idx,)
-            engine = snmp_engine.SNMPEngine()
+            engine = snmp_engine.SNMPEngine(unity)
             engine.registerTransportDispatcher(self.transport_dispatcher, transport_domain)
 
             port = int(unity.port)
