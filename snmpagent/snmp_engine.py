@@ -6,8 +6,6 @@ from pysnmp.entity import engine, config
 from pysnmp.entity.rfc3413 import cmdrsp, context
 from pysnmp.proto.api import v2c
 from pysnmp.smi import builder
-from unityImpl.agent_info import AgentInfo
-from unityImpl.enclosure_table import EnclosureTableInfo
 
 debug.setLogger(debug.Debug('all'))
 
@@ -82,7 +80,7 @@ class SNMPEngine(object):
             # class_name = item.label.upper()[:1] + item.label[1:]
             class_name = item.label
             try:
-             mod = __import__("unityImpl."+class_name, fromlist=[item.label])
+                mod = __import__("unityImpl." + class_name, fromlist=[item.label])
             except ImportError:
                 continue
 

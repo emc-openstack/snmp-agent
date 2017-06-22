@@ -25,12 +25,14 @@ class TableColumnInstanceFactory(object):
             base_class.__init__(self, *args, **kwargs)
 
         def __read_getnext__(self, name, val, idx, acInfo, oName=None):
-            # if self.name == name:
-            #     for row in self.row_list:
-            #         row_instance_id = self.entry.getInstIdFromIndices(row)
-            #         # TODO: destory subtree first?
-            #         self.createTest(name + row_instance_id, val, idx, acInfo)
-            #         self.createCommit(name + row_instance_id, val, idx, acInfo)
+            if self.name == name:
+                # TODO: need to get row_list first
+                row_list = ['a', 'b', 'c']
+                for row in row_list:
+                    row_instance_id = self.entry.getInstIdFromIndices(row)
+                    # TODO: destory subtree first?
+                    self.createTest(name + row_instance_id, val, idx, acInfo)
+                    self.createCommit(name + row_instance_id, val, idx, acInfo)
             next_node = self.getNextNode(name, idx)
             return next_node.readGet(next_node.name, val, idx, acInfo)
 

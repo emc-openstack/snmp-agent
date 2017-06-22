@@ -1,3 +1,5 @@
+from datetime import datetime
+
 class VolumeFastCacheReadHitIOs(object):
     def get_value(self):
-        return "VolumeFastCacheReadHitIOs"
+        return "[%s]  VolumeFastCacheReadHitIOs" % str(datetime.now())
