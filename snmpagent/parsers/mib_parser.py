@@ -12,7 +12,7 @@ from pysmi.codegen.pysnmp import PySnmpCodeGen, baseMibs
 from pysmi.compiler import MibCompiler
 
 
-class InMemoryMibGenerator(object):
+class InMemoryMibParser(object):
     def __init__(self):
         self.oids = {}
 
@@ -23,15 +23,15 @@ class InMemoryMibGenerator(object):
     def getData(self, filename):
         pass
 
-    def getOids(self):
-        return self.oids
+    def getOids(self, name):
+        return self.oids.get(name)
 
 
-def get_mib_symbols():
-    mib_generator = InMemoryMibGenerator()
-    mibCompiler = MibCompiler(SmiV2Parser(), SymtableCodeGen(), mib_generator)
+def get_mib_symbols(name):
+    mib_parser = InMemoryMibParser()
+    mibCompiler = MibCompiler(SmiV2Parser(), SymtableCodeGen(), mib_parser)
     mibCompiler.addSources(FileReader(os.path.abspath('../mib')))
     mibCompiler.addSearchers(StubSearcher(*baseMibs))
-    mibCompiler.compile('Unity-MIB')
+    mibCompiler.compile(name)
 
-    return mib_generator.getOids()
+    return mib_parser.getOids(name)

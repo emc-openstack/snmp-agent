@@ -86,7 +86,7 @@ class SNMPAgent(object):
 
 
 if __name__ == '__main__':
-    config_file = os.path.abspath('../etc/snmpagent.conf')
-    auth_config_file = os.path.abspath('../etc/access.conf')
+    config_file = os.path.abspath('conf/snmpagent.conf')
+    auth_config_file = os.path.abspath('conf/access.conf')
     agent = SNMPAgent(config_file, auth_config_file)
     agent.run()

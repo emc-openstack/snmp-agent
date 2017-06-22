@@ -27,7 +27,7 @@ IMPORTS
 	
 	-- 1.3.6.1.4.1.1139.103.2
 	unityStorageObjects OBJECT IDENTIFIER ::= { unity 2 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.1
 	agentVersion OBJECT-TYPE
 		SYNTAX DisplayString
@@ -36,7 +36,7 @@ IMPORTS
 		DESCRIPTION
 			"Version of Unity SNMP Agent."
 		::= { unityStorageObjects 1 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.2
 	mibVersion OBJECT-TYPE
 		SYNTAX DisplayString
@@ -45,7 +45,7 @@ IMPORTS
 		DESCRIPTION
 			"Unity MIB version."
 		::= { unityStorageObjects 2 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.3
 	manufacturer OBJECT-TYPE
 		SYNTAX DisplayString
@@ -54,7 +54,7 @@ IMPORTS
 		DESCRIPTION
 			"Dell EMC."
 		::= { unityStorageObjects 3 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.4
 	model OBJECT-TYPE
 		SYNTAX DisplayString
@@ -63,7 +63,7 @@ IMPORTS
 		DESCRIPTION
 			"Description."
 		::= { unityStorageObjects 4 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.5
 	serialNumber OBJECT-TYPE
 		SYNTAX DisplayString
@@ -72,7 +72,7 @@ IMPORTS
 		DESCRIPTION
 			"Description."
 		::= { unityStorageObjects 5 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.6
 	operationEnvironmentVersion OBJECT-TYPE
 		SYNTAX DisplayString
@@ -81,7 +81,7 @@ IMPORTS
 		DESCRIPTION
 			"Description."
 		::= { unityStorageObjects 6 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.7
 	managementIP OBJECT-TYPE
 		SYNTAX DisplayString
@@ -90,7 +90,7 @@ IMPORTS
 		DESCRIPTION
 			"Description."
 		::= { unityStorageObjects 7 }
-		
+
 	-- 1.3.6.1.4.1.1139.103.2.8
 	currentPower OBJECT-TYPE
 		SYNTAX DisplayString
@@ -99,7 +99,7 @@ IMPORTS
 		DESCRIPTION
 			"Unit: Watts."
 		::= { unityStorageObjects 8 }
-		
+
 	-- 1.3.6.1.4.1.1139.103.2.9
 	averagePower OBJECT-TYPE
 		SYNTAX DisplayString
@@ -108,16 +108,16 @@ IMPORTS
 		DESCRIPTION
 			"Unit: Watts."
 		::= { unityStorageObjects 9 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.10
-	numberOfstorageProcessor OBJECT-TYPE
+	numberOfStorageProcessor OBJECT-TYPE
 		SYNTAX Integer32
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"Description."
 		::= { unityStorageObjects 10 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.11
 	numberOfEnclosure OBJECT-TYPE
 		SYNTAX Integer32
@@ -126,7 +126,7 @@ IMPORTS
 		DESCRIPTION
 			"Description."
 		::= { unityStorageObjects 11 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.12
 	numberOfPowerSupply OBJECT-TYPE
 		SYNTAX Integer32
@@ -135,7 +135,7 @@ IMPORTS
 		DESCRIPTION
 			"Description."
 		::= { unityStorageObjects 12 }
-		
+
 	-- 1.3.6.1.4.1.1139.103.2.13
 	numberOfFan OBJECT-TYPE
 		SYNTAX Integer32
@@ -144,7 +144,7 @@ IMPORTS
 		DESCRIPTION
 			"Description."
 		::= { unityStorageObjects 13 }
-		
+
 	-- 1.3.6.1.4.1.1139.103.2.14
 	numberOfPhysicalDisk OBJECT-TYPE
 		SYNTAX Integer32
@@ -153,7 +153,7 @@ IMPORTS
 		DESCRIPTION
 			"Description."
 		::= { unityStorageObjects 14 }
-		
+
 	-- 1.3.6.1.4.1.1139.103.2.15
 	numberOfFrontendPort OBJECT-TYPE
 		SYNTAX Integer32
@@ -162,7 +162,7 @@ IMPORTS
 		DESCRIPTION
 			"Description."
 		::= { unityStorageObjects 15 }
-		
+
 	-- 1.3.6.1.4.1.1139.103.2.16
 	numberOfBackendPort OBJECT-TYPE
 		SYNTAX Integer32
@@ -171,7 +171,7 @@ IMPORTS
 		DESCRIPTION
 			"Description."
 		::= { unityStorageObjects 16 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.17
 	totalCapacity OBJECT-TYPE
 		SYNTAX DisplayString
@@ -180,7 +180,7 @@ IMPORTS
 		DESCRIPTION
 			"Unit: GB."
 		::= { unityStorageObjects 17 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.18
 	usedCapacity OBJECT-TYPE
 		SYNTAX DisplayString
@@ -189,7 +189,7 @@ IMPORTS
 		DESCRIPTION
 			"Unit: GB."
 		::= { unityStorageObjects 18 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.19
 	freeCapacity OBJECT-TYPE
 		SYNTAX DisplayString
@@ -198,7 +198,7 @@ IMPORTS
 		DESCRIPTION
 			"Unit: GB."
 		::= { unityStorageObjects 19 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.20
 	totalThroughput OBJECT-TYPE
 		SYNTAX DisplayString
@@ -207,7 +207,7 @@ IMPORTS
 		DESCRIPTION
 			"Unit: IO/s."
 		::= { unityStorageObjects 20 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.21
 	readThroughput OBJECT-TYPE
 		SYNTAX DisplayString
@@ -216,7 +216,7 @@ IMPORTS
 		DESCRIPTION
 			"Unit: IO/s."
 		::= { unityStorageObjects 21 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.22
 	writeThroughput OBJECT-TYPE
 		SYNTAX DisplayString
@@ -225,7 +225,7 @@ IMPORTS
 		DESCRIPTION
 			"Unit: IO/s."
 		::= { unityStorageObjects 22 }
-		
+
 	-- 1.3.6.1.4.1.1139.103.2.23
 	totalBandwidth OBJECT-TYPE
 		SYNTAX DisplayString
@@ -234,7 +234,7 @@ IMPORTS
 		DESCRIPTION
 			"Unit: MB/s."
 		::= { unityStorageObjects 23 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.24
 	readBandwidth OBJECT-TYPE
 		SYNTAX DisplayString
@@ -243,7 +243,7 @@ IMPORTS
 		DESCRIPTION
 			"Unit: MB/s."
 		::= { unityStorageObjects 24 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.25
 	writeBandwidth OBJECT-TYPE
 		SYNTAX DisplayString
@@ -252,7 +252,7 @@ IMPORTS
 		DESCRIPTION
 			"Unit: MB/s."
 		::= { unityStorageObjects 25 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.26
 	storageProcessorTable OBJECT-TYPE
 		SYNTAX SEQUENCE OF StorageProcessorEntry
@@ -261,7 +261,7 @@ IMPORTS
 		DESCRIPTION
 			"Description."
 		::= { unityStorageObjects 26 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.26.1
 	storageProcessorEntry OBJECT-TYPE
 		SYNTAX StorageProcessorEntry
@@ -271,43 +271,24 @@ IMPORTS
 			"Description."
 		INDEX { storageProcessorName }
 		::= { storageProcessorTable 1 }
-	
+
 	StorageProcessorEntry ::=
-		SEQUENCE { 
-			storageProcessorName
-				DisplayString,
-			storageProcessorSerialNumber
-				DisplayString,
-			storageProcessorNumberOfFrontendPort
-				Integer32,
-			storageProcessorNumberOfBackendPort
-				Integer32,
-			storageProcessorOperationalState
-				DisplayString,
-			storageProcessorCpuUtilization
-				DisplayString,
-		    storageProcessorTotalThroughput
-				DisplayString,
-			storageProcessorReadThroughput
-				DisplayString,
-			storageProcessorWriteThroughput
-				DisplayString,
-			storageProcessorTotalBandwidth
-				DisplayString,
-			storageProcessorReadBandwidth
-				DisplayString,
-			storageProcessorWriteBandwidth
-				DisplayString,
-			storageProcessorDirtyCachePagesAmount
-				DisplayString,
-			storageProcessorPercentDirtyCachePages
-				DisplayString,
-			storageProcessorReadCacheState
-				DisplayString,
-			storageProcessorWriteCacheState
-				DisplayString
+		SEQUENCE {
+			storageProcessorName                    DisplayString,
+			storageProcessorSerialNumber            DisplayString,
+			storageProcessorOperationalState        DisplayString,
+			storageProcessorCpuUtilization          DisplayString,
+                        storageProcessorTotalThroughput         DisplayString,
+			storageProcessorReadThroughput          DisplayString,
+			storageProcessorWriteThroughput         DisplayString,
+			storageProcessorTotalBandwidth          DisplayString,
+			storageProcessorReadBandwidth           DisplayString,
+			storageProcessorWriteBandwidth          DisplayString,
+			storageProcessorCacheDirtySize          DisplayString,
+			storageProcessorReadCacheState          DisplayString,
+			storageProcessorWriteCacheState         DisplayString
 		 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.26.1.1
 	storageProcessorName OBJECT-TYPE
 		SYNTAX DisplayString
@@ -316,7 +297,7 @@ IMPORTS
 		DESCRIPTION
 			"Description."
 		::= { storageProcessorEntry 1 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.26.1.2
 	storageProcessorSerialNumber OBJECT-TYPE
 		SYNTAX DisplayString
@@ -325,45 +306,45 @@ IMPORTS
 		DESCRIPTION
 			"Description."
 		::= { storageProcessorEntry 2 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.26.1.3
-	storageProcessorNumberOfFrontendPort OBJECT-TYPE
-		SYNTAX Integer32
-		ACCESS read-only
-		STATUS mandatory
-		DESCRIPTION
-			"Description."
-		::= { storageProcessorEntry 3 }
-	
-	-- 1.3.6.1.4.1.1139.103.2.26.1.4
-	storageProcessorNumberOfBackendPort OBJECT-TYPE
-		SYNTAX Integer32
-		ACCESS read-only
-		STATUS mandatory
-		DESCRIPTION
-			"Description."
-		::= { storageProcessorEntry 4 }
-	
-	-- 1.3.6.1.4.1.1139.103.2.26.1.5
 	storageProcessorOperationalState OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"Description."
-		::= { storageProcessorEntry 5 }
-	
-	-- 1.3.6.1.4.1.1139.103.2.26.1.6
+		::= { storageProcessorEntry 3 }
+
+	-- 1.3.6.1.4.1.1139.103.2.26.1.4
 	storageProcessorCpuUtilization OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"Description."
+		::= { storageProcessorEntry 4 }
+
+	-- 1.3.6.1.4.1.1139.103.2.26.1.5
+	storageProcessorTotalThroughput OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: IO/s."
+		::= { storageProcessorEntry 5 }
+
+	-- 1.3.6.1.4.1.1139.103.2.26.1.6
+	storageProcessorReadThroughput OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: IO/s."
 		::= { storageProcessorEntry 6 }
 
 	-- 1.3.6.1.4.1.1139.103.2.26.1.7
-	storageProcessorTotalThroughput OBJECT-TYPE
+	storageProcessorWriteThroughput OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
@@ -372,25 +353,25 @@ IMPORTS
 		::= { storageProcessorEntry 7 }
 
 	-- 1.3.6.1.4.1.1139.103.2.26.1.8
-	storageProcessorReadThroughput OBJECT-TYPE
+	storageProcessorTotalBandwidth OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
-			"Unit: IO/s."
+			"Unit: MB/s."
 		::= { storageProcessorEntry 8 }
 
 	-- 1.3.6.1.4.1.1139.103.2.26.1.9
-	storageProcessorWriteThroughput OBJECT-TYPE
+	storageProcessorReadBandwidth OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
-			"Unit: IO/s."
+			"Unit: MB/s."
 		::= { storageProcessorEntry 9 }
 
 	-- 1.3.6.1.4.1.1139.103.2.26.1.10
-	storageProcessorTotalBandwidth OBJECT-TYPE
+	storageProcessorWriteBandwidth OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
@@ -399,59 +380,32 @@ IMPORTS
 		::= { storageProcessorEntry 10 }
 
 	-- 1.3.6.1.4.1.1139.103.2.26.1.11
-	storageProcessorReadBandwidth OBJECT-TYPE
-		SYNTAX DisplayString
-		ACCESS read-only
-		STATUS mandatory
-		DESCRIPTION
-			"Unit: MB/s."
-		::= { storageProcessorEntry 11 }
-
-	-- 1.3.6.1.4.1.1139.103.2.26.1.12
-	storageProcessorWriteBandwidth OBJECT-TYPE
-		SYNTAX DisplayString
-		ACCESS read-only
-		STATUS mandatory
-		DESCRIPTION
-			"Unit: MB/s."
-		::= { storageProcessorEntry 12 }
-
-	-- 1.3.6.1.4.1.1139.103.2.26.1.13
-	storageProcessorDirtyCachePagesAmount OBJECT-TYPE
+	storageProcessorCacheDirtySize OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"Unit: MB."
-		::= { storageProcessorEntry 13 }
-		
-	-- 1.3.6.1.4.1.1139.103.2.26.1.14
-	storageProcessorPercentDirtyCachePages OBJECT-TYPE
-		SYNTAX DisplayString
-		ACCESS read-only
-		STATUS mandatory
-		DESCRIPTION
-			"Description."
-		::= { storageProcessorEntry 14 }
-	
-	-- 1.3.6.1.4.1.1139.103.2.26.1.15
+		::= { storageProcessorEntry 11 }
+
+	-- 1.3.6.1.4.1.1139.103.2.26.1.12
 	storageProcessorReadCacheState OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"Description."
-		::= { storageProcessorEntry 15 }
-	
-	-- 1.3.6.1.4.1.1139.103.2.26.1.16
+		::= { storageProcessorEntry 12 }
+
+	-- 1.3.6.1.4.1.1139.103.2.26.1.13
 	storageProcessorWriteCacheState OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"Description."
-		::= { storageProcessorEntry 16 }
-	
+		::= { storageProcessorEntry 13 }
+
 	-- 1.3.6.1.4.1.1139.103.2.27
 	poolTable OBJECT-TYPE
 		SYNTAX SEQUENCE OF PoolEntry
@@ -460,7 +414,7 @@ IMPORTS
 		DESCRIPTION
 			"Description."
 		::= { unityStorageObjects 27 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.27.1
 	poolEntry OBJECT-TYPE
 		SYNTAX PoolEntry
@@ -470,27 +424,18 @@ IMPORTS
 			"Description."
 		INDEX { poolName }
 		::= { poolTable 1 }
-	
+
 	PoolEntry ::=
-		SEQUENCE { 
-			poolName
-				DisplayString,
-			poolDiskTypes
-				DisplayString,
-			poolRaidLevel
-				DisplayString,
-			poolFastCacheStatus
-				DisplayString,
-			poolNumberOfPhysicalDisk
-				Integer32,
-			poolTotalCapacity
-				DisplayString,
-			poolRemainingCapacity
-				DisplayString,
-			poolUsedCapacity
-				DisplayString,
-			poolCapacityUtilization
-				DisplayString
+		SEQUENCE {
+			poolName                    DisplayString,
+			poolDiskTypes               DisplayString,
+			poolRaidLevels              DisplayString,
+			poolFastCacheStatus         DisplayString,
+			poolNumberOfPhysicalDisk    Integer32,
+			poolTotalCapacity           DisplayString,
+			poolRemainingCapacity       DisplayString,
+			poolUsedCapacity            DisplayString,
+			poolCapacityUtilization     DisplayString
 		 }
 
 	-- 1.3.6.1.4.1.1139.103.2.27.1.1
@@ -501,7 +446,7 @@ IMPORTS
 		DESCRIPTION
 			"Description."
 		::= { poolEntry 1 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.27.1.2
 	poolDiskTypes OBJECT-TYPE
 		SYNTAX DisplayString
@@ -510,16 +455,16 @@ IMPORTS
 		DESCRIPTION
 			"Description."
 		::= { poolEntry 2 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.27.1.3
-	poolRaidLevel OBJECT-TYPE
+	poolRaidLevels OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"Description."
 		::= { poolEntry 3 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.27.1.4
 	poolFastCacheStatus OBJECT-TYPE
 		SYNTAX DisplayString
@@ -528,7 +473,7 @@ IMPORTS
 		DESCRIPTION
 			"Description."
 		::= { poolEntry 4 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.27.1.5
 	poolNumberOfPhysicalDisk OBJECT-TYPE
 		SYNTAX Integer32
@@ -537,7 +482,7 @@ IMPORTS
 		DESCRIPTION
 			"Description."
 		::= { poolEntry 5 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.27.1.6
 	poolTotalCapacity OBJECT-TYPE
 		SYNTAX DisplayString
@@ -546,7 +491,7 @@ IMPORTS
 		DESCRIPTION
 			"Unit: GB."
 		::= { poolEntry 6 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.27.1.7
 	poolRemainingCapacity OBJECT-TYPE
 		SYNTAX DisplayString
@@ -555,7 +500,7 @@ IMPORTS
 		DESCRIPTION
 			"Unit: GB."
 		::= { poolEntry 7 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.27.1.8
 	poolUsedCapacity OBJECT-TYPE
 		SYNTAX DisplayString
@@ -564,7 +509,7 @@ IMPORTS
 		DESCRIPTION
 			"Unit: GB."
 		::= { poolEntry 8 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.27.1.9
 	poolCapacityUtilization OBJECT-TYPE
 		SYNTAX DisplayString
@@ -573,7 +518,7 @@ IMPORTS
 		DESCRIPTION
 			"Description."
 		::= { poolEntry 9 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.28
 	volumeTable OBJECT-TYPE
 		SYNTAX SEQUENCE OF VolumeEntry
@@ -582,7 +527,7 @@ IMPORTS
 		DESCRIPTION
 			"Description."
 		::= { unityStorageObjects 28 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.28.1
 	volumeEntry OBJECT-TYPE
 		SYNTAX VolumeEntry
@@ -592,55 +537,33 @@ IMPORTS
 			"Description."
 		INDEX { volumeId }
 		::= { volumeTable 1 }
-	
+
 	VolumeEntry ::=
-		SEQUENCE { 
-			volumeId
-				DisplayString,
-			volumeName
-				DisplayString,
-			volumeRaidLevel
-				DisplayString,
-			volumeSize
-				DisplayString,
-			volumeNumberOfPhysicalDisk
-				Integer32,
-			volumeOperationalState
-				DisplayString,
-			volumeFastCacheState
-				DisplayString,
-			volumeDefaultController
-				DisplayString,
-			volumeCurrentController
-				DisplayString,
-			volumeResponseTime
-				DisplayString,
-			volumeQueueLength
-				DisplayString,
-			volumeTotalThroughput
-				DisplayString,
-			volumeReadThroughput
-				DisplayString,
-			volumeWriteThroughput
-				DisplayString,
-			volumeFastCacheReadHitIOs
-				DisplayString,
-			volumeFastCacheWriteHitIOs
-				DisplayString,
-			volumeTotalBandwidth
-				DisplayString,
-			volumeReadBandwidth
-				DisplayString,
-			volumeWriteBandwidth
-				DisplayString,
-			volumeFastCacheReadHitRate
-				DisplayString,
-			volumeFastCacheWriteHitRate
-				DisplayString,
-			volumeUtilization
-				DisplayString,
-			volumeHostInfo
-				DisplayString
+		SEQUENCE {
+			volumeId                        DisplayString,
+			volumeName                      DisplayString,
+			volumeRaidLevels                DisplayString,
+			volumeAllocatedSize             DisplayString,
+			volumeSize                      DisplayString,
+			volumeNumberOfPhysicalDisk      Integer32,
+			volumeOperationalState          DisplayString,
+			volumeFastCacheState            DisplayString,
+			volumeDefaultStorageProcessor   DisplayString,
+			volumeCurrentStorageProcessor   DisplayString,
+			volumeResponseTime              DisplayString,
+			volumeQueueLength               DisplayString,
+			volumeTotalThroughput           DisplayString,
+			volumeReadThroughput            DisplayString,
+			volumeWriteThroughput           DisplayString,
+			volumeFastCacheReadHitIOs       DisplayString,
+			volumeFastCacheWriteHitIOs      DisplayString,
+			volumeTotalBandwidth            DisplayString,
+			volumeReadBandwidth             DisplayString,
+			volumeWriteBandwidth            DisplayString,
+			volumeFastCacheReadHitRate      DisplayString,
+			volumeFastCacheWriteHitRate     DisplayString,
+			volumeUtilization               DisplayString,
+			volumeHostInfo                  DisplayString
 		 }
 
 	-- 1.3.6.1.4.1.1139.103.2.28.1.1
@@ -651,7 +574,7 @@ IMPORTS
 		DESCRIPTION
 			"Description."
 		::= { volumeEntry 1 }
-		
+
 	-- 1.3.6.1.4.1.1139.103.2.28.1.2
 	volumeName OBJECT-TYPE
 		SYNTAX DisplayString
@@ -660,196 +583,205 @@ IMPORTS
 		DESCRIPTION
 			"Description."
 		::= { volumeEntry 2 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.28.1.3
-	volumeRaidLevel OBJECT-TYPE
+	volumeRaidLevels OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"Description."
 		::= { volumeEntry 3 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.28.1.4
-	volumeSize OBJECT-TYPE
+	volumeAllocatedSize OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"Unit: GB."
 		::= { volumeEntry 4 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.28.1.5
+	volumeSize OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: GB."
+		::= { volumeEntry 5 }
+
+	-- 1.3.6.1.4.1.1139.103.2.28.1.6
 	volumeNumberOfPhysicalDisk OBJECT-TYPE
 		SYNTAX Integer32
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"Description."
-		::= { volumeEntry 5 }
-	
-	-- 1.3.6.1.4.1.1139.103.2.28.1.6
+		::= { volumeEntry 6 }
+
+	-- 1.3.6.1.4.1.1139.103.2.28.1.7
 	volumeOperationalState OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"Description."
-		::= { volumeEntry 6 }
-	
-	-- 1.3.6.1.4.1.1139.103.2.28.1.7
+		::= { volumeEntry 7 }
+
+	-- 1.3.6.1.4.1.1139.103.2.28.1.8
 	volumeFastCacheState OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"Description."
-		::= { volumeEntry 7 }
-	
-	-- 1.3.6.1.4.1.1139.103.2.28.1.8
-	volumeDefaultController OBJECT-TYPE
-		SYNTAX DisplayString
-		ACCESS read-only
-		STATUS mandatory
-		DESCRIPTION
-			"Description."
 		::= { volumeEntry 8 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.28.1.9
-	volumeCurrentController OBJECT-TYPE
+	volumeDefaultStorageProcessor OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"Description."
 		::= { volumeEntry 9 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.28.1.10
+	volumeCurrentStorageProcessor OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { volumeEntry 10 }
+
+	-- 1.3.6.1.4.1.1139.103.2.28.1.11
 	volumeResponseTime OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"Unit: ms."
-		::= { volumeEntry 10 }
-	
-	-- 1.3.6.1.4.1.1139.103.2.28.1.11
+		::= { volumeEntry 11 }
+
+	-- 1.3.6.1.4.1.1139.103.2.28.1.12
 	volumeQueueLength OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"Description."
-		::= { volumeEntry 11 }	
-	
-	-- 1.3.6.1.4.1.1139.103.2.28.1.12
+		::= { volumeEntry 12 }
+
+	-- 1.3.6.1.4.1.1139.103.2.28.1.13
 	volumeTotalThroughput OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"Unit: IO/s."
-		::= { volumeEntry 12 }
-	
-	-- 1.3.6.1.4.1.1139.103.2.28.1.13
+		::= { volumeEntry 13 }
+
+	-- 1.3.6.1.4.1.1139.103.2.28.1.14
 	volumeReadThroughput OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"Unit: IO/s."
-		::= { volumeEntry 13 }
-	
-	-- 1.3.6.1.4.1.1139.103.2.28.1.14
+		::= { volumeEntry 14 }
+
+	-- 1.3.6.1.4.1.1139.103.2.28.1.15
 	volumeWriteThroughput OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"Unit: IO/s."
-		::= { volumeEntry 14 }
-	
-	-- 1.3.6.1.4.1.1139.103.2.28.1.15
+		::= { volumeEntry 15 }
+
+	-- 1.3.6.1.4.1.1139.103.2.28.1.16
 	volumeFastCacheReadHitIOs OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"Unit: IO."
-		::= { volumeEntry 15 }
-	
-	-- 1.3.6.1.4.1.1139.103.2.28.1.16
+		::= { volumeEntry 16 }
+
+	-- 1.3.6.1.4.1.1139.103.2.28.1.17
 	volumeFastCacheWriteHitIOs OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"Unit: IO."
-		::= { volumeEntry 16 }
-	
-	-- 1.3.6.1.4.1.1139.103.2.28.1.17
+		::= { volumeEntry 17 }
+
+	-- 1.3.6.1.4.1.1139.103.2.28.1.18
 	volumeTotalBandwidth OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"Unit: MB/s."
-		::= { volumeEntry 17 }
-	
-	-- 1.3.6.1.4.1.1139.103.2.28.1.18
+		::= { volumeEntry 18 }
+
+	-- 1.3.6.1.4.1.1139.103.2.28.1.19
 	volumeReadBandwidth OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"Unit: MB/s."
-		::= { volumeEntry 18 }
-	
-	-- 1.3.6.1.4.1.1139.103.2.28.1.19
+		::= { volumeEntry 19 }
+
+	-- 1.3.6.1.4.1.1139.103.2.28.1.20
 	volumeWriteBandwidth OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"Unit: MB/s."
-		::= { volumeEntry 19 }
-	
-	-- 1.3.6.1.4.1.1139.103.2.28.1.20
+		::= { volumeEntry 20 }
+
+	-- 1.3.6.1.4.1.1139.103.2.28.1.21
 	volumeFastCacheReadHitRate OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"Description."
-		::= { volumeEntry 20 }
-	
-	-- 1.3.6.1.4.1.1139.103.2.28.1.21
+		::= { volumeEntry 21 }
+
+	-- 1.3.6.1.4.1.1139.103.2.28.1.22
 	volumeFastCacheWriteHitRate OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"Description."
-		::= { volumeEntry 21 }
-	
-	-- 1.3.6.1.4.1.1139.103.2.28.1.22
+		::= { volumeEntry 22 }
+
+	-- 1.3.6.1.4.1.1139.103.2.28.1.23
 	volumeUtilization OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"Description."
-		::= { volumeEntry 22 }
-		
-	-- 1.3.6.1.4.1.1139.103.2.28.1.23
+		::= { volumeEntry 23 }
+
+	-- 1.3.6.1.4.1.1139.103.2.28.1.24
 	volumeHostInfo OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"Description."
-		::= { volumeEntry 23 }
-	
+		::= { volumeEntry 24 }
+
 	-- 1.3.6.1.4.1.1139.103.2.29
 	diskTable OBJECT-TYPE
 		SYNTAX SEQUENCE OF DiskEntry
@@ -858,7 +790,7 @@ IMPORTS
 		DESCRIPTION
 			"Description."
 		::= { unityStorageObjects 29 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.29.1
 	diskEntry OBJECT-TYPE
 		SYNTAX DiskEntry
@@ -868,45 +800,27 @@ IMPORTS
 			"Description."
 		INDEX { diskName }
 		::= { diskTable 1 }
-	
+
 	DiskEntry ::=
-		SEQUENCE { 
-			diskName
-				DisplayString,
-			diskModel
-				DisplayString,
-			diskSerialNumber
-				DisplayString,
-			diskFirmwareVersion
-				DisplayString,
-			diskType
-				DisplayString,
-			diskPhysicalLocation
-				DisplayString,
-			diskStatus
-				DisplayString,
-			diskRawCapacity
-				DisplayString,
-			diskCurrentPool
-				DisplayString,
-			diskResponseTime
-				DisplayString,
-			diskQueueLength
-				DisplayString,
-			diskTotalThroughput
-				DisplayString,
-			diskReadThroughput
-				DisplayString,
-			diskWriteThroughput
-				DisplayString,
-			diskTotalBandwidth
-				DisplayString,
-			diskReadBandwidth
-				DisplayString,
-			diskWriteBandwidth
-				DisplayString,
-			diskUtilization
-				DisplayString
+		SEQUENCE {
+			diskName                DisplayString,
+			diskModel               DisplayString,
+			diskSerialNumber        DisplayString,
+			diskFirmwareVersion     DisplayString,
+			diskType                DisplayString,
+			diskPhysicalLocation    DisplayString,
+			diskStatus              DisplayString,
+			diskRawCapacity         DisplayString,
+			diskCurrentPool         DisplayString,
+			diskResponseTime        DisplayString,
+			diskQueueLength         DisplayString,
+			diskTotalThroughput     DisplayString,
+			diskReadThroughput      DisplayString,
+			diskWriteThroughput     DisplayString,
+			diskTotalBandwidth      DisplayString,
+			diskReadBandwidth       DisplayString,
+			diskWriteBandwidth      DisplayString,
+			diskUtilization         DisplayString
 		 }
 
 	-- 1.3.6.1.4.1.1139.103.2.29.1.1
@@ -917,7 +831,7 @@ IMPORTS
 		DESCRIPTION
 			"Description."
 		::= { diskEntry 1 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.29.1.2
 	diskModel OBJECT-TYPE
 		SYNTAX DisplayString
@@ -926,7 +840,7 @@ IMPORTS
 		DESCRIPTION
 			"Description."
 		::= { diskEntry 2 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.29.1.3
 	diskSerialNumber OBJECT-TYPE
 		SYNTAX DisplayString
@@ -935,7 +849,7 @@ IMPORTS
 		DESCRIPTION
 			"Description."
 		::= { diskEntry 3 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.29.1.4
 	diskFirmwareVersion OBJECT-TYPE
 		SYNTAX DisplayString
@@ -944,7 +858,7 @@ IMPORTS
 		DESCRIPTION
 			"Description."
 		::= { diskEntry 4 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.29.1.5
 	diskType OBJECT-TYPE
 		SYNTAX DisplayString
@@ -953,7 +867,7 @@ IMPORTS
 		DESCRIPTION
 			"Description."
 		::= { diskEntry 5 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.29.1.6
 	diskPhysicalLocation OBJECT-TYPE
 		SYNTAX DisplayString
@@ -962,7 +876,7 @@ IMPORTS
 		DESCRIPTION
 			"Description."
 		::= { diskEntry 6 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.29.1.7
 	diskStatus OBJECT-TYPE
 		SYNTAX DisplayString
@@ -971,7 +885,7 @@ IMPORTS
 		DESCRIPTION
 			"Description."
 		::= { diskEntry 7 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.29.1.8
 	diskRawCapacity OBJECT-TYPE
 		SYNTAX DisplayString
@@ -980,7 +894,7 @@ IMPORTS
 		DESCRIPTION
 			"Description."
 		::= { diskEntry 8 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.29.1.9
 	diskCurrentPool OBJECT-TYPE
 		SYNTAX DisplayString
@@ -989,7 +903,7 @@ IMPORTS
 		DESCRIPTION
 			"Description."
 		::= { diskEntry 9 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.29.1.10
 	diskResponseTime OBJECT-TYPE
 		SYNTAX DisplayString
@@ -998,7 +912,7 @@ IMPORTS
 		DESCRIPTION
 			"Unit: ms."
 		::= { diskEntry 10 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.29.1.11
 	diskQueueLength OBJECT-TYPE
 		SYNTAX DisplayString
@@ -1007,7 +921,7 @@ IMPORTS
 		DESCRIPTION
 			"Description."
 		::= { diskEntry 11 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.29.1.12
 	diskTotalThroughput OBJECT-TYPE
 		SYNTAX DisplayString
@@ -1016,7 +930,7 @@ IMPORTS
 		DESCRIPTION
 			"Unit: IO/s."
 		::= { diskEntry 12 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.29.1.13
 	diskReadThroughput OBJECT-TYPE
 		SYNTAX DisplayString
@@ -1025,7 +939,7 @@ IMPORTS
 		DESCRIPTION
 			"Unit: IO/s."
 		::= { diskEntry 13 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.29.1.14
 	diskWriteThroughput OBJECT-TYPE
 		SYNTAX DisplayString
@@ -1034,7 +948,7 @@ IMPORTS
 		DESCRIPTION
 			"Unit: IO/s."
 		::= { diskEntry 14 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.29.1.15
 	diskTotalBandwidth OBJECT-TYPE
 		SYNTAX DisplayString
@@ -1043,7 +957,7 @@ IMPORTS
 		DESCRIPTION
 			"Unit: MB/s."
 		::= { diskEntry 15 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.29.1.16
 	diskReadBandwidth OBJECT-TYPE
 		SYNTAX DisplayString
@@ -1052,7 +966,7 @@ IMPORTS
 		DESCRIPTION
 			"Unit: MB/s."
 		::= { diskEntry 16 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.29.1.17
 	diskWriteBandwidth OBJECT-TYPE
 		SYNTAX DisplayString
@@ -1061,7 +975,7 @@ IMPORTS
 		DESCRIPTION
 			"Unit: MB/s."
 		::= { diskEntry 17 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.29.1.18
 	diskUtilization OBJECT-TYPE
 		SYNTAX DisplayString
@@ -1070,7 +984,7 @@ IMPORTS
 		DESCRIPTION
 			"Description."
 		::= { diskEntry 18 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.30
 	frontendPortTable OBJECT-TYPE
 		SYNTAX SEQUENCE OF FrontendPortEntry
@@ -1079,7 +993,7 @@ IMPORTS
 		DESCRIPTION
 			"Description."
 		::= { unityStorageObjects 30 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.30.1
 	frontendPortEntry OBJECT-TYPE
 		SYNTAX FrontendPortEntry
@@ -1089,35 +1003,22 @@ IMPORTS
 			"Description."
 		INDEX { frontendPortId }
 		::= { frontendPortTable 1 }
-	
+
 	FrontendPortEntry ::=
-		SEQUENCE { 
-			frontendPortId
-				Integer32,
-			frontendPortName
-				DisplayString,
-			frontendPortAddress
-				DisplayString,
-			frontendPortType
-				DisplayString,
-			frontendPortCurrentSpeed
-				DisplayString,
-			frontendPortSupportedSpeed
-				DisplayString,
-			frontendPortStatus
-				DisplayString,
-			frontendPortTotalThroughput
-				DisplayString,
-			frontendPortReadThroughput
-				DisplayString,
-			frontendPortWriteThroughput
-				DisplayString,
-			frontendPortTotalBandwidth
-				DisplayString,
-			frontendPortReadBandwidth
-				DisplayString,
-			frontendPortWriteBandwidth
-				DisplayString
+		SEQUENCE {
+			frontendPortId              Integer32,
+			frontendPortName            DisplayString,
+			frontendPortAddress         DisplayString,
+			frontendPortType            DisplayString,
+			frontendPortCurrentSpeed    DisplayString,
+			frontendPortSupportedSpeed  DisplayString,
+			frontendPortStatus          DisplayString,
+			frontendPortTotalThroughput DisplayString,
+			frontendPortReadThroughput  DisplayString,
+			frontendPortWriteThroughput DisplayString,
+			frontendPortTotalBandwidth  DisplayString,
+			frontendPortReadBandwidth   DisplayString,
+			frontendPortWriteBandwidth  DisplayString
 		 }
 
 	-- 1.3.6.1.4.1.1139.103.2.30.1.1
@@ -1128,7 +1029,7 @@ IMPORTS
 		DESCRIPTION
 			"Description."
 		::= { frontendPortEntry 1 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.30.1.2
 	frontendPortName OBJECT-TYPE
 		SYNTAX DisplayString
@@ -1137,7 +1038,7 @@ IMPORTS
 		DESCRIPTION
 			"Description."
 		::= { frontendPortEntry 2 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.30.1.3
 	frontendPortAddress OBJECT-TYPE
 		SYNTAX DisplayString
@@ -1146,7 +1047,7 @@ IMPORTS
 		DESCRIPTION
 			"Description."
 		::= { frontendPortEntry 3 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.30.1.4
 	frontendPortType OBJECT-TYPE
 		SYNTAX DisplayString
@@ -1155,7 +1056,7 @@ IMPORTS
 		DESCRIPTION
 			"Description."
 		::= { frontendPortEntry 4 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.30.1.5
 	frontendPortCurrentSpeed OBJECT-TYPE
 		SYNTAX DisplayString
@@ -1164,7 +1065,7 @@ IMPORTS
 		DESCRIPTION
 			"Description."
 		::= { frontendPortEntry 5 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.30.1.6
 	frontendPortSupportedSpeed OBJECT-TYPE
 		SYNTAX DisplayString
@@ -1173,7 +1074,7 @@ IMPORTS
 		DESCRIPTION
 			"Description."
 		::= { frontendPortEntry 6 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.30.1.7
 	frontendPortStatus OBJECT-TYPE
 		SYNTAX DisplayString
@@ -1191,7 +1092,7 @@ IMPORTS
 		DESCRIPTION
 			"Unit: IO/s."
 		::= { frontendPortEntry 8 }
-		
+
 	-- 1.3.6.1.4.1.1139.103.2.30.1.9
 	frontendPortReadThroughput OBJECT-TYPE
 		SYNTAX DisplayString
@@ -1200,7 +1101,7 @@ IMPORTS
 		DESCRIPTION
 			"Unit: IO/s."
 		::= { frontendPortEntry 9 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.30.1.10
 	frontendPortWriteThroughput OBJECT-TYPE
 		SYNTAX DisplayString
@@ -1218,7 +1119,7 @@ IMPORTS
 		DESCRIPTION
 			"Unit: MB/s."
 		::= { frontendPortEntry 11 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.30.1.12
 	frontendPortReadBandwidth OBJECT-TYPE
 		SYNTAX DisplayString
@@ -1227,7 +1128,7 @@ IMPORTS
 		DESCRIPTION
 			"Unit: MB/s"
 		::= { frontendPortEntry 12 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.30.1.13
 	frontendPortWriteBandwidth OBJECT-TYPE
 		SYNTAX DisplayString
@@ -1236,7 +1137,7 @@ IMPORTS
 		DESCRIPTION
 			"Unit: MB/s."
 		::= { frontendPortEntry 13 }
-		
+
 	-- 1.3.6.1.4.1.1139.103.2.31
 	backendPortTable OBJECT-TYPE
 		SYNTAX SEQUENCE OF BackendPortEntry
@@ -1245,7 +1146,7 @@ IMPORTS
 		DESCRIPTION
 			"Description."
 		::= { unityStorageObjects 31 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.31.1
 	backendPortEntry OBJECT-TYPE
 		SYNTAX BackendPortEntry
@@ -1255,37 +1156,23 @@ IMPORTS
 			"Description."
 		INDEX { backendPortId }
 		::= { backendPortTable 1 }
-	
+
 	BackendPortEntry ::=
-		SEQUENCE { 
-			backendPortId
-				Integer32,
-			backendPortName
-				DisplayString,
-			backendPortType
-				DisplayString,
-			backendPortPortNumber
-				DisplayString,
-			backendPortCurrentSpeed
-				DisplayString,
-			backendPortParentIoModule
-				DisplayString,
-			backendPortParentStorageProcessor
-				DisplayString,
-			backendPortStatus
-				DisplayString,
-			backendPortTotalThroughput
-				DisplayString,
-			backendPortReadThroughput
-				DisplayString,
-			backendPortWriteThroughput
-				DisplayString,
-			backendPortTotalBandwidth
-				DisplayString,
-			backendPortReadBandwidth
-				DisplayString,
-			backendPortWriteBandwidth
-				DisplayString
+		SEQUENCE {
+			backendPortId                       Integer32,
+			backendPortName                     DisplayString,
+			backendPortType                     DisplayString,
+			backendPortPortNumber               DisplayString,
+			backendPortCurrentSpeed             DisplayString,
+			backendPortParentIoModule           DisplayString,
+			backendPortParentStorageProcessor   DisplayString,
+			backendPortStatus                   DisplayString,
+			backendPortTotalThroughput          DisplayString,
+			backendPortReadThroughput           DisplayString,
+			backendPortWriteThroughput          DisplayString,
+			backendPortTotalBandwidth           DisplayString,
+			backendPortReadBandwidth            DisplayString,
+			backendPortWriteBandwidth           DisplayString
 		 }
 
 	-- 1.3.6.1.4.1.1139.103.2.31.1.1
@@ -1296,7 +1183,7 @@ IMPORTS
 		DESCRIPTION
 			"Description."
 		::= { backendPortEntry 1 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.31.1.2
 	backendPortName OBJECT-TYPE
 		SYNTAX DisplayString
@@ -1305,7 +1192,7 @@ IMPORTS
 		DESCRIPTION
 			"Description."
 		::= { backendPortEntry 2 }
-		
+
 	-- 1.3.6.1.4.1.1139.103.2.31.1.3
 	backendPortType OBJECT-TYPE
 		SYNTAX DisplayString
@@ -1314,7 +1201,7 @@ IMPORTS
 		DESCRIPTION
 			"Description."
 		::= { backendPortEntry 3 }
-		
+
 	-- 1.3.6.1.4.1.1139.103.2.31.1.4
 	backendPortPortNumber OBJECT-TYPE
 		SYNTAX DisplayString
@@ -1323,7 +1210,7 @@ IMPORTS
 		DESCRIPTION
 			"Description."
 		::= { backendPortEntry 4 }
-		
+
 	-- 1.3.6.1.4.1.1139.103.2.31.1.5
 	backendPortCurrentSpeed OBJECT-TYPE
 		SYNTAX DisplayString
@@ -1332,7 +1219,7 @@ IMPORTS
 		DESCRIPTION
 			"Description."
 		::= { backendPortEntry 5 }
-		
+
 	-- 1.3.6.1.4.1.1139.103.2.31.1.6
 	backendPortParentIoModule OBJECT-TYPE
 		SYNTAX DisplayString
@@ -1341,7 +1228,7 @@ IMPORTS
 		DESCRIPTION
 			"Description."
 		::= { backendPortEntry 6 }
-		
+
 	-- 1.3.6.1.4.1.1139.103.2.31.1.7
 	backendPortParentStorageProcessor OBJECT-TYPE
 		SYNTAX DisplayString
@@ -1350,7 +1237,7 @@ IMPORTS
 		DESCRIPTION
 			"Description."
 		::= { backendPortEntry 7 }
-		
+
 	-- 1.3.6.1.4.1.1139.103.2.31.1.8
 	backendPortStatus OBJECT-TYPE
 		SYNTAX DisplayString
@@ -1359,7 +1246,7 @@ IMPORTS
 		DESCRIPTION
 			"Description."
 		::= { backendPortEntry 8 }
-		
+
 	-- 1.3.6.1.4.1.1139.103.2.31.1.9
 	backendPortTotalThroughput OBJECT-TYPE
 		SYNTAX DisplayString
@@ -1368,7 +1255,7 @@ IMPORTS
 		DESCRIPTION
 			"Description."
 		::= { backendPortEntry 9 }
-		
+
 	-- 1.3.6.1.4.1.1139.103.2.31.1.10
 	backendPortReadThroughput OBJECT-TYPE
 		SYNTAX DisplayString
@@ -1377,7 +1264,7 @@ IMPORTS
 		DESCRIPTION
 			"Description."
 		::= { backendPortEntry 10 }
-		
+
 	-- 1.3.6.1.4.1.1139.103.2.31.1.11
 	backendPortWriteThroughput OBJECT-TYPE
 		SYNTAX DisplayString
@@ -1386,7 +1273,7 @@ IMPORTS
 		DESCRIPTION
 			"Description."
 		::= { backendPortEntry 11 }
-		
+
 	-- 1.3.6.1.4.1.1139.103.2.31.1.12
 	backendPortTotalBandwidth OBJECT-TYPE
 		SYNTAX DisplayString
@@ -1395,7 +1282,7 @@ IMPORTS
 		DESCRIPTION
 			"Description."
 		::= { backendPortEntry 12 }
-		
+
 	-- 1.3.6.1.4.1.1139.103.2.31.1.13
 	backendPortReadBandwidth OBJECT-TYPE
 		SYNTAX DisplayString
@@ -1404,7 +1291,7 @@ IMPORTS
 		DESCRIPTION
 			"Description."
 		::= { backendPortEntry 13 }
-		
+
 	-- 1.3.6.1.4.1.1139.103.2.31.1.14
 	backendPortWriteBandwidth OBJECT-TYPE
 		SYNTAX DisplayString
@@ -1413,7 +1300,7 @@ IMPORTS
 		DESCRIPTION
 			"Description."
 		::= { backendPortEntry 14 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.32
 	hostTable OBJECT-TYPE
 		SYNTAX SEQUENCE OF HostEntry
@@ -1422,7 +1309,7 @@ IMPORTS
 		DESCRIPTION
 			"Description."
 		::= { unityStorageObjects 32 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.32.1
 	hostEntry OBJECT-TYPE
 		SYNTAX HostEntry
@@ -1432,21 +1319,16 @@ IMPORTS
 			"Description."
 		INDEX { hostHBAWWN }
 		::= { hostTable 1 }
-	
+
 	HostEntry ::=
-		SEQUENCE { 
-			hostName
-				DisplayString,
-			hostNetworkAddress
-				DisplayString,
-			hostHBAWWN
-				DisplayString,
-			hostOperationSystemVersion
-				DisplayString,
-			hostAssignedStorageVolumes
-				DisplayString
+		SEQUENCE {
+			hostName                    DisplayString,
+			hostNetworkAddress          DisplayString,
+			hostInitiators              DisplayString,
+			hostOperationSystemVersion  DisplayString,
+			hostAssignedStorageVolumes  DisplayString
 		 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.32.1.1
 	hostName OBJECT-TYPE
 		SYNTAX DisplayString
@@ -1455,7 +1337,7 @@ IMPORTS
 		DESCRIPTION
 			"Description."
 		::= { hostEntry 1 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.32.1.2
 	hostNetworkAddress OBJECT-TYPE
 		SYNTAX DisplayString
@@ -1464,16 +1346,16 @@ IMPORTS
 		DESCRIPTION
 			"Description."
 		::= { hostEntry 2 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.32.1.3
-	hostHBAWWN OBJECT-TYPE
+	hostInitiators OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"Description."
 		::= { hostEntry 3 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.32.1.4
 	hostOperationSystemVersion OBJECT-TYPE
 		SYNTAX DisplayString
@@ -1482,7 +1364,7 @@ IMPORTS
 		DESCRIPTION
 			"Description."
 		::= { hostEntry 4 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.32.1.5
 	hostAssignedStorageVolumes OBJECT-TYPE
 		SYNTAX DisplayString
@@ -1500,7 +1382,7 @@ IMPORTS
 		DESCRIPTION
 			"Description."
 		::= { unityStorageObjects 33 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.33.1
 	enclosureEntry OBJECT-TYPE
 		SYNTAX EnclosureEntry
@@ -1510,31 +1392,22 @@ IMPORTS
 			"Description."
 		INDEX { enclosureName }
 		::= { enclosureTable 1 }
-	
+
 	EnclosureEntry ::=
-		SEQUENCE { 
-			enclosureName
-				DisplayString,
-		    enclosureModel
-				DisplayString,
-			enclosureSerialNumber
-				DisplayString,
-			enclosurePartNumber
-				DisplayString,
-			enclosureHealthStatus
-				DisplayString,
-			enclosureCurrentPower
-				DisplayString,
-			enclosureAveragePower
-				DisplayString,
-			enclosureMaxPower
-				DisplayString,
-			enclosureAverageTemperature
-				DisplayString,
-			enclosureMaxTemperature
-				DisplayString
+		SEQUENCE {
+			enclosureName                   DisplayString,
+		    enclosureModel                  DisplayString,
+			enclosureSerialNumber           DisplayString,
+			enclosurePartNumber             DisplayString,
+			enclosureHealthStatus           DisplayString,
+			enclosureCurrentPower           DisplayString,
+			enclosureAveragePower           DisplayString,
+			enclosureMaxPower               DisplayString,
+			enclosureCurrentTemperature     DisplayString,
+			enclosureAverageTemperature     DisplayString,
+			enclosureMaxTemperature         DisplayString
 		 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.33.1.1
 	enclosureName OBJECT-TYPE
 		SYNTAX DisplayString
@@ -1543,7 +1416,7 @@ IMPORTS
 		DESCRIPTION
 			"Description."
 		::= { enclosureEntry 1 }
-	
+
 	-- 1.3.6.1.4.1.1139.103.2.33.1.2
 	enclosureModel OBJECT-TYPE
 		SYNTAX DisplayString
@@ -1608,7 +1481,7 @@ IMPORTS
 		::= { enclosureEntry 8 }
 
 	-- 1.3.6.1.4.1.1139.103.2.33.1.9
-	enclosureAverageTemperature OBJECT-TYPE
+	enclosureCurrentTemperature OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
@@ -1617,13 +1490,22 @@ IMPORTS
 		::= { enclosureEntry 9 }
 
 	-- 1.3.6.1.4.1.1139.103.2.33.1.10
-	enclosureMaxTemperature OBJECT-TYPE
+	enclosureAverageTemperature OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"Description."
 		::= { enclosureEntry 10 }
+
+	-- 1.3.6.1.4.1.1139.103.2.33.1.11
+	enclosureMaxTemperature OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { enclosureEntry 11 }
 
 	-- 1.3.6.1.4.1.1139.103.2.34
 	powerSupplyTable OBJECT-TYPE
@@ -1646,20 +1528,13 @@ IMPORTS
 
 	PowerSupplyEntry ::=
 		SEQUENCE {
-			powerSupplyName
-				DisplayString,
-			powerSupplyManufacturer
-				DisplayString,
-			powerSupplyModel
-				DisplayString,
-			powerSupplyFirmwareVersion
-				DisplayString,
-			powerSupplyParentEnclosure
-				DisplayString,
-			powerSupplyStorageProcessor
-				DisplayString,
-			powerSupplyHealthStatus
-				DisplayString
+			powerSupplyName             DisplayString,
+			powerSupplyManufacturer     DisplayString,
+			powerSupplyModel            DisplayString,
+			powerSupplyFirmwareVersion  DisplayString,
+			powerSupplyParentEnclosure  DisplayString,
+			powerSupplyStorageProcessor DisplayString,
+			powerSupplyHealthStatus     DisplayString
 		 }
 
 	-- 1.3.6.1.4.1.1139.103.2.34.1.1
@@ -1746,14 +1621,10 @@ IMPORTS
 
 	FanEntry ::=
 		SEQUENCE {
-			fanName
-				DisplayString,
-			fanSlotNumber
-				DisplayString,
-			fanParentEnclosure
-				DisplayString,
-			fanHealthStatus
-				DisplayString
+			fanName             DisplayString,
+			fanSlotNumber       DisplayString,
+			fanParentEnclosure  DisplayString,
+			fanHealthStatus     DisplayString
 		 }
 
 	-- 1.3.6.1.4.1.1139.103.2.35.1.1
@@ -1813,20 +1684,12 @@ IMPORTS
 
 	BBUEntry ::=
 		SEQUENCE {
-			bbuName
-				DisplayString,
-			bbuManufacturer
-				DisplayString,
-			bbuModel
-				DisplayString,
-			bbuFirmwareVersion
-				DisplayString,
-			bbuParentStorageProcessor
-				DisplayString,
-			bbuSlotNumber
-				DisplayString,
-			bbuHealthStatus
-				DisplayString
+			bbuName                     DisplayString,
+			bbuManufacturer             DisplayString,
+			bbuModel                    DisplayString,
+			bbuFirmwareVersion          DisplayString,
+			bbuParentStorageProcessor   DisplayString,
+			bbuHealthStatus             DisplayString
 		 }
 
 	-- 1.3.6.1.4.1.1139.103.2.36.1.1
@@ -1875,20 +1738,11 @@ IMPORTS
 		::= { bbuEntry 5 }
 
 	-- 1.3.6.1.4.1.1139.103.2.36.1.6
-	bbuSlotNumber OBJECT-TYPE
-		SYNTAX DisplayString
-		ACCESS read-only
-		STATUS mandatory
-		DESCRIPTION
-			"Description."
-		::= { bbuEntry 6 }
-
-	-- 1.3.6.1.4.1.1139.103.2.36.1.7
 	bbuHealthStatus OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"Description."
-		::= { bbuEntry 7 }
+		::= { bbuEntry 6 }
 END

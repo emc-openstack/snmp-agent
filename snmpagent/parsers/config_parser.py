@@ -71,7 +71,7 @@ class AuthConfig(object):
 
 
 if __name__ == '__main__':
-    config_file = os.path.abspath('../../etc/snmpagent.conf')
+    config_file = os.path.abspath('../../conf/snmpagent.conf')
     snmp_config = SNMPAgentConfig(config_file)
     for name, section in snmp_config.sections.items():
         if 'type' in section.__dict__ and section.type == 'unity':
@@ -79,7 +79,7 @@ if __name__ == '__main__':
             for k, v in section.__dict__.items():
                 print(k + ': ' + v)
 
-    auth_config_file = os.path.abspath('../../etc/access.conf')
+    auth_config_file = os.path.abspath('../../conf/access.conf')
     auth_config = AuthConfig(auth_config_file)
     for user in auth_config.users:
         for k, v in user.__dict__.items():
