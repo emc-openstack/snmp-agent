@@ -1,3 +1,6 @@
+from clients import UnityClient
+
+
 class ScalarInstanceFactory(object):
     @staticmethod
     def build(name, base_class, impl_class):
@@ -6,9 +9,25 @@ class ScalarInstanceFactory(object):
             base_class.__init__(self, *args, **kwargs)
 
         def __read_get__(self, name, val, idx, acInfo):
-            return name, self.getSyntax().clone(
-                self.impl_class().read_get(name, idx, acInfo[1].storage_context)
-            )
+            try:
+                storage_context = acInfo[1].storage_context
+                # TODO: instanciate unique UnityClient instance for (host, username, password)
+                # unity_client = UnityClient(host=storage_context.spa, username=storage_context.user,
+                #                            password=storage_context.password)
+                client_name = storage_context.spa + '_' + storage_context.port
+                unity_client = UnityClient.get_unity_client(client_name, storage_context.spa, storage_context.user,
+                                                            storage_context.password)
+
+                return name, self.getSyntax().clone(
+                    self.impl_class().read_get(name, idx, unity_client)
+                )
+
+            except:
+                # logging ...
+                # return name, self.getSyntax().clone(
+                #     # "exception"
+                # )
+                pass
 
         newclass = type(name + "ScalarInstance", (base_class,),
                         {"__init__": __init__,
