@@ -4,7 +4,6 @@ from pysnmp import debug
 from pysnmp.carrier.asyncore.dgram import udp
 from pysnmp.entity import engine, config
 from pysnmp.entity.rfc3413 import cmdrsp, context
-from pysnmp.proto.api import v2c
 from pysnmp.smi import builder
 
 debug.setLogger(debug.Debug('all'))
@@ -63,7 +62,6 @@ class SNMPEngine(object):
                                                      recvId)
 
     def create_managed_object_instance(self):
-
         module_name = "Unity-MIB"
         instances = []
         table_rows = []
@@ -101,6 +99,7 @@ class SNMPEngine(object):
                     class_name, base_class=self.MibTableColumn,
                     proto_inst=scalar_instance_class,
                     entry=entry,
+                    impl_class=getattr(mod, class_name + "Column")
                 )
                 instances.append(column_instance_class(item.name, item.syntax))
 

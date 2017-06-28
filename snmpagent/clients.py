@@ -1,11 +1,8 @@
-import weakref
-
 from storops import UnitySystem
 
 
 class CachedUnityClientManager(object):
     def __init__(self):
-        # self._cache = weakref.WeakValueDictionary()
         self._cache = {}
 
     def get_unity_client(self, name, *args):
@@ -61,3 +58,39 @@ class UnityClient(object):
     def get_number_of_enclosure(self):
         pass
 
+    # hostTable
+    def get_hosts(self):
+        return [host.name for host in self.unity_system.get_host()]
+
+    def get_host_network_address(self, host_name):
+        host = self.unity_system.get_host(name=host_name)
+        # if hasattr(host, 'ip_list'):
+        #     return ', '.join(host.ip_list)
+        # else:
+        #     # TODO: 0x is returned, why?
+        #     return '--'
+        return ', '.join(host.ip_list) if host.ip_list else '--'
+
+    def get_host_initiators(self, host_name):
+        host = self.unity_system.get_host(name=host_name)
+        initiators = []
+        if host.iscsi_host_initiators:
+            initiators.extend(x.initiator_id for x in host.iscsi_host_initiators)
+        if host.fc_host_initiators:
+            initiators.extend(x.initiator_id for x in host.fc_host_initiators)
+        return ', '.join(initiators) if initiators else '--'
+
+    def get_host_os_type(self, host_name):
+        host = self.unity_system.get_host(name=host_name)
+        return host.os_type if host.os_type else '--'
+
+    def get_host_assigned_volumes(self, host_name):
+        host = self.unity_system.get_host(name=host_name)
+        # if host.host_luns:
+        #     return ', '.join(x.lun.name for x in host.host_luns)
+        # else:
+        #     return '--'
+        return ', '.join(x.lun.name for x in host.host_luns) if host.host_luns else '--'
+
+    def get_volume_fast_cache_read_hit_ios(self):
+        return 'volume1'

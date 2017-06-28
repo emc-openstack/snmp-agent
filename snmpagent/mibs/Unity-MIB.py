@@ -277,7 +277,7 @@ backendPortWriteBandwidth = MibTableColumn((1, 3, 6, 1, 4, 1, 1139, 103, 2, 31, 
 if mibBuilder.loadTexts: backendPortWriteBandwidth.setStatus('mandatory')
 hostTable = MibTable((1, 3, 6, 1, 4, 1, 1139, 103, 2, 32), ).setMaxAccess("readonly")
 if mibBuilder.loadTexts: hostTable.setStatus('mandatory')
-hostEntry = MibTableRow((1, 3, 6, 1, 4, 1, 1139, 103, 2, 32, 1), ).setMaxAccess("readonly").setIndexNames((0, "Unity-MIB", "hostHBAWWN"))
+hostEntry = MibTableRow((1, 3, 6, 1, 4, 1, 1139, 103, 2, 32, 1), ).setMaxAccess("readonly").setIndexNames((0, "Unity-MIB", "hostName"))
 if mibBuilder.loadTexts: hostEntry.setStatus('mandatory')
 hostName = MibTableColumn((1, 3, 6, 1, 4, 1, 1139, 103, 2, 32, 1, 1), DisplayString()).setMaxAccess("readonly")
 if mibBuilder.loadTexts: hostName.setStatus('mandatory')

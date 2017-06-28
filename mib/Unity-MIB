@@ -1317,7 +1317,7 @@ IMPORTS
 		STATUS mandatory
 		DESCRIPTION
 			"Description."
-		INDEX { hostHBAWWN }
+		INDEX { hostName }
 		::= { hostTable 1 }
 
 	HostEntry ::=
