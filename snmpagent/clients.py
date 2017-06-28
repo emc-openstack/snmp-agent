@@ -59,48 +59,60 @@ class UnityClient(object):
     def get_number_of_enclosure(self):
         pass
 
+    # storageProcessorTable
+    def get_sps(self):
+        return [pool.name for pool in self.unity_system.get_sp()]
+
+    def get_sp_serial_number(self, name):
+        sp = self.unity_system.get_sp(name=name)
+        return sp.emc_serial_number
+
+    def get_sp_health_state(self, name):
+        sp = self.unity_system.get_sp(name=name)
+        return sp.health.value.name
+
     # poolTable
     def get_pools(self):
         return [pool.name for pool in self.unity_system.get_pool()]
 
-    # def get_pool_disk_types(self, pool_name):
-    #     pool = self.unity_system.get_pool(name=pool_name)
+    # def get_pool_disk_types(self, name):
+    #     pool = self.unity_system.get_pool(name=name)
     #     return
 
-    def get_pool_raid_levels(self, pool_name):
-        pool = self.unity_system.get_pool(name=pool_name)
+    def get_pool_raid_levels(self, name):
+        pool = self.unity_system.get_pool(name=name)
         return pool.raid_type.name
 
-    def get_pool_fast_cache_status(self, pool_name):
-        pool = self.unity_system.get_pool(name=pool_name)
+    def get_pool_fast_cache_status(self, name):
+        pool = self.unity_system.get_pool(name=name)
         return str(pool.is_fast_cache_enabled)
 
-    # def get_pool_number_of_disk(self, pool_name):
-    #     pool = self.unity_system.get_pool(name=pool_name)
+    # def get_pool_number_of_disk(self, name):
+    #     pool = self.unity_system.get_pool(name=name)
     #     return
 
-    def get_pool_size_total(self, pool_name):
-        pool = self.unity_system.get_pool(name=pool_name)
+    def get_pool_size_total(self, name):
+        pool = self.unity_system.get_pool(name=name)
         return str(pool.size_total)
 
-    def get_pool_size_free(self, pool_name):
-        pool = self.unity_system.get_pool(name=pool_name)
+    def get_pool_size_free(self, name):
+        pool = self.unity_system.get_pool(name=name)
         return str(pool.size_free)
 
-    def get_pool_size_used(self, pool_name):
-        pool = self.unity_system.get_pool(name=pool_name)
+    def get_pool_size_used(self, name):
+        pool = self.unity_system.get_pool(name=name)
         return str(pool.size_used)
 
-    # def get_pool_size_ultilization(self, pool_name):
-    #     pool = self.unity_system.get_pool(name=pool_name)
+    # def get_pool_size_ultilization(self, name):
+    #     pool = self.unity_system.get_pool(name=name)
     #     return
 
     # hostTable
     def get_hosts(self):
         return [host.name for host in self.unity_system.get_host()]
 
-    def get_host_network_address(self, host_name):
-        host = self.unity_system.get_host(name=host_name)
+    def get_host_network_address(self, name):
+        host = self.unity_system.get_host(name=name)
         # if hasattr(host, 'ip_list'):
         #     return ', '.join(host.ip_list)
         # else:
@@ -108,8 +120,8 @@ class UnityClient(object):
         #     return '--'
         return ', '.join(host.ip_list) if host.ip_list else '--'
 
-    def get_host_initiators(self, host_name):
-        host = self.unity_system.get_host(name=host_name)
+    def get_host_initiators(self, name):
+        host = self.unity_system.get_host(name=name)
         initiators = []
         if host.iscsi_host_initiators:
             initiators.extend(x.initiator_id for x in host.iscsi_host_initiators)
@@ -117,12 +129,12 @@ class UnityClient(object):
             initiators.extend(x.initiator_id for x in host.fc_host_initiators)
         return ', '.join(initiators) if initiators else '--'
 
-    def get_host_os_type(self, host_name):
-        host = self.unity_system.get_host(name=host_name)
+    def get_host_os_type(self, name):
+        host = self.unity_system.get_host(name=name)
         return host.os_type if host.os_type else '--'
 
-    def get_host_assigned_volumes(self, host_name):
-        host = self.unity_system.get_host(name=host_name)
+    def get_host_assigned_volumes(self, name):
+        host = self.unity_system.get_host(name=name)
         # if host.host_luns:
         #     return ', '.join(x.lun.name for x in host.host_luns)
         # else:
