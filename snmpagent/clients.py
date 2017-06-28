@@ -24,6 +24,7 @@ class UnityClient(object):
     def get_unity_client(cls, name, *args):
         return cls.manager.get_unity_client(name, *args)
 
+    # system
     def get_agent_version(self):
         return "1.0"
 
@@ -57,6 +58,42 @@ class UnityClient(object):
 
     def get_number_of_enclosure(self):
         pass
+
+    # poolTable
+    def get_pools(self):
+        return [pool.name for pool in self.unity_system.get_pool()]
+
+    # def get_pool_disk_types(self, pool_name):
+    #     pool = self.unity_system.get_pool(name=pool_name)
+    #     return
+
+    def get_pool_raid_levels(self, pool_name):
+        pool = self.unity_system.get_pool(name=pool_name)
+        return pool.raid_type.name
+
+    def get_pool_fast_cache_status(self, pool_name):
+        pool = self.unity_system.get_pool(name=pool_name)
+        return str(pool.is_fast_cache_enabled)
+
+    # def get_pool_number_of_disk(self, pool_name):
+    #     pool = self.unity_system.get_pool(name=pool_name)
+    #     return
+
+    def get_pool_size_total(self, pool_name):
+        pool = self.unity_system.get_pool(name=pool_name)
+        return str(pool.size_total)
+
+    def get_pool_size_free(self, pool_name):
+        pool = self.unity_system.get_pool(name=pool_name)
+        return str(pool.size_free)
+
+    def get_pool_size_used(self, pool_name):
+        pool = self.unity_system.get_pool(name=pool_name)
+        return str(pool.size_used)
+
+    # def get_pool_size_ultilization(self, pool_name):
+    #     pool = self.unity_system.get_pool(name=pool_name)
+    #     return
 
     # hostTable
     def get_hosts(self):
