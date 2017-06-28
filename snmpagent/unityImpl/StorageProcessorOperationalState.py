@@ -1,6 +1,6 @@
 class StorageProcessorOperationalState(object):
     def read_get(self, name, idx_name, unity_client):
-        return unity_client.get_sp_health_state(idx_name)
+        return unity_client.get_sp_health_status(idx_name)
 
 
 class StorageProcessorOperationalStateColumn(object):

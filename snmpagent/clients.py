@@ -67,7 +67,7 @@ class UnityClient(object):
         sp = self.unity_system.get_sp(name=name)
         return sp.emc_serial_number
 
-    def get_sp_health_state(self, name):
+    def get_sp_health_status(self, name):
         sp = self.unity_system.get_sp(name=name)
         return sp.health.value.name
 
@@ -107,18 +107,51 @@ class UnityClient(object):
     #     pool = self.unity_system.get_pool(name=name)
     #     return
 
+    # diskTable
+    def get_disks(self):
+        return [disk.name for disk in self.unity_system.get_disk()]
+
+    def get_disk_model(self, name):
+        disk = self.unity_system.get_disk(name=name)
+        return disk.model
+
+    def get_disk_serial_number(self, name):
+        disk = self.unity_system.get_disk(name=name)
+        return disk.emc_serial_number
+
+    def get_disk_version(self, name):
+        disk = self.unity_system.get_disk(name=name)
+        return disk.version
+
+    def get_disk_type(self, name):
+        disk = self.unity_system.get_disk(name=name)
+        if disk.disk_technology:
+            return disk.disk_technology.name
+        else:
+            return
+
+    def get_disk_health_status(self, name):
+        disk = self.unity_system.get_disk(name=name)
+        return disk.health.value.name
+
+    def get_disk_raw_size(self, name):
+        disk = self.unity_system.get_disk(name=name)
+        return str(disk.raw_size)
+
+    def get_disk_current_pool(self, name):
+        disk = self.unity_system.get_disk(name=name)
+        if disk.pool:
+            return disk.pool.name
+        else:
+            return
+
     # hostTable
     def get_hosts(self):
         return [host.name for host in self.unity_system.get_host()]
 
     def get_host_network_address(self, name):
         host = self.unity_system.get_host(name=name)
-        # if hasattr(host, 'ip_list'):
-        #     return ', '.join(host.ip_list)
-        # else:
-        #     # TODO: 0x is returned, why?
-        #     return '--'
-        return ', '.join(host.ip_list) if host.ip_list else '--'
+        return ', '.join(host.ip_list)
 
     def get_host_initiators(self, name):
         host = self.unity_system.get_host(name=name)
@@ -127,19 +160,15 @@ class UnityClient(object):
             initiators.extend(x.initiator_id for x in host.iscsi_host_initiators)
         if host.fc_host_initiators:
             initiators.extend(x.initiator_id for x in host.fc_host_initiators)
-        return ', '.join(initiators) if initiators else '--'
+        return ', '.join(initiators)
 
     def get_host_os_type(self, name):
         host = self.unity_system.get_host(name=name)
-        return host.os_type if host.os_type else '--'
+        return host.os_type
 
     def get_host_assigned_volumes(self, name):
         host = self.unity_system.get_host(name=name)
-        # if host.host_luns:
-        #     return ', '.join(x.lun.name for x in host.host_luns)
-        # else:
-        #     return '--'
-        return ', '.join(x.lun.name for x in host.host_luns) if host.host_luns else '--'
-
-    def get_volume_fast_cache_read_hit_ios(self):
-        return 'volume1'
+        if host.host_luns:
+            return ', '.join(x.lun.name for x in host.host_luns)
+        else:
+            return
