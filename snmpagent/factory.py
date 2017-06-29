@@ -19,8 +19,10 @@ class ScalarInstanceFactory(object):
 
                 idx_name = ''.join([chr(x) for x in self.instId[1:]])
                 print(idx_name)
+                # print(self.instId)
                 return name, self.getSyntax().clone(
                     self.impl_class().read_get(name, idx_name, unity_client)
+                    # self.impl_class().read_get(name, self.instId[0], unity_client)
                 )
 
             except:
@@ -28,7 +30,7 @@ class ScalarInstanceFactory(object):
                 # return name, self.getSyntax().clone(
                 #     # "exception"
                 # )
-                pass
+                raise
 
         newclass = type(name + "ScalarInstance", (base_class,),
                         {"__init__": __init__,
@@ -60,6 +62,11 @@ class TableColumnInstanceFactory(object):
                     # TODO: destory subtree first?
                     self.createTest(name + row_instance_id, val, idx, acInfo)
                     self.createCommit(name + row_instance_id, val, idx, acInfo)
+                # TODO: use 1, 2, 3, ... as idx
+                # for row_id, row in enumerate(row_list, 1):
+                #     val = self.entry.getInstIdFromIndices(row)
+                #     self.createTest(name + (row_id,), val, idx, acInfo)
+                #     self.createCommit(name + (row_id,), val, idx, acInfo)
             next_node = self.getNextNode(name, idx)
             return next_node.readGet(next_node.name, val, idx, acInfo)
 

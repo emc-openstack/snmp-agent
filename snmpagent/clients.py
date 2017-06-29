@@ -107,6 +107,65 @@ class UnityClient(object):
     #     pool = self.unity_system.get_pool(name=name)
     #     return
 
+    # volumeTable
+    def get_luns(self):
+        # self.luns = self.unity_system.get_lun()
+        # return [lun.id for lun in self.luns]
+        return [lun.id for lun in self.unity_system.get_lun()]
+
+    # def get_lun_id(self, idx):
+        # luns = self.unity_system.get_lun()
+        # luns = self.luns
+        # return luns[idx-1].id
+
+    def get_lun_name(self, id):
+        # luns = self.unity_system.get_lun()
+        # luns = self.luns
+        # return luns[idx-1].name
+        lun = self.unity_system.get_lun(_id=id)
+        return lun.name
+
+    def get_lun_raid_type(self, id):
+        # luns = self.unity_system.get_lun()
+        # luns = self.luns
+        # return luns[idx-1].pool.raid_type.name
+        lun = self.unity_system.get_lun(_id=id)
+        if lun.pool:
+            return lun.pool.raid_type.name
+        else:
+            return
+
+    def get_lun_size_allocated(self, id):
+        lun = self.unity_system.get_lun(_id=id)
+        return str(lun.size_allocated)
+
+    def get_lun_size_total(self, id):
+        lun = self.unity_system.get_lun(_id=id)
+        return str(lun.size_total)
+
+    def get_lun_health_status(self, id):
+        lun = self.unity_system.get_lun(_id=id)
+        return lun.health.value.name
+
+    def get_lun_fast_cache_status(self, id):
+        lun = self.unity_system.get_lun(_id=id)
+        return str(lun.pool.is_fast_cache_enabled)
+
+    def get_lun_default_sp(self, id):
+        lun = self.unity_system.get_lun(_id=id)
+        return lun.default_node.name
+
+    def get_lun_current_sp(self, id):
+        lun = self.unity_system.get_lun(_id=id)
+        return lun.current_node.name
+
+    def get_lun_host_access(self, id):
+        lun = self.unity_system.get_lun(_id=id)
+        if lun.host_access:
+            return ', '.join(x.host.name for x in lun.host_access)
+        else:
+            return
+
     # diskTable
     def get_disks(self):
         return [disk.name for disk in self.unity_system.get_disk()]
