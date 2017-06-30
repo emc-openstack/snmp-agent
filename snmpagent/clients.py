@@ -19,6 +19,7 @@ class UnityClient(object):
 
     def __init__(self, host=None, username=None, password=None, port=443):
         self.unity_system = UnitySystem(host=host, username=username, password=password, port=port)
+        self.unity_system.enable_perf_stats()
 
     @classmethod
     def get_unity_client(cls, name, *args):
@@ -70,6 +71,26 @@ class UnityClient(object):
     def get_sp_health_status(self, name):
         sp = self.unity_system.get_sp(name=name)
         return sp.health.value.name
+
+    def get_sp_utilization(self, name):
+        sp = self.unity_system.get_sp(name=name)
+        return str(sp.utilization)
+
+    def get_sp_block_read_iops(self, name):
+        sp = self.unity_system.get_sp(name=name)
+        return str(sp.block_read_iops)
+
+    def get_sp_block_write_iops(self, name):
+        sp = self.unity_system.get_sp(name=name)
+        return str(sp.block_write_iops)
+
+    def get_sp_block_cache_read_hit_ratio(self, name):
+        sp = self.unity_system.get_sp(name=name)
+        return str(sp.block_cache_read_hit_ratio)
+
+    def get_sp_block_cache_write_hit_ratio(self, name):
+        sp = self.unity_system.get_sp(name=name)
+        return str(sp.block_cache_write_hit_ratio)
 
     # poolTable
     def get_pools(self):
@@ -159,6 +180,18 @@ class UnityClient(object):
         lun = self.unity_system.get_lun(_id=id)
         return lun.current_node.name
 
+    def get_lun_read_iops(self, id):
+        lun = self.unity_system.get_lun(_id=id)
+        return str(lun.read_iops)
+
+    def get_lun_write_iops(self, id):
+        lun = self.unity_system.get_lun(_id=id)
+        return str(lun.write_iops)
+
+    def get_lun_utilization(self, id):
+        lun = self.unity_system.get_lun(_id=id)
+        return str(lun.utilization)
+
     def get_lun_host_access(self, id):
         lun = self.unity_system.get_lun(_id=id)
         if lun.host_access:
@@ -203,6 +236,18 @@ class UnityClient(object):
             return disk.pool.name
         else:
             return
+
+    def get_disk_read_iops(self, name):
+        disk = self.unity_system.get_disk(name=name)
+        return str(disk.read_iops)
+
+    def get_disk_write_iops(self, name):
+        disk = self.unity_system.get_disk(name=name)
+        return str(disk.write_iops)
+
+    def get_disk_utilization(self, name):
+        disk = self.unity_system.get_disk(name=name)
+        return str(disk.utilization)
 
     # hostTable
     def get_hosts(self):
