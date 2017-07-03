@@ -331,3 +331,25 @@ class UnityClient(object):
         return fan.health.value.name
 
     # BBUTable
+    def get_bbus(self):
+        return [bbu.name for bbu in self.unity_system.get_battery()]
+
+    def get_bbu_manufacturer(self, name):
+        bbu = self.unity_system.get_battery(name=name)
+        return bbu.manufacturer
+
+    def get_bbu_model(self, name):
+        bbu = self.unity_system.get_battery(name=name)
+        return bbu.model
+
+    def get_bbu_firmware_version(self, name):
+        bbu = self.unity_system.get_battery(name=name)
+        return bbu.firmware_version
+
+    def get_bbu_parent_sp(self, name):
+        bbu = self.unity_system.get_battery(name=name)
+        return bbu.parent_storage_processor.name
+
+    def get_bbu_health_status(self, name):
+        bbu = self.unity_system.get_battery(name=name)
+        return bbu.health.value.name
