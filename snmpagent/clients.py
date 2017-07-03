@@ -48,11 +48,12 @@ class UnityClient(object):
         pass
 
     def get_current_power(self):
-        # TODO: failed to snmpget currentPower
-        return self.unity_system.current_power
+        self.unity_system.update()
+        return str(self.unity_system.current_power)
 
-    def get_average_power(self):
-        return self.unity_system.average_power
+    def get_avg_power(self):
+        self.unity_system.update()
+        return str(self.unity_system.avg_power)
 
     def get_number_of_sp(self):
         return len(self.unity_system.get_sp())
@@ -61,13 +62,19 @@ class UnityClient(object):
         pass
 
     def get_number_of_power_supply(self):
-        pass
+        return len(self.unity_system.get_power_supply())
 
     def get_number_of_fan(self):
-        pass
+        return len(self.unity_system.get_fan())
 
     def get_number_of_disk(self):
         return len(self.unity_system.get_disk())
+
+    def get_number_of_frontend_port(self):
+        pass
+
+    def get_number_of_backend_port(self):
+        return len(self.unity_system.get_sas_port())
 
     # storageProcessorTable
     def get_sps(self):
@@ -105,9 +112,12 @@ class UnityClient(object):
     def get_pools(self):
         return [pool.name for pool in self.unity_system.get_pool()]
 
-    # def get_pool_disk_types(self, name):
-    #     pool = self.unity_system.get_pool(name=name)
-    #     return
+    def get_pool_disk_types(self, name):
+        pool = self.unity_system.get_pool(name=name)
+        if pool.tiers:
+            return ', '.join(x.name for x in pool.tiers)
+        else:
+            return
 
     def get_pool_raid_levels(self, name):
         pool = self.unity_system.get_pool(name=name)
@@ -117,9 +127,12 @@ class UnityClient(object):
         pool = self.unity_system.get_pool(name=name)
         return str(pool.is_fast_cache_enabled)
 
-    # def get_pool_number_of_disk(self, name):
-    #     pool = self.unity_system.get_pool(name=name)
-    #     return
+    def get_pool_number_of_disk(self, name):
+        pool = self.unity_system.get_pool(name=name)
+        if pool.tiers:
+            return sum(x.disk_count for x in pool.tiers)
+        else:
+            return
 
     def get_pool_size_total(self, name):
         pool = self.unity_system.get_pool(name=name)
@@ -230,6 +243,10 @@ class UnityClient(object):
             return disk.disk_technology.name
         else:
             return
+
+    def get_disk_slot_number(self, name):
+        disk = self.unity_system.get_disk(name=name)
+        return str(disk.slot_number)
 
     def get_disk_health_status(self, name):
         disk = self.unity_system.get_disk(name=name)
