@@ -156,7 +156,7 @@ class UnityClient(object):
         # return [lun.id for lun in self.luns]
         return [lun.id for lun in self.unity_system.get_lun()]
 
-    # def get_lun_id(self, idx):
+        # def get_lun_id(self, idx):
         # luns = self.unity_system.get_lun()
         # luns = self.luns
         # return luns[idx-1].id
@@ -302,3 +302,32 @@ class UnityClient(object):
             return ', '.join(x.lun.name for x in host.host_luns)
         else:
             return
+
+    # enclosureTable
+
+
+    # powerSupplyTable
+
+
+    # fanTable
+    def get_fans(self):
+        return [fan.name for fan in self.unity_system.get_fan()]
+
+    def get_fan_slot_number(self, name):
+        fan = self.unity_system.get_fan(name=name)
+        return str(fan.slot_number)
+
+    def get_fan_parent_enclosure(self, name):
+        fan = self.unity_system.get_fan(name=name)
+        if fan.parent['id'] == 'dpe':
+            return fan.parent_dpe.name
+        elif fan.parent['id'] == 'dae':
+            return fan.parent_dae.name
+        else:
+            return
+
+    def get_fan_health_status(self, name):
+        fan = self.unity_system.get_fan(name=name)
+        return fan.health.value.name
+
+    # BBUTable
