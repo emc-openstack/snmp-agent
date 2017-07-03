@@ -307,7 +307,37 @@ class UnityClient(object):
 
 
     # powerSupplyTable
+    def get_power_supplies(self):
+        return [power_supply.name for power_supply in self.unity_system.get_power_supply()]
 
+    def get_power_supply_manufacturer(self, name):
+        power_supply = self.unity_system.get_power_supply(name=name)
+        return power_supply.manufacturer
+
+    def get_power_supply_model(self, name):
+        power_supply = self.unity_system.get_power_supply(name=name)
+        return power_supply.model
+
+    def get_power_supply_firmware_version(self, name):
+        power_supply = self.unity_system.get_power_supply(name=name)
+        return power_supply.firmware_version
+
+    def get_power_supply_parent_enclosure(self, name):
+        power_supply = self.unity_system.get_power_supply(name=name)
+        parents = []
+        if power_supply.parent_dpe:
+            parents.append(power_supply.parent_dpe)
+        if power_supply.parent_dae:
+            parents.append(power_supply.parent_dae)
+        return ', '.join(x.name for x in parents)
+
+    def get_power_supply_sp(self, name):
+        power_supply = self.unity_system.get_power_supply(name=name)
+        return power_supply.storage_processor.name
+
+    def get_power_supply_health_status(self, name):
+        power_supply = self.unity_system.get_power_supply(name=name)
+        return power_supply.health.value.name
 
     # fanTable
     def get_fans(self):
@@ -319,12 +349,12 @@ class UnityClient(object):
 
     def get_fan_parent_enclosure(self, name):
         fan = self.unity_system.get_fan(name=name)
-        if fan.parent['id'] == 'dpe':
-            return fan.parent_dpe.name
-        elif fan.parent['id'] == 'dae':
-            return fan.parent_dae.name
-        else:
-            return
+        parents = []
+        if fan.parent_dpe:
+            parents.append(fan.parent_dpe)
+        if fan.parent_dae:
+            parents.append(fan.parent_dae)
+        return ', '.join(x.name for x in parents)
 
     def get_fan_health_status(self, name):
         fan = self.unity_system.get_fan(name=name)
