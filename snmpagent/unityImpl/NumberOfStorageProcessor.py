@@ -1,3 +1,3 @@
 class NumberOfStorageProcessor(object):
     def read_get(self, name, idx, unity_client):
-        return unity_client.get_number_of_storage_processor()
+        return unity_client.get_number_of_sp()

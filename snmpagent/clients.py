@@ -54,11 +54,20 @@ class UnityClient(object):
     def get_average_power(self):
         return self.unity_system.average_power
 
-    def get_number_of_storage_processor(self):
+    def get_number_of_sp(self):
         return len(self.unity_system.get_sp())
 
     def get_number_of_enclosure(self):
         pass
+
+    def get_number_of_power_supply(self):
+        pass
+
+    def get_number_of_fan(self):
+        pass
+
+    def get_number_of_disk(self):
+        return len(self.unity_system.get_disk())
 
     # storageProcessorTable
     def get_sps(self):
