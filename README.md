@@ -21,7 +21,7 @@ Currently, Unity is the first product supported by this agent. Here are the expe
 
   Print out the help manual of a specific *CMD*.
 
-* snmpagent __start__ [--configure-file *\<snmpagent.conf\>*]
+* snmpagent __start__ [--configure-file *snmpagent.conf*]
 
   Start a SNMP agent with the configuration file *snmpagent.conf* once the configure file is specified. 
 Otherwise, the agent will use the default configuration file under the agent installation directory. If the agent is running, it will return an error message in both console and log file.
