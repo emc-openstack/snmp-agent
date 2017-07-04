@@ -21,10 +21,18 @@ Currently, Unity is the first product supported by this agent. Here are the expe
 
   Print out the help manual of a specific *CMD*.
 
-* snmpagent __daemon__ [--configure-file *\<snmpagent.conf\>*]
+* snmpagent __start__ [--configure-file *\<snmpagent.conf\>*]
 
   Start a SNMP agent with the configuration file *snmpagent.conf* once the configure file is specified. 
-Otherwise, the agent will use the default configuration file under the agent installation directory.
+Otherwise, the agent will use the default configuration file under the agent installation directory. If the agent is running, it will return an error message in both console and log file.
+
+* snmpagent __restart__
+
+  Restart a SNMP agent. It will return an error message in both console and log file if the agent is not running.
+  
+* snmpagent __stop__
+
+  Stop a SNMP agent. It will return an error message in both console and log file if the agent is not running.
 
 * snmpagent __addUser__ --version *v3* --name *user_name* --auth *auth_protocol* --authPass *auth_password* [--priv *privacy_protocol*] [--privPass *priv_password*]
 
