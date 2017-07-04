@@ -79,8 +79,8 @@ Otherwise, the agent will use the default configuration file under the agent ins
     
 * snmpagent __encrypt__  --configure-file *\<path of snmpagent.conf\>*
 
-  Create a new configuration file, but the password login to the storage is encrypted if it is pain text.
+  Create a new configuration file in the same direcotry of unencrypted configuration file, but the password login to the storage is encrypted if it is pain text.
   
 * snmpagent __decrypt__  --configure-file *\<path of snmpagent.conf\>*
 
-  Create a new configuration file, but the password login to the storage is decrypted if it is encrypted.
+  Create a new configuration file in the same directory of the encrypted configuration file, but the password login to the storage is decrypted if it is encrypted.
