@@ -44,6 +44,7 @@ Otherwise, the agent will use the default configuration file under the agent ins
    
    Privacy Protocol supported by this agent are:
    * DES
+   * AES
 
 * snmpagent __updateUser__ --version *v3* --name *user_name* --auth *auth_protocol* --authPass *auth_password* [--new_auth_password *new_auth_password*] [--priv *new_priv_protocol*] [--privPass *new_priv_password*]
 
