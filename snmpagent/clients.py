@@ -59,7 +59,7 @@ class UnityClient(object):
         return len(self.unity_system.get_sp())
 
     def get_number_of_enclosure(self):
-        pass
+        return len(self.unity_system.get_dpe() + self.unity_system.get_dae())
 
     def get_number_of_power_supply(self):
         return len(self.unity_system.get_power_supply())
@@ -347,7 +347,62 @@ class UnityClient(object):
             return
 
     # enclosureTable
+    def get_enclosures(self):
+        daes = ['dae_' + dae.name for dae in self.unity_system.get_dae()]
+        dpes = ['dpe_' + dpe.name for dpe in self.unity_system.get_dpe()]
+        return daes + dpes
 
+    def _get_enclosure(self, name):
+        if name.startswith('dae_'):
+            name = name.lstrip('dae_')
+            return self.unity_system.get_dae(name=name)
+        if name.startswith('dpe_'):
+            name = name.lstrip('dpe_')
+            return self.unity_system.get_dpe(name=name)
+
+    def get_enclosure_name(self, name):
+        enclosure = self._get_enclosure(name)
+        return enclosure.name
+
+    def get_enclosure_model(self, name):
+        enclosure = self._get_enclosure(name)
+        return enclosure.model
+
+    def get_enclosure_serial_number(self, name):
+        enclosure = self._get_enclosure(name)
+        return enclosure.emc_serial_number
+
+    def get_enclosure_part_number(self, name):
+        enclosure = self._get_enclosure(name)
+        return enclosure.emc_part_number
+
+    def get_enclosure_health_status(self, name):
+        enclosure = self._get_enclosure(name)
+        return enclosure.health.value.name
+
+    def get_enclosure_current_power(self, name):
+        enclosure = self._get_enclosure(name)
+        return str(enclosure.current_power)
+
+    def get_enclosure_avg_power(self, name):
+        enclosure = self._get_enclosure(name)
+        return str(enclosure.avg_power)
+
+    def get_enclosure_max_power(self, name):
+        enclosure = self._get_enclosure(name)
+        return str(enclosure.max_power)
+
+    def get_enclosure_current_temperature(self, name):
+        enclosure = self._get_enclosure(name)
+        return str(enclosure.current_temperature)
+
+    def get_enclosure_avg_temperature(self, name):
+        enclosure = self._get_enclosure(name)
+        return str(enclosure.avg_temperature)
+
+    def get_enclosure_max_temperature(self, name):
+        enclosure = self._get_enclosure(name)
+        return str(enclosure.max_temperature)
 
     # powerSupplyTable
     def get_power_supplies(self):
