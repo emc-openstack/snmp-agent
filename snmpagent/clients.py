@@ -275,6 +275,49 @@ class UnityClient(object):
         disk = self.unity_system.get_disk(name=name)
         return str(disk.utilization)
 
+    # frontendPortTable
+
+    # backendPortTable
+    def get_backend_ports(self):
+        return [port.id for port in self.unity_system.get_sas_port()]
+
+    def get_backend_port_name(self, id):
+        port = self.unity_system.get_sas_port(_id=id)
+        return port.name
+
+    def get_backend_port_type(self, id):
+        port = self.unity_system.get_sas_port(_id=id)
+        return port.connector_type.name
+
+    def get_backend_port_port_number(self, id):
+        port = self.unity_system.get_sas_port(_id=id)
+        return str(port.port)
+
+    def get_backend_port_current_speed(self, id):
+        port = self.unity_system.get_sas_port(_id=id)
+        if port.current_speed:
+            return port.current_speed.name
+        else:
+            return
+
+    def get_backend_port_parent_io_module(self, id):
+        port = self.unity_system.get_sas_port(_id=id)
+        if port.parent_io_module:
+            return port.parent_io_module.name
+        else:
+            return
+
+    def get_backend_port_parent_sp(self, id):
+        port = self.unity_system.get_sas_port(_id=id)
+        if port.parent_storage_processor:
+            return port.parent_storage_processor.name
+        else:
+            return
+
+    def get_backend_port_health_status(self, id):
+        port = self.unity_system.get_sas_port(_id=id)
+        return port.health.value.name
+
     # hostTable
     def get_hosts(self):
         return [host.name for host in self.unity_system.get_host()]
