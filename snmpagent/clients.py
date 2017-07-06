@@ -130,6 +130,7 @@ class UnityClient(object):
     def get_pool_number_of_disk(self, name):
         pool = self.unity_system.get_pool(name=name)
         if pool.tiers:
+            # return str(sum(x.disk_count for x in pool.tiers))
             return sum(x.disk_count for x in pool.tiers)
         else:
             return
@@ -146,9 +147,9 @@ class UnityClient(object):
         pool = self.unity_system.get_pool(name=name)
         return str(pool.size_used)
 
-    # def get_pool_size_ultilization(self, name):
-    #     pool = self.unity_system.get_pool(name=name)
-    #     return
+    def get_pool_size_ultilization(self, name):
+        pool = self.unity_system.get_pool(name=name)
+        return str(pool.size_used / pool.size_total)
 
     # volumeTable
     def get_luns(self):

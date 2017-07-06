@@ -111,7 +111,7 @@ poolRaidLevels = MibTableColumn((1, 3, 6, 1, 4, 1, 1139, 103, 2, 27, 1, 3), Disp
 if mibBuilder.loadTexts: poolRaidLevels.setStatus('mandatory')
 poolFastCacheStatus = MibTableColumn((1, 3, 6, 1, 4, 1, 1139, 103, 2, 27, 1, 4), DisplayString()).setMaxAccess("readonly")
 if mibBuilder.loadTexts: poolFastCacheStatus.setStatus('mandatory')
-poolNumberOfPhysicalDisk = MibTableColumn((1, 3, 6, 1, 4, 1, 1139, 103, 2, 27, 1, 5), Integer32()).setMaxAccess("readonly")
+poolNumberOfPhysicalDisk = MibTableColumn((1, 3, 6, 1, 4, 1, 1139, 103, 2, 27, 1, 5), DisplayString()).setMaxAccess("readonly")
 if mibBuilder.loadTexts: poolNumberOfPhysicalDisk.setStatus('mandatory')
 poolTotalCapacity = MibTableColumn((1, 3, 6, 1, 4, 1, 1139, 103, 2, 27, 1, 6), DisplayString()).setMaxAccess("readonly")
 if mibBuilder.loadTexts: poolTotalCapacity.setStatus('mandatory')
