@@ -1006,7 +1006,7 @@ IMPORTS
 
 	FrontendPortEntry ::=
 		SEQUENCE {
-			frontendPortId              Integer32,
+			frontendPortId              DisplayString,
 			frontendPortName            DisplayString,
 			frontendPortAddress         DisplayString,
 			frontendPortType            DisplayString,
@@ -1023,7 +1023,7 @@ IMPORTS
 
 	-- 1.3.6.1.4.1.1139.103.2.30.1.1
 	frontendPortId OBJECT-TYPE
-		SYNTAX Integer32
+		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION

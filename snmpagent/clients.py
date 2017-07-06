@@ -59,7 +59,7 @@ class UnityClient(object):
         return len(self.unity_system.get_sp())
 
     def get_number_of_enclosure(self):
-        return len(self.unity_system.get_dpe() + self.unity_system.get_dae())
+        return len(self.get_enclosures())
 
     def get_number_of_power_supply(self):
         return len(self.unity_system.get_power_supply())
@@ -71,7 +71,7 @@ class UnityClient(object):
         return len(self.unity_system.get_disk())
 
     def get_number_of_frontend_port(self):
-        pass
+        return len(self.get_frontend_ports())
 
     def get_number_of_backend_port(self):
         return len(self.unity_system.get_sas_port())
@@ -276,6 +276,50 @@ class UnityClient(object):
         return str(disk.utilization)
 
     # frontendPortTable
+    def get_frontend_ports(self):
+        fc_ports = ['fc_port_' + port.id for port in self.unity_system.get_fc_port()]
+        eth_ports = ['eth_port_' + port.id for port in self.unity_system.get_ethernet_port()]
+        return fc_ports + eth_ports
+
+    def _get_frontend_port(self, id):
+        if id.startswith('fc_port_'):
+            id = id.lstrip('fc_port_')
+            return self.unity_system.get_fc_port(_id=id)
+        if id.startswith('eth_port_'):
+            id = id.lstrip('eth_port_')
+            return self.unity_system.get_ethernet_port(_id=id)
+
+    def get_frontend_port_id(self, id):
+        port = self._get_frontend_port(id)
+        return port.id
+
+    def get_frontend_port_name(self, id):
+        port = self._get_frontend_port(id)
+        return port.name
+
+    def get_frontend_port_address(self, id):
+        port = self._get_frontend_port(id)
+        if hasattr(port, 'mac_address'):
+            return port.mac_address
+
+    def get_frontend_port_type(self, id):
+        port = self._get_frontend_port(id)
+        return port.connector_type.name
+
+    def get_frontend_port_current_speed(self, id):
+        port = self._get_frontend_port(id)
+        if hasattr(port, 'speed'):
+            if port.speed:
+                return port.speed.name
+
+    def get_frontend_port_supported_speed(self, id):
+        port = self._get_frontend_port(id)
+        if hasattr(port, 'supported_speeds'):
+            return ', '.join(x.name for x in port.supported_speeds)
+
+    def get_frontend_port_health_status(self, id):
+        port = self._get_frontend_port(id)
+        return port.health.value.name
 
     # backendPortTable
     def get_backend_ports(self):

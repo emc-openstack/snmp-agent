@@ -217,7 +217,7 @@ frontendPortTable = MibTable((1, 3, 6, 1, 4, 1, 1139, 103, 2, 30), ).setMaxAcces
 if mibBuilder.loadTexts: frontendPortTable.setStatus('mandatory')
 frontendPortEntry = MibTableRow((1, 3, 6, 1, 4, 1, 1139, 103, 2, 30, 1), ).setMaxAccess("readonly").setIndexNames((0, "Unity-MIB", "frontendPortId"))
 if mibBuilder.loadTexts: frontendPortEntry.setStatus('mandatory')
-frontendPortId = MibTableColumn((1, 3, 6, 1, 4, 1, 1139, 103, 2, 30, 1, 1), Integer32()).setMaxAccess("readonly")
+frontendPortId = MibTableColumn((1, 3, 6, 1, 4, 1, 1139, 103, 2, 30, 1, 1), DisplayString()).setMaxAccess("readonly")
 if mibBuilder.loadTexts: frontendPortId.setStatus('mandatory')
 frontendPortName = MibTableColumn((1, 3, 6, 1, 4, 1, 1139, 103, 2, 30, 1, 2), DisplayString()).setMaxAccess("readonly")
 if mibBuilder.loadTexts: frontendPortName.setStatus('mandatory')
