@@ -44,6 +44,9 @@ class UnityClient(object):
     def get_operation_environment_version(self):
         return self.unity_system.system_version
 
+    def get_mgmt_ip(self):
+        return ', '.join(x.ip_address for x in self.unity_system.get_mgmt_interface())
+
     def get_management_ip(self):
         pass
 
@@ -75,6 +78,15 @@ class UnityClient(object):
 
     def get_number_of_backend_port(self):
         return len(self.unity_system.get_sas_port())
+
+    def get_total_capacity(self):
+        return str(sum(x.size_total for x in self.unity_system.get_system_capacity()))
+
+    def get_used_capacity(self):
+        return str(sum(x.size_used for x in self.unity_system.get_system_capacity()))
+
+    def get_free_capacity(self):
+        return str(sum(x.size_free for x in self.unity_system.get_system_capacity()))
 
     # storageProcessorTable
     def get_sps(self):
