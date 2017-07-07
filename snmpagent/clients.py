@@ -47,9 +47,6 @@ class UnityClient(object):
     def get_mgmt_ip(self):
         return ', '.join(x.ip_address for x in self.unity_system.get_mgmt_interface())
 
-    def get_management_ip(self):
-        pass
-
     def get_current_power(self):
         self.unity_system.update()
         return str(self.unity_system.current_power)
@@ -59,25 +56,25 @@ class UnityClient(object):
         return str(self.unity_system.avg_power)
 
     def get_number_of_sp(self):
-        return len(self.unity_system.get_sp())
+        return len(self.get_sps())
 
     def get_number_of_enclosure(self):
         return len(self.get_enclosures())
 
     def get_number_of_power_supply(self):
-        return len(self.unity_system.get_power_supply())
+        return len(self.get_power_supplies())
 
     def get_number_of_fan(self):
-        return len(self.unity_system.get_fan())
+        return len(self.get_fans())
 
     def get_number_of_disk(self):
-        return len(self.unity_system.get_disk())
+        return len(self.get_disks())
 
     def get_number_of_frontend_port(self):
         return len(self.get_frontend_ports())
 
     def get_number_of_backend_port(self):
-        return len(self.unity_system.get_sas_port())
+        return len(self.get_backend_ports())
 
     def get_total_capacity(self):
         return str(sum(x.size_total for x in self.unity_system.get_system_capacity()))
