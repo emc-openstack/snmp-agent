@@ -101,6 +101,10 @@ class UnityClient(object):
         sp = self.unity_system.get_sp(name=name)
         return str(sp.utilization)
 
+    def get_sp_block_total_iops(self, name):
+        sp = self.unity_system.get_sp(name=name)
+        return str(sp.block_total_iops)
+
     def get_sp_block_read_iops(self, name):
         sp = self.unity_system.get_sp(name=name)
         return str(sp.block_read_iops)
@@ -108,6 +112,10 @@ class UnityClient(object):
     def get_sp_block_write_iops(self, name):
         sp = self.unity_system.get_sp(name=name)
         return str(sp.block_write_iops)
+
+    def get_sp_cache_dirty_size(self, name):
+        sp = self.unity_system.get_sp(name=name)
+        return str(sp.block_cache_dirty_size)
 
     def get_sp_block_cache_read_hit_ratio(self, name):
         sp = self.unity_system.get_sp(name=name)
@@ -212,6 +220,18 @@ class UnityClient(object):
         lun = self.unity_system.get_lun(_id=id)
         return lun.current_node.name
 
+    def get_lun_response_time(self, id):
+        lun = self.unity_system.get_lun(_id=id)
+        return str(lun.response_time)
+
+    def get_lun_queue_length(self, id):
+        lun = self.unity_system.get_lun(_id=id)
+        return str(lun.queue_length)
+
+    def get_lun_total_iops(self, id):
+        lun = self.unity_system.get_lun(_id=id)
+        return str(lun.total_iops)
+
     def get_lun_read_iops(self, id):
         lun = self.unity_system.get_lun(_id=id)
         return str(lun.read_iops)
@@ -219,6 +239,14 @@ class UnityClient(object):
     def get_lun_write_iops(self, id):
         lun = self.unity_system.get_lun(_id=id)
         return str(lun.write_iops)
+
+    def get_lun_fast_cache_read_hits(self, id):
+        lun = self.unity_system.get_lun(_id=id)
+        return str(lun.fast_cache_read_hits)
+
+    def get_lun_fast_cache_write_hits(self, id):
+        lun = self.unity_system.get_lun(_id=id)
+        return str(lun.fast_cache_write_hits)
 
     def get_lun_utilization(self, id):
         lun = self.unity_system.get_lun(_id=id)
@@ -272,6 +300,18 @@ class UnityClient(object):
             return disk.pool.name
         else:
             return
+
+    def get_disk_response_time(self, name):
+        disk = self.unity_system.get_disk(name=name)
+        return str(disk.response_time)
+
+    def get_disk_queue_length(self, name):
+        disk = self.unity_system.get_disk(name=name)
+        return str(disk.queue_length)
+
+    def get_disk_total_iops(self, name):
+        disk = self.unity_system.get_disk(name=name)
+        return str(disk.total_iops)
 
     def get_disk_read_iops(self, name):
         disk = self.unity_system.get_disk(name=name)
