@@ -326,50 +326,77 @@ class UnityClient(object):
         return str(disk.utilization)
 
     # frontendPortTable
+    FC_PORT_TYPE = 'fc_port'
+    ISCSI_PORT_TYPE = 'iscsi_port'
+
     def get_frontend_ports(self):
-        fc_ports = ['fc_port_' + port.id for port in self.unity_system.get_fc_port()]
-        eth_ports = ['eth_port_' + port.id for port in self.unity_system.get_ethernet_port()]
-        return fc_ports + eth_ports
+        fc_ports = [self.FC_PORT_TYPE + port.id for port in self.unity_system.get_fc_port()]
+        iscsi_ports = [self.ISCSI_PORT_TYPE + port.id for port in self.unity_system.get_iscsi_portal()]
+        return fc_ports + iscsi_ports
 
     def _get_frontend_port(self, id):
-        if id.startswith('fc_port_'):
-            id = id.lstrip('fc_port_')
-            return self.unity_system.get_fc_port(_id=id)
-        if id.startswith('eth_port_'):
-            id = id.lstrip('eth_port_')
-            return self.unity_system.get_ethernet_port(_id=id)
+        if id.startswith(self.FC_PORT_TYPE):
+            id = id.replace(self.FC_PORT_TYPE, '', 1)
+            return self.unity_system.get_fc_port(_id=id), self.FC_PORT_TYPE
+        if id.startswith(self.ISCSI_PORT_TYPE):
+            id = id.replace(self.ISCSI_PORT_TYPE, '', 1)
+            return self.unity_system.get_iscsi_portal(_id=id), self.ISCSI_PORT_TYPE
 
     def get_frontend_port_id(self, id):
-        port = self._get_frontend_port(id)
+        port, _ = self._get_frontend_port(id)
         return port.id
 
     def get_frontend_port_name(self, id):
-        port = self._get_frontend_port(id)
-        return port.name
+        port, type = self._get_frontend_port(id)
+        if type == self.FC_PORT_TYPE:
+            return port.name
+        if type == self.ISCSI_PORT_TYPE:
+            return port.ethernet_port.name
 
     def get_frontend_port_address(self, id):
-        port = self._get_frontend_port(id)
-        if hasattr(port, 'mac_address'):
-            return port.mac_address
+        port, type = self._get_frontend_port(id)
+        if type == self.FC_PORT_TYPE:
+            return
+        if type == self.ISCSI_PORT_TYPE:
+            return port.ip_address
 
     def get_frontend_port_type(self, id):
-        port = self._get_frontend_port(id)
-        return port.connector_type.name
+        port, type = self._get_frontend_port(id)
+        if type == self.FC_PORT_TYPE:
+            return port.connector_type.name
+        if type == self.ISCSI_PORT_TYPE:
+            return port.ethernet_port.connector_type.name
 
     def get_frontend_port_current_speed(self, id):
-        port = self._get_frontend_port(id)
-        if hasattr(port, 'speed'):
-            if port.speed:
-                return port.speed.name
+        port, type = self._get_frontend_port(id)
+        if type == self.FC_PORT_TYPE:
+            if port.current_speed:
+                return port.current_speed.name
+        if type == self.ISCSI_PORT_TYPE:
+            if port.ethernet_port.speed:
+                return port.ethernet_port.speed.name
 
     def get_frontend_port_supported_speed(self, id):
-        port = self._get_frontend_port(id)
-        if hasattr(port, 'supported_speeds'):
-            return ', '.join(x.name for x in port.supported_speeds)
+        port, type = self._get_frontend_port(id)
+        if type == self.FC_PORT_TYPE:
+            if port.available_speeds:
+                return ', '.join(x.name for x in port.available_speeds)
+        if type == self.ISCSI_PORT_TYPE:
+            if port.ethernet_port.supported_speeds:
+                return ', '.join(x.name for x in port.ethernet_port.supported_speeds)
 
     def get_frontend_port_health_status(self, id):
-        port = self._get_frontend_port(id)
-        return port.health.value.name
+        port, type = self._get_frontend_port(id)
+        if type == self.FC_PORT_TYPE:
+            if port.health:
+                return port.health.value.name
+        if type == self.ISCSI_PORT_TYPE:
+            if port.ethernet_port.health:
+                return port.ethernet_port.health.value.name
+
+    def get_frontend_port_read_iops(self, id):
+        port, _ = self._get_frontend_port(id)
+        return "1.0"
 
     # backendPortTable
     def get_backend_ports(self):
