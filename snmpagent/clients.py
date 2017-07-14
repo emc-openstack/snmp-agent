@@ -103,7 +103,7 @@ class UnityClient(object):
 
     def get_sp_block_total_iops(self, name):
         sp = self.unity_system.get_sp(name=name)
-        return str(sp.block_total_iops)
+        return str(sp.block_read_iops + sp.block_write_iops)
 
     def get_sp_block_read_iops(self, name):
         sp = self.unity_system.get_sp(name=name)
@@ -112,6 +112,18 @@ class UnityClient(object):
     def get_sp_block_write_iops(self, name):
         sp = self.unity_system.get_sp(name=name)
         return str(sp.block_write_iops)
+
+    def get_sp_total_byte_rate(self, name):
+        sp = self.unity_system.get_sp(name=name)
+        return str(sp.read_byte_rate + sp.write_byte_rate)
+
+    def get_sp_read_byte_rate(self, name):
+        sp = self.unity_system.get_sp(name=name)
+        return str(sp.read_byte_rate)
+
+    def get_sp_write_byte_rate(self, name):
+        sp = self.unity_system.get_sp(name=name)
+        return str(sp.write_byte_rate)
 
     def get_sp_cache_dirty_size(self, name):
         sp = self.unity_system.get_sp(name=name)
@@ -147,8 +159,7 @@ class UnityClient(object):
     def get_pool_number_of_disk(self, name):
         pool = self.unity_system.get_pool(name=name)
         if pool.tiers:
-            # return str(sum(x.disk_count for x in pool.tiers))
-            return sum(x.disk_count for x in pool.tiers)
+            return str(sum(x.disk_count for x in pool.tiers))
         else:
             return
 
@@ -166,12 +177,11 @@ class UnityClient(object):
 
     def get_pool_size_ultilization(self, name):
         pool = self.unity_system.get_pool(name=name)
+        # TODO: zero division
         return str(pool.size_used / pool.size_total)
 
     # volumeTable
     def get_luns(self):
-        # self.luns = self.unity_system.get_lun()
-        # return [lun.id for lun in self.luns]
         return [lun.id for lun in self.unity_system.get_lun()]
 
         # def get_lun_id(self, idx):
@@ -230,7 +240,7 @@ class UnityClient(object):
 
     def get_lun_total_iops(self, id):
         lun = self.unity_system.get_lun(_id=id)
-        return str(lun.total_iops)
+        return str(lun.read_iops + lun.write_iops)
 
     def get_lun_read_iops(self, id):
         lun = self.unity_system.get_lun(_id=id)
@@ -239,6 +249,18 @@ class UnityClient(object):
     def get_lun_write_iops(self, id):
         lun = self.unity_system.get_lun(_id=id)
         return str(lun.write_iops)
+
+    def get_lun_total_byte_rate(self, id):
+        lun = self.unity_system.get_lun(_id=id)
+        return str(lun.read_byte_rate + lun.write_byte_rate)
+
+    def get_lun_read_byte_rate(self, id):
+        lun = self.unity_system.get_lun(_id=id)
+        return str(lun.read_byte_rate)
+
+    def get_lun_write_byte_rate(self, id):
+        lun = self.unity_system.get_lun(_id=id)
+        return str(lun.write_byte_rate)
 
     def get_lun_fast_cache_read_hits(self, id):
         lun = self.unity_system.get_lun(_id=id)
@@ -311,7 +333,7 @@ class UnityClient(object):
 
     def get_disk_total_iops(self, name):
         disk = self.unity_system.get_disk(name=name)
-        return str(disk.total_iops)
+        return str(disk.read_iops + disk.write_iops)
 
     def get_disk_read_iops(self, name):
         disk = self.unity_system.get_disk(name=name)
@@ -321,17 +343,29 @@ class UnityClient(object):
         disk = self.unity_system.get_disk(name=name)
         return str(disk.write_iops)
 
+    def get_disk_total_byte_rate(self, name):
+        disk = self.unity_system.get_disk(name=name)
+        return str(disk.read_byte_rate + disk.write_byte_rate)
+
+    def get_disk_read_byte_rate(self, name):
+        disk = self.unity_system.get_disk(name=name)
+        return str(disk.read_byte_rate)
+
+    def get_disk_write_byte_rate(self, name):
+        disk = self.unity_system.get_disk(name=name)
+        return str(disk.write_byte_rate)
+
     def get_disk_utilization(self, name):
         disk = self.unity_system.get_disk(name=name)
         return str(disk.utilization)
 
     # frontendPortTable
-    FC_PORT_TYPE = 'fc_port'
-    ISCSI_PORT_TYPE = 'iscsi_port'
+    FC_PORT_TYPE = 'fc_port_'
+    ISCSI_PORT_TYPE = 'iscsi_port_'
 
     def get_frontend_ports(self):
         fc_ports = [self.FC_PORT_TYPE + port.id for port in self.unity_system.get_fc_port()]
-        iscsi_ports = [self.ISCSI_PORT_TYPE + port.id for port in self.unity_system.get_iscsi_portal()]
+        iscsi_ports = [self.ISCSI_PORT_TYPE + port.id for port in self.unity_system.get_iscsi_node()]
         return fc_ports + iscsi_ports
 
     def _get_frontend_port(self, id):
@@ -340,25 +374,23 @@ class UnityClient(object):
             return self.unity_system.get_fc_port(_id=id), self.FC_PORT_TYPE
         if id.startswith(self.ISCSI_PORT_TYPE):
             id = id.replace(self.ISCSI_PORT_TYPE, '', 1)
-            return self.unity_system.get_iscsi_portal(_id=id), self.ISCSI_PORT_TYPE
+            return self.unity_system.get_iscsi_node(_id=id), self.ISCSI_PORT_TYPE
 
     def get_frontend_port_id(self, id):
         port, _ = self._get_frontend_port(id)
         return port.id
 
     def get_frontend_port_name(self, id):
-        port, type = self._get_frontend_port(id)
-        if type == self.FC_PORT_TYPE:
-            return port.name
-        if type == self.ISCSI_PORT_TYPE:
-            return port.ethernet_port.name
+        port, _ = self._get_frontend_port(id)
+        return port.name
 
     def get_frontend_port_address(self, id):
         port, type = self._get_frontend_port(id)
         if type == self.FC_PORT_TYPE:
             return
         if type == self.ISCSI_PORT_TYPE:
-            return port.ip_address
+            return ', '.join(
+                portal.ip_address for portal in self.unity_system.get_iscsi_portal() if portal.iscsi_node.id == id)
 
     def get_frontend_port_type(self, id):
         port, type = self._get_frontend_port(id)
@@ -379,7 +411,7 @@ class UnityClient(object):
     def get_frontend_port_supported_speed(self, id):
         port, type = self._get_frontend_port(id)
         if type == self.FC_PORT_TYPE:
-            if port.available_speeds:
+            if port.available_speeds is not None:
                 return ', '.join(x.name for x in port.available_speeds)
         if type == self.ISCSI_PORT_TYPE:
             if port.ethernet_port.supported_speeds:
@@ -394,9 +426,29 @@ class UnityClient(object):
             if port.ethernet_port.health:
                 return port.ethernet_port.health.value.name
 
+    def get_frontend_port_total_iops(self, id):
+        port, _ = self._get_frontend_port(id)
+        return str(port.read_iops + port.write_iops)
+
     def get_frontend_port_read_iops(self, id):
         port, _ = self._get_frontend_port(id)
-        return "1.0"
+        return str(port.read_iops)
+
+    def get_frontend_port_write_iops(self, id):
+        port, _ = self._get_frontend_port(id)
+        return str(port.write_iops)
+
+    def get_frontend_port_total_byte_rate(self, id):
+        port, _ = self._get_frontend_port(id)
+        return str(port.read_byte_rate + port.write_byte_rate)
+
+    def get_frontend_port_read_byte_rate(self, id):
+        port, _ = self._get_frontend_port(id)
+        return str(port.read_byte_rate)
+
+    def get_frontend_port_write_byte_rate(self, id):
+        port, _ = self._get_frontend_port(id)
+        return str(port.write_byte_rate)
 
     # backendPortTable
     def get_backend_ports(self):
