@@ -32,7 +32,7 @@ class ScalarInstanceFactory(object):
                 )
             except:
                 # TODO: logging ...
-                raise
+                pass
 
         newclass = type(name + "ScalarInstance", (base_class,),
                         {"__init__": __init__,

@@ -52,7 +52,7 @@ IMPORTS
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
-			"Dell EMC."
+			"Unity manufacturer: Dell EMC."
 		::= { unityStorageObjects 3 }
 
 	-- 1.3.6.1.4.1.1139.103.2.4
@@ -61,7 +61,7 @@ IMPORTS
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
-			"Description."
+			"System model name."
 		::= { unityStorageObjects 4 }
 
 	-- 1.3.6.1.4.1.1139.103.2.5
@@ -70,7 +70,7 @@ IMPORTS
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
-			"Description."
+			"System product serial number."
 		::= { unityStorageObjects 5 }
 
 	-- 1.3.6.1.4.1.1139.103.2.6
@@ -79,7 +79,7 @@ IMPORTS
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
-			"Description."
+			"System version."
 		::= { unityStorageObjects 6 }
 
 	-- 1.3.6.1.4.1.1139.103.2.7
@@ -88,7 +88,7 @@ IMPORTS
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
-			"Description."
+			"System management interface IP addresses"
 		::= { unityStorageObjects 7 }
 
 	-- 1.3.6.1.4.1.1139.103.2.8
@@ -97,7 +97,7 @@ IMPORTS
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
-			"Unit: Watts."
+			"Current amount of power used by the system. Unit: Watts."
 		::= { unityStorageObjects 8 }
 
 	-- 1.3.6.1.4.1.1139.103.2.9
@@ -106,7 +106,7 @@ IMPORTS
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
-			"Unit: Watts."
+			"Average amount of power used by the system. The system uses a one hour window of 30-second samples to determine this value. Unit: Watts."
 		::= { unityStorageObjects 9 }
 
 	-- 1.3.6.1.4.1.1139.103.2.10
@@ -115,7 +115,7 @@ IMPORTS
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
-			"Description."
+			"Number of storage processor."
 		::= { unityStorageObjects 10 }
 
 	-- 1.3.6.1.4.1.1139.103.2.11
@@ -124,7 +124,7 @@ IMPORTS
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
-			"Description."
+			"Number of enclosure."
 		::= { unityStorageObjects 11 }
 
 	-- 1.3.6.1.4.1.1139.103.2.12
@@ -133,7 +133,7 @@ IMPORTS
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
-			"Description."
+			"Number of power supply."
 		::= { unityStorageObjects 12 }
 
 	-- 1.3.6.1.4.1.1139.103.2.13
@@ -142,7 +142,7 @@ IMPORTS
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
-			"Description."
+			"Number of fan."
 		::= { unityStorageObjects 13 }
 
 	-- 1.3.6.1.4.1.1139.103.2.14
@@ -151,7 +151,7 @@ IMPORTS
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
-			"Description."
+			"Number of physical disk."
 		::= { unityStorageObjects 14 }
 
 	-- 1.3.6.1.4.1.1139.103.2.15
@@ -160,7 +160,7 @@ IMPORTS
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
-			"Description."
+			"Number of frontend port."
 		::= { unityStorageObjects 15 }
 
 	-- 1.3.6.1.4.1.1139.103.2.16
@@ -169,7 +169,7 @@ IMPORTS
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
-			"Description."
+			"Number of backend port."
 		::= { unityStorageObjects 16 }
 
 	-- 1.3.6.1.4.1.1139.103.2.17
@@ -178,7 +178,7 @@ IMPORTS
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
-			"Unit: GB."
+			"Total amount of space (used space plus free space) in the pools on the storage system. Unit: GB."
 		::= { unityStorageObjects 17 }
 
 	-- 1.3.6.1.4.1.1139.103.2.18
@@ -187,7 +187,7 @@ IMPORTS
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
-			"Unit: GB."
+			"Amount of used space in the pools on the storage system. Unit: GB."
 		::= { unityStorageObjects 18 }
 
 	-- 1.3.6.1.4.1.1139.103.2.19
@@ -196,7 +196,7 @@ IMPORTS
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
-			"Unit: GB."
+			"Amount of free space available in the pools on the storage system. Unit: GB."
 		::= { unityStorageObjects 19 }
 
 	-- 1.3.6.1.4.1.1139.103.2.20
@@ -278,7 +278,7 @@ IMPORTS
 			storageProcessorSerialNumber            DisplayString,
 			storageProcessorOperationalState        DisplayString,
 			storageProcessorCpuUtilization          DisplayString,
-                        storageProcessorTotalThroughput         DisplayString,
+            storageProcessorTotalThroughput         DisplayString,
 			storageProcessorReadThroughput          DisplayString,
 			storageProcessorWriteThroughput         DisplayString,
 			storageProcessorTotalBandwidth          DisplayString,
@@ -295,7 +295,7 @@ IMPORTS
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
-			"Description."
+			"SP name."
 		::= { storageProcessorEntry 1 }
 
 	-- 1.3.6.1.4.1.1139.103.2.26.1.2
@@ -304,7 +304,7 @@ IMPORTS
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
-			"Description."
+			"EMC serial number for the SP."
 		::= { storageProcessorEntry 2 }
 
 	-- 1.3.6.1.4.1.1139.103.2.26.1.3
@@ -313,7 +313,7 @@ IMPORTS
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
-			"Description."
+			"Health information for the SP."
 		::= { storageProcessorEntry 3 }
 
 	-- 1.3.6.1.4.1.1139.103.2.26.1.4
@@ -444,7 +444,7 @@ IMPORTS
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
-			"Description."
+			"Pool name, unique in the storage system."
 		::= { poolEntry 1 }
 
 	-- 1.3.6.1.4.1.1139.103.2.27.1.2
@@ -462,7 +462,7 @@ IMPORTS
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
-			"Description."
+			"RAID type with which the pool is configured. A value of Mixed indicates that the pool consists of multiple RAID types.."
 		::= { poolEntry 3 }
 
 	-- 1.3.6.1.4.1.1139.103.2.27.1.4
@@ -471,7 +471,10 @@ IMPORTS
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
-			"Description."
+			"(Applies if FAST Cache is supported on the system and the corresponding license is installed.) Indicates whether the FAST Cache is enabled for the pool. Values are:
+             true - FAST Cache is enabled for the pool.
+             false - FAST Cache is disabled for the pool.
+             FAST Cache is created from Flash SAS drives and applied only to RAID groups created of SAS and NL-SAS hard drives. If the pool is populated by purely Flash drives the FAST Cache is not enabled.."
 		::= { poolEntry 4 }
 
 	-- 1.3.6.1.4.1.1139.103.2.27.1.5
@@ -480,7 +483,7 @@ IMPORTS
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
-			"Description."
+			"Number of physical disk in the pool."
 		::= { poolEntry 5 }
 
 	-- 1.3.6.1.4.1.1139.103.2.27.1.6
@@ -489,7 +492,7 @@ IMPORTS
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
-			"Unit: GB."
+			"Total size of space (used space plus free space) in the pool. Unit: GB."
 		::= { poolEntry 6 }
 
 	-- 1.3.6.1.4.1.1139.103.2.27.1.7
@@ -498,7 +501,7 @@ IMPORTS
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
-			"Unit: GB."
+			"Size of free space available in the pool. Unit: GB."
 		::= { poolEntry 7 }
 
 	-- 1.3.6.1.4.1.1139.103.2.27.1.8
@@ -507,7 +510,7 @@ IMPORTS
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
-			"Unit: GB."
+			"Size of space used by the storage resources allocated in the pool. Unit: GB."
 		::= { poolEntry 8 }
 
 	-- 1.3.6.1.4.1.1139.103.2.27.1.9
@@ -571,7 +574,7 @@ IMPORTS
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
-			"Description."
+			"Unique identifier of the LUN."
 		::= { volumeEntry 1 }
 
 	-- 1.3.6.1.4.1.1139.103.2.28.1.2
@@ -580,7 +583,7 @@ IMPORTS
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
-			"Description."
+			"Name of the LUN."
 		::= { volumeEntry 2 }
 
 	-- 1.3.6.1.4.1.1139.103.2.28.1.3
@@ -598,7 +601,10 @@ IMPORTS
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
-			"Unit: GB."
+			"Size of space actually allocated in the pool for the LUN:
+             For thin-provisioned LUNs this as a rule is less than the sizeTotal attribute until the LUN is not fully populated with user data.
+             For not thin-provisioned LUNs this is approximately equal to the sizeTotal.
+             Unit: GB."
 		::= { volumeEntry 4 }
 
 	-- 1.3.6.1.4.1.1139.103.2.28.1.5
@@ -607,7 +613,7 @@ IMPORTS
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
-			"Unit: GB."
+			"LUN size that the system presents to the host or end user. Unit: GB."
 		::= { volumeEntry 5 }
 
 	-- 1.3.6.1.4.1.1139.103.2.28.1.6
@@ -616,7 +622,7 @@ IMPORTS
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
-			"Description."
+			"Health information for the LUN."
 		::= { volumeEntry 6 }
 
 	-- 1.3.6.1.4.1.1139.103.2.28.1.7
@@ -634,7 +640,7 @@ IMPORTS
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
-			"Description."
+			"The storage processor that is the default owner of this LUN.."
 		::= { volumeEntry 8 }
 
 	-- 1.3.6.1.4.1.1139.103.2.28.1.9
@@ -643,7 +649,7 @@ IMPORTS
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
-			"Description."
+			"The storage processor that is the current owner of this LUN.."
 		::= { volumeEntry 9 }
 
 	-- 1.3.6.1.4.1.1139.103.2.28.1.10
@@ -769,7 +775,7 @@ IMPORTS
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
-			"Description."
+			"Host access permissions for the LUN."
 		::= { volumeEntry 23 }
 
 	-- 1.3.6.1.4.1.1139.103.2.29
@@ -819,7 +825,7 @@ IMPORTS
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
-			"Description."
+			"Drive name. Modifiable for virtual drives only."
 		::= { diskEntry 1 }
 
 	-- 1.3.6.1.4.1.1139.103.2.29.1.2
@@ -828,7 +834,7 @@ IMPORTS
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
-			"Description."
+			"Manufacturer model number."
 		::= { diskEntry 2 }
 
 	-- 1.3.6.1.4.1.1139.103.2.29.1.3
@@ -837,7 +843,7 @@ IMPORTS
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
-			"Description."
+			"EMC serial number."
 		::= { diskEntry 3 }
 
 	-- 1.3.6.1.4.1.1139.103.2.29.1.4
@@ -846,7 +852,7 @@ IMPORTS
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
-			"Description."
+			"Manufacturer version number."
 		::= { diskEntry 4 }
 
 	-- 1.3.6.1.4.1.1139.103.2.29.1.5
@@ -855,7 +861,7 @@ IMPORTS
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
-			"Description."
+			"Drive type."
 		::= { diskEntry 5 }
 
 	-- 1.3.6.1.4.1.1139.103.2.29.1.6
@@ -864,7 +870,7 @@ IMPORTS
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
-			"Description."
+			"Slot where the drive is located in the parent enclosure."
 		::= { diskEntry 6 }
 
 	-- 1.3.6.1.4.1.1139.103.2.29.1.7
@@ -873,7 +879,7 @@ IMPORTS
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
-			"Description."
+			"Health information of the drive instance."
 		::= { diskEntry 7 }
 
 	-- 1.3.6.1.4.1.1139.103.2.29.1.8
@@ -882,7 +888,7 @@ IMPORTS
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
-			"Description."
+			"Raw (unformatted) capacity."
 		::= { diskEntry 8 }
 
 	-- 1.3.6.1.4.1.1139.103.2.29.1.9
@@ -1325,7 +1331,9 @@ IMPORTS
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
-			"Description."
+			"Host name:
+             For an automatically-managed ESX server through vCenter, this is the display name in the vCenter GUI.
+             For a manually-created host, this is the host name entered by the user."
 		::= { hostEntry 1 }
 
 	-- 1.3.6.1.4.1.1139.103.2.32.1.2
@@ -1352,7 +1360,7 @@ IMPORTS
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
-			"Description."
+			"Operating system running on the host."
 		::= { hostEntry 4 }
 
 	-- 1.3.6.1.4.1.1139.103.2.32.1.5
@@ -1533,7 +1541,7 @@ IMPORTS
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
-			"Description."
+			"Power supply name."
 		::= { powerSupplyEntry 1 }
 
 	-- 1.3.6.1.4.1.1139.103.2.34.1.2
@@ -1542,7 +1550,7 @@ IMPORTS
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
-			"Description."
+			"Manufacturer of the power supply."
 		::= { powerSupplyEntry 2 }
 
 	-- 1.3.6.1.4.1.1139.103.2.34.1.3
@@ -1551,7 +1559,7 @@ IMPORTS
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
-			"Description."
+			"Manufacturer's model number for the power supply."
 		::= { powerSupplyEntry 3 }
 
 	-- 1.3.6.1.4.1.1139.103.2.34.1.4
@@ -1560,7 +1568,7 @@ IMPORTS
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
-			"Description."
+			"Firmware version number for the power supply."
 		::= { powerSupplyEntry 4 }
 
 	-- 1.3.6.1.4.1.1139.103.2.34.1.5
@@ -1569,7 +1577,7 @@ IMPORTS
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
-			"Description."
+			"Parent Enclosures (DAE or DPE) of the power supply."
 		::= { powerSupplyEntry 5 }
 
 	-- 1.3.6.1.4.1.1139.103.2.34.1.6
@@ -1578,7 +1586,7 @@ IMPORTS
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
-			"Description."
+			"Storage Processor that the power supply is associated to."
 		::= { powerSupplyEntry 6 }
 
 	-- 1.3.6.1.4.1.1139.103.2.34.1.7
@@ -1587,7 +1595,7 @@ IMPORTS
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
-			"Description."
+			"Health information for the power supply."
 		::= { powerSupplyEntry 7 }
 
 	-- 1.3.6.1.4.1.1139.103.2.35
@@ -1623,7 +1631,7 @@ IMPORTS
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
-			"Description."
+			"Fan name."
 		::= { fanEntry 1 }
 
 	-- 1.3.6.1.4.1.1139.103.2.35.1.2
@@ -1632,7 +1640,7 @@ IMPORTS
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
-			"Description."
+			"Slot where the fan is located in the parent enclosure."
 		::= { fanEntry 2 }
 
 	-- 1.3.6.1.4.1.1139.103.2.35.1.3
@@ -1641,7 +1649,7 @@ IMPORTS
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
-			"Description."
+			"Parent Enclosures (DAE or DPE) of the power supply."
 		::= { fanEntry 3 }
 
 	-- 1.3.6.1.4.1.1139.103.2.35.1.4
@@ -1650,7 +1658,7 @@ IMPORTS
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
-			"Description."
+			"Health information for the fan."
 		::= { fanEntry 4 }
 
 	-- 1.3.6.1.4.1.1139.103.2.36
@@ -1688,7 +1696,7 @@ IMPORTS
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
-			"Description."
+			"Battery name."
 		::= { bbuEntry 1 }
 
 	-- 1.3.6.1.4.1.1139.103.2.36.1.2
@@ -1697,7 +1705,7 @@ IMPORTS
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
-			"Description."
+			"Manufacturer of the battery."
 		::= { bbuEntry 2 }
 
     -- 1.3.6.1.4.1.1139.103.2.36.1.3
@@ -1706,7 +1714,7 @@ IMPORTS
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
-			"Description."
+			"Manufacturer's model number for the battery."
 		::= { bbuEntry 3 }
 
 	-- 1.3.6.1.4.1.1139.103.2.36.1.4
@@ -1715,7 +1723,7 @@ IMPORTS
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
-			"Description."
+			"Firmware version number for the battery."
 		::= { bbuEntry 4 }
 
 	-- 1.3.6.1.4.1.1139.103.2.36.1.5
@@ -1724,7 +1732,7 @@ IMPORTS
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
-			"Description."
+			"Parent Storage Processor of the battery."
 		::= { bbuEntry 5 }
 
 	-- 1.3.6.1.4.1.1139.103.2.36.1.6
@@ -1733,6 +1741,6 @@ IMPORTS
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
-			"Description."
+			"Health information for the battery."
 		::= { bbuEntry 6 }
 END

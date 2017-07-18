@@ -127,6 +127,7 @@ class UnityClient(object):
 
     def get_sp_cache_dirty_size(self, name):
         sp = self.unity_system.get_sp(name=name)
+        # TODO: sometimes get/getnext this mib will raise exception
         return str(sp.block_cache_dirty_size)
 
     def get_sp_block_cache_read_hit_ratio(self, name):
