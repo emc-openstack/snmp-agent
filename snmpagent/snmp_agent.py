@@ -68,9 +68,8 @@ class SNMPAgent(object):
 
             port = int(unity.port)
             engine.addTransport(self.default_config.ip, port, idx)
-
             self._add_users(engine)
-
+            engine.connect_backend_device()
             engine.create_managed_object_instance()
             engine.register_snmp_application()
 

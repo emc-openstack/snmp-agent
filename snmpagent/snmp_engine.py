@@ -1,4 +1,5 @@
 import factory
+from clients import UnityClient
 from parsers.mib_parser import get_mib_symbols
 from pysnmp import debug
 from pysnmp.carrier.asyncore.dgram import udp
@@ -11,15 +12,11 @@ debug.setLogger(debug.Debug('all'))
 
 class SNMPEngine(object):
     def __init__(self, storage_context):
-        # Create SNMP engine
         self.snmp_engine = engine.SnmpEngine()
         self.snmp_engine.storage_context = storage_context
 
         snmp_context = context.SnmpContext(self.snmp_engine)
         self.mib_builder = snmp_context.getMibInstrum().getMibBuilder()
-
-        # mibSources = self.mib_builder.getMibSources() + (builder.DirMibSource('.'),)
-        # self.mib_builder.setMibSources(*mibSources)
 
         mibSources = self.mib_builder.getMibSources()
         self.mib_builder.setMibSources(builder.DirMibSource('./mibs/'),
@@ -60,6 +57,16 @@ class SNMPEngine(object):
     def registerTransportDispatcher(self, transportDispatcher, recvId=None):
         self.snmp_engine.registerTransportDispatcher(transportDispatcher,
                                                      recvId)
+
+    def connect_backend_device(self):
+        storage_context = self.snmp_engine.storage_context
+        client_name = storage_context.spa + '_' + storage_context.port
+        try:
+            self.snmp_engine.unity_client = UnityClient.get_unity_client(client_name, storage_context.spa, storage_context.user,
+                                                        storage_context.password)
+        except:
+            # TODO: log
+            self.snmp_engine.unity_client = None
 
     def create_managed_object_instance(self):
         module_name = "Unity-MIB"
@@ -126,7 +133,6 @@ class SNMPEngine(object):
         self.snmp_engine.transportDispatcher.jobStarted(1)
 
     def run(self):
-
         # Run I/O dispatcher which would receive queries and send responses
         try:
             self.snmp_engine.transportDispatcher.runDispatcher()
