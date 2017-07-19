@@ -18,10 +18,12 @@ class ScalarInstanceFactory(object):
                                                                        storage_context.user,
                                                                        storage_context.password)
                 except:
+                    print('Failed to connect unity.')
                     engine.unity_client = None
 
             if engine.unity_client == None:
-                return
+                # return name, self.getSyntax().clone('Failed to connect unity.')
+                return name, self.getSyntax().clone()
 
             idx_len = self.instId[0]
             idx_name = ''.join([chr(x) for x in self.instId[1: idx_len + 1]])
@@ -32,7 +34,8 @@ class ScalarInstanceFactory(object):
                 )
             except:
                 # TODO: logging ...
-                pass
+                return name, self.getSyntax().clone()
+                # pass
 
         newclass = type(name + "ScalarInstance", (base_class,),
                         {"__init__": __init__,
