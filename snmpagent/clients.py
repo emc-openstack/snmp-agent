@@ -177,6 +177,18 @@ class UnityClient(object):
     def get_free_capacity(self):
         return str(sum(x.size_free for x in self.get_system_capacity()))
 
+    def get_total_iops(self):
+        self.unity_system.update()
+        return str(self.unity_system.total_iops)
+
+    def get_read_iops(self):
+        self.unity_system.update()
+        return str(self.unity_system.read_iops)
+
+    def get_write_iops(self):
+        self.unity_system.update()
+        return str(self.unity_system.write_iops)
+
     # storageProcessorTable
     def get_sps(self):
         return [pool.name for pool in self.get_sp()]
@@ -268,8 +280,8 @@ class UnityClient(object):
 
     def get_pool_size_ultilization(self, name):
         pool = self._get_item(self.get_pool(), name=name)
-        # TODO: zero division
-        return str(pool.size_used / pool.size_total)
+        if pool.size_total != 0:
+            return str(pool.size_used / pool.size_total)
 
     # volumeTable
     def get_luns(self):
@@ -318,7 +330,7 @@ class UnityClient(object):
 
     def get_lun_total_iops(self, id):
         lun = self._get_item(self.get_lun(), id=id)
-        return str(lun.read_iops + lun.write_iops)
+        return str(lun.total_iops)
 
     def get_lun_read_iops(self, id):
         lun = self._get_item(self.get_lun(), id=id)
@@ -330,7 +342,7 @@ class UnityClient(object):
 
     def get_lun_total_byte_rate(self, id):
         lun = self._get_item(self.get_lun(), id=id)
-        return str(lun.read_byte_rate + lun.write_byte_rate)
+        return str(lun.total_byte_rate)
 
     def get_lun_read_byte_rate(self, id):
         lun = self._get_item(self.get_lun(), id=id)
@@ -347,6 +359,14 @@ class UnityClient(object):
     def get_lun_fast_cache_write_hits(self, id):
         lun = self._get_item(self.get_lun(), id=id)
         return str(lun.fast_cache_write_hits)
+
+    def get_lun_fast_cache_read_hit_rate(self, id):
+        lun = self._get_item(self.get_lun(), id=id)
+        return str(lun.fast_cache_read_hit_rate)
+
+    def get_lun_fast_cache_write_hit_rate(self, id):
+        lun = self._get_item(self.get_lun(), id=id)
+        return str(lun.fast_cache_write_hit_rate)
 
     def get_lun_utilization(self, id):
         lun = self._get_item(self.get_lun(), id=id)
@@ -405,7 +425,7 @@ class UnityClient(object):
 
     def get_disk_total_iops(self, name):
         disk = self._get_item(self.get_disk(), name=name)
-        return str(disk.read_iops + disk.write_iops)
+        return str(disk.total_iops)
 
     def get_disk_read_iops(self, name):
         disk = self._get_item(self.get_disk(), name=name)
@@ -417,7 +437,7 @@ class UnityClient(object):
 
     def get_disk_total_byte_rate(self, name):
         disk = self._get_item(self.get_disk(), name=name)
-        return str(disk.read_byte_rate + disk.write_byte_rate)
+        return str(disk.total_byte_rate)
 
     def get_disk_read_byte_rate(self, name):
         disk = self._get_item(self.get_disk(), name=name)

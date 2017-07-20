@@ -35,7 +35,7 @@ class ScalarInstanceFactory(object):
             except:
                 # TODO: logging ...
                 return name, self.getSyntax().clone()
-                # pass
+                # raise
 
         newclass = type(name + "ScalarInstance", (base_class,),
                         {"__init__": __init__,
