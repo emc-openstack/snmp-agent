@@ -189,6 +189,18 @@ class UnityClient(object):
         self.unity_system.update()
         return str(self.unity_system.write_iops)
 
+    def get_total_byte_rate(self):
+        self.unity_system.update()
+        return str(self.unity_system.total_byte_rate)
+
+    def get_read_byte_rate(self):
+        self.unity_system.update()
+        return str(self.unity_system.read_byte_rate)
+
+    def get_write_byte_rate(self):
+        self.unity_system.update()
+        return str(self.unity_system.write_byte_rate)
+
     # storageProcessorTable
     def get_sps(self):
         return [pool.name for pool in self.get_sp()]
