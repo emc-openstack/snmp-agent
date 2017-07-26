@@ -1,6 +1,3 @@
-import time
-from functools import wraps
-
 from storops import UnitySystem
 
 
@@ -21,7 +18,7 @@ class UnityClient(object):
     manager = CachedUnityClientManager()
 
     def __init__(self, host=None, username=None, password=None, port=443):
-        self.unity_system = UnitySystem(host=host, username=username, password=password, port=port)
+        self.unity_system = UnitySystem(host=host, username=username, password=password, port=port, cache_interval=30)
         self.unity_system.enable_perf_stats()
         self.cache_dict = {}
 
@@ -35,87 +32,6 @@ class UnityClient(object):
 
         if len(items) >= 1:
             return items[0]
-
-    def cache_response(func):
-        @wraps(func)
-        def inner(self, *args, **kwargs):
-            current = time.time()
-            key = "%s_%s_%s" % (
-                func.__name__, '_'.join(str(x) for x in args),
-                '_'.join(str(k) + '=' + str(v) for k, v in kwargs.items()))
-
-            if key in self.cache_dict.keys() and (current - self.cache_dict.get(key)[0] < 10):
-                print('----- read from cache -----')
-                result = self.cache_dict[key][1]
-            else:
-                print('----- write to cache -----')
-                result = func(self, *args, **kwargs)
-                current = time.time()
-                self.cache_dict[key] = (current, result)
-
-            return result
-
-        return inner
-
-    @cache_response
-    def get_system_capacity(self, *args, **kwargs):
-        return self.unity_system.get_system_capacity(*args, **kwargs)
-
-    @cache_response
-    def get_mgmt_interface(self, *args, **kwargs):
-        return self.unity_system.get_mgmt_interface(*args, **kwargs)
-
-    @cache_response
-    def get_sp(self, *args, **kwargs):
-        return self.unity_system.get_sp(*args, **kwargs)
-
-    @cache_response
-    def get_pool(self, *args, **kwargs):
-        return self.unity_system.get_pool(*args, **kwargs)
-
-    @cache_response
-    def get_lun(self, *args, **kwargs):
-        return self.unity_system.get_lun(*args, **kwargs)
-
-    @cache_response
-    def get_disk(self, *args, **kwargs):
-        return self.unity_system.get_disk(*args, **kwargs)
-
-    @cache_response
-    def get_fc_port(self, *args, **kwargs):
-        return self.unity_system.get_fc_port(*args, **kwargs)
-
-    @cache_response
-    def get_iscsi_node(self, *args, **kwargs):
-        return self.unity_system.get_iscsi_node(*args, **kwargs)
-
-    @cache_response
-    def get_sas_port(self, *args, **kwargs):
-        return self.unity_system.get_sas_port(*args, **kwargs)
-
-    @cache_response
-    def get_host(self, *args, **kwargs):
-        return self.unity_system.get_host(*args, **kwargs)
-
-    @cache_response
-    def get_dae(self, *args, **kwargs):
-        return self.unity_system.get_dae(*args, **kwargs)
-
-    @cache_response
-    def get_dpe(self, *args, **kwargs):
-        return self.unity_system.get_dpe(*args, **kwargs)
-
-    @cache_response
-    def get_power_supply(self, *args, **kwargs):
-        return self.unity_system.get_power_supply(*args, **kwargs)
-
-    @cache_response
-    def get_fan(self, *args, **kwargs):
-        return self.unity_system.get_fan(*args, **kwargs)
-
-    @cache_response
-    def get_battery(self, *args, **kwargs):
-        return self.unity_system.get_battery(*args, **kwargs)
 
     # system
     def get_agent_version(self):
@@ -137,7 +53,7 @@ class UnityClient(object):
         return self.unity_system.system_version
 
     def get_mgmt_ip(self):
-        return ', '.join(x.ip_address for x in self.get_mgmt_interface())
+        return ', '.join(x.ip_address for x in self.unity_system.get_mgmt_interface())
 
     def get_current_power(self):
         self.unity_system.update()
@@ -169,13 +85,13 @@ class UnityClient(object):
         return len(self.get_backend_ports())
 
     def get_total_capacity(self):
-        return str(sum(x.size_total for x in self.get_system_capacity()))
+        return str(sum(x.size_total for x in self.unity_system.get_system_capacity()))
 
     def get_used_capacity(self):
-        return str(sum(x.size_used for x in self.get_system_capacity()))
+        return str(sum(x.size_used for x in self.unity_system.get_system_capacity()))
 
     def get_free_capacity(self):
-        return str(sum(x.size_free for x in self.get_system_capacity()))
+        return str(sum(x.size_free for x in self.unity_system.get_system_capacity()))
 
     def get_total_iops(self):
         self.unity_system.update()
@@ -203,264 +119,273 @@ class UnityClient(object):
 
     # storageProcessorTable
     def get_sps(self):
-        return [pool.name for pool in self.get_sp()]
+        return [pool.name for pool in self.unity_system.get_sp()]
+
+    def _get_sp(self, name):
+        return self._get_item(self.unity_system.get_sp(), name=name)
 
     def get_sp_serial_number(self, name):
-        sp = self._get_item(self.get_sp(), name=name)
+        sp = self._get_sp(name)
         return sp.emc_serial_number
 
     def get_sp_health_status(self, name):
-        sp = self._get_item(self.get_sp(), name=name)
+        sp = self._get_sp(name)
         return sp.health.value.name
 
     def get_sp_utilization(self, name):
-        sp = self._get_item(self.get_sp(), name=name)
+        sp = self._get_sp(name)
         return str(sp.utilization)
 
     def get_sp_block_total_iops(self, name):
-        sp = self._get_item(self.get_sp(), name=name)
+        sp = self._get_sp(name)
         return str(sp.block_total_iops)
 
     def get_sp_block_read_iops(self, name):
-        sp = self._get_item(self.get_sp(), name=name)
+        sp = self._get_sp(name)
         return str(sp.block_read_iops)
 
     def get_sp_block_write_iops(self, name):
-        sp = self._get_item(self.get_sp(), name=name)
+        sp = self._get_sp(name)
         return str(sp.block_write_iops)
 
     def get_sp_total_byte_rate(self, name):
-        sp = self._get_item(self.get_sp(), name=name)
+        sp = self._get_sp(name)
         return str(sp.total_byte_rate)
 
     def get_sp_read_byte_rate(self, name):
-        sp = self._get_item(self.get_sp(), name=name)
+        sp = self._get_sp(name)
         return str(sp.read_byte_rate)
 
     def get_sp_write_byte_rate(self, name):
-        sp = self._get_item(self.get_sp(), name=name)
+        sp = self._get_sp(name)
         return str(sp.write_byte_rate)
 
     def get_sp_cache_dirty_size(self, name):
-        sp = self._get_item(self.get_sp(), name=name)
-        # TODO: sometimes get/getnext this mib will raise exception
+        sp = self._get_sp(name)
         return str(sp.block_cache_dirty_size)
 
     def get_sp_block_cache_read_hit_ratio(self, name):
-        sp = self._get_item(self.get_sp(), name=name)
-        # TODO: sometimes get/getnext this mib will raise exception
+        sp = self._get_sp(name)
         return str(sp.block_cache_read_hit_ratio)
 
     def get_sp_block_cache_write_hit_ratio(self, name):
-        sp = self._get_item(self.get_sp(), name=name)
-        # TODO: sometimes get/getnext this mib will raise exception
+        sp = self._get_sp(name)
         return str(sp.block_cache_write_hit_ratio)
 
     # poolTable
     def get_pools(self):
-        return [pool.name for pool in self.get_pool()]
+        return [pool.name for pool in self.unity_system.get_pool()]
+
+    def _get_pool(self, name):
+        return self._get_item(self.unity_system.get_pool(), name=name)
 
     def get_pool_disk_types(self, name):
-        pool = self._get_item(self.get_pool(), name=name)
+        pool = self._get_pool(name)
         if pool.tiers:
             return ', '.join(x.name for x in pool.tiers)
 
     def get_pool_raid_levels(self, name):
-        pool = self._get_item(self.get_pool(), name=name)
+        pool = self._get_pool(name)
         return pool.raid_type.name
 
     def get_pool_fast_cache_status(self, name):
-        pool = self._get_item(self.get_pool(), name=name)
+        pool = self._get_pool(name)
         return str(pool.is_fast_cache_enabled)
 
     def get_pool_number_of_disk(self, name):
-        pool = self._get_item(self.get_pool(), name=name)
+        pool = self._get_pool(name)
         if pool.tiers:
             return str(sum(x.disk_count for x in pool.tiers))
 
     def get_pool_size_total(self, name):
-        pool = self._get_item(self.get_pool(), name=name)
+        pool = self._get_pool(name)
         return str(pool.size_total)
 
     def get_pool_size_free(self, name):
-        pool = self._get_item(self.get_pool(), name=name)
+        pool = self._get_pool(name)
         return str(pool.size_free)
 
     def get_pool_size_used(self, name):
-        pool = self._get_item(self.get_pool(), name=name)
+        pool = self._get_pool(name)
         return str(pool.size_used)
 
     def get_pool_size_ultilization(self, name):
-        pool = self._get_item(self.get_pool(), name=name)
+        pool = self._get_pool(name)
         if pool.size_total != 0:
             return str(pool.size_used / pool.size_total)
 
     # volumeTable
     def get_luns(self):
-        return [lun.id for lun in self.get_lun()]
+        return [lun.id for lun in self.unity_system.get_lun()]
+
+    def _get_lun(self, id):
+        return self._get_item(self.unity_system.get_lun(), id=id)
 
     def get_lun_name(self, id):
-        lun = self._get_item(self.get_lun(), id=id)
+        lun = self._get_lun(id)
         return lun.name
 
     def get_lun_raid_type(self, id):
-        lun = self._get_item(self.get_lun(), id=id)
+        lun = self._get_lun(id)
         if lun.pool:
             return lun.pool.raid_type.name
 
     def get_lun_size_allocated(self, id):
-        lun = self._get_item(self.get_lun(), id=id)
+        lun = self._get_lun(id)
         return str(lun.size_allocated)
 
     def get_lun_size_total(self, id):
-        lun = self._get_item(self.get_lun(), id=id)
+        lun = self._get_lun(id)
         return str(lun.size_total)
 
     def get_lun_health_status(self, id):
-        lun = self._get_item(self.get_lun(), id=id)
+        lun = self._get_lun(id)
         return lun.health.value.name
 
     def get_lun_fast_cache_status(self, id):
-        lun = self._get_item(self.get_lun(), id=id)
+        lun = self._get_lun(id)
         return str(lun.pool.is_fast_cache_enabled)
 
     def get_lun_default_sp(self, id):
-        lun = self._get_item(self.get_lun(), id=id)
+        lun = self._get_lun(id)
         return lun.default_node.name
 
     def get_lun_current_sp(self, id):
-        lun = self._get_item(self.get_lun(), id=id)
+        lun = self._get_lun(id)
         return lun.current_node.name
 
     def get_lun_response_time(self, id):
-        lun = self._get_item(self.get_lun(), id=id)
+        lun = self._get_lun(id)
         return str(lun.response_time)
 
     def get_lun_queue_length(self, id):
-        lun = self._get_item(self.get_lun(), id=id)
+        lun = self._get_lun(id)
         return str(lun.queue_length)
 
     def get_lun_total_iops(self, id):
-        lun = self._get_item(self.get_lun(), id=id)
+        lun = self._get_lun(id)
         return str(lun.total_iops)
 
     def get_lun_read_iops(self, id):
-        lun = self._get_item(self.get_lun(), id=id)
+        lun = self._get_lun(id)
         return str(lun.read_iops)
 
     def get_lun_write_iops(self, id):
-        lun = self._get_item(self.get_lun(), id=id)
+        lun = self._get_lun(id)
         return str(lun.write_iops)
 
     def get_lun_total_byte_rate(self, id):
-        lun = self._get_item(self.get_lun(), id=id)
+        lun = self._get_lun(id)
         return str(lun.total_byte_rate)
 
     def get_lun_read_byte_rate(self, id):
-        lun = self._get_item(self.get_lun(), id=id)
+        lun = self._get_lun(id)
         return str(lun.read_byte_rate)
 
     def get_lun_write_byte_rate(self, id):
-        lun = self._get_item(self.get_lun(), id=id)
+        lun = self._get_lun(id)
         return str(lun.write_byte_rate)
 
     def get_lun_fast_cache_read_hits(self, id):
-        lun = self._get_item(self.get_lun(), id=id)
+        lun = self._get_lun(id)
         return str(lun.fast_cache_read_hits)
 
     def get_lun_fast_cache_write_hits(self, id):
-        lun = self._get_item(self.get_lun(), id=id)
+        lun = self._get_lun(id)
         return str(lun.fast_cache_write_hits)
 
     def get_lun_fast_cache_read_hit_rate(self, id):
-        lun = self._get_item(self.get_lun(), id=id)
+        lun = self._get_lun(id)
         return str(lun.fast_cache_read_hit_rate)
 
     def get_lun_fast_cache_write_hit_rate(self, id):
-        lun = self._get_item(self.get_lun(), id=id)
+        lun = self._get_lun(id)
         return str(lun.fast_cache_write_hit_rate)
 
     def get_lun_utilization(self, id):
-        lun = self._get_item(self.get_lun(), id=id)
+        lun = self._get_lun(id)
         return str(lun.utilization)
 
     def get_lun_host_access(self, id):
-        lun = self._get_item(self.get_lun(), id=id)
+        lun = self._get_lun(id)
         if lun.host_access:
             return ', '.join(x.host.name for x in lun.host_access)
 
     # diskTable
     def get_disks(self):
-        return [disk.name for disk in self.get_disk()]
+        return [disk.name for disk in self.unity_system.get_disk()]
+
+    def _get_disk(self, name):
+        return self._get_item(self.unity_system.get_disk(), name=name)
 
     def get_disk_model(self, name):
-        disk = self._get_item(self.get_disk(), name=name)
+        disk = self._get_disk(name)
         return disk.model
 
     def get_disk_serial_number(self, name):
-        disk = self._get_item(self.get_disk(), name=name)
+        disk = self._get_disk(name)
         return disk.emc_serial_number
 
     def get_disk_version(self, name):
-        disk = self._get_item(self.get_disk(), name=name)
+        disk = self._get_disk(name)
         return disk.version
 
     def get_disk_type(self, name):
-        disk = self._get_item(self.get_disk(), name=name)
+        disk = self._get_disk(name)
         if disk.disk_technology:
             return disk.disk_technology.name
 
     def get_disk_slot_number(self, name):
-        disk = self._get_item(self.get_disk(), name=name)
+        disk = self._get_disk(name)
         return str(disk.slot_number)
 
     def get_disk_health_status(self, name):
-        disk = self._get_item(self.get_disk(), name=name)
+        disk = self._get_disk(name)
         return disk.health.value.name
 
     def get_disk_raw_size(self, name):
-        disk = self._get_item(self.get_disk(), name=name)
+        disk = self._get_disk(name)
         return str(disk.raw_size)
 
     def get_disk_current_pool(self, name):
-        disk = self._get_item(self.get_disk(), name=name)
+        disk = self._get_disk(name)
         if disk.pool:
             return disk.pool.name
 
     def get_disk_response_time(self, name):
-        disk = self._get_item(self.get_disk(), name=name)
+        disk = self._get_disk(name)
         return str(disk.response_time)
 
     def get_disk_queue_length(self, name):
-        disk = self._get_item(self.get_disk(), name=name)
+        disk = self._get_disk(name)
         return str(disk.queue_length)
 
     def get_disk_total_iops(self, name):
-        disk = self._get_item(self.get_disk(), name=name)
+        disk = self._get_disk(name)
         return str(disk.total_iops)
 
     def get_disk_read_iops(self, name):
-        disk = self._get_item(self.get_disk(), name=name)
+        disk = self._get_disk(name)
         return str(disk.read_iops)
 
     def get_disk_write_iops(self, name):
-        disk = self._get_item(self.get_disk(), name=name)
+        disk = self._get_disk(name)
         return str(disk.write_iops)
 
     def get_disk_total_byte_rate(self, name):
-        disk = self._get_item(self.get_disk(), name=name)
+        disk = self._get_disk(name)
         return str(disk.total_byte_rate)
 
     def get_disk_read_byte_rate(self, name):
-        disk = self._get_item(self.get_disk(), name=name)
+        disk = self._get_disk(name)
         return str(disk.read_byte_rate)
 
     def get_disk_write_byte_rate(self, name):
-        disk = self._get_item(self.get_disk(), name=name)
+        disk = self._get_disk(name)
         return str(disk.write_byte_rate)
 
     def get_disk_utilization(self, name):
-        disk = self._get_item(self.get_disk(), name=name)
+        disk = self._get_disk(name)
         return str(disk.utilization)
 
     # frontendPortTable
@@ -468,17 +393,17 @@ class UnityClient(object):
     ISCSI_PORT_TYPE = 'iscsi_port_'
 
     def get_frontend_ports(self):
-        fc_ports = [self.FC_PORT_TYPE + port.id for port in self.get_fc_port()]
-        iscsi_ports = [self.ISCSI_PORT_TYPE + port.id for port in self.get_iscsi_node()]
+        fc_ports = [self.FC_PORT_TYPE + port.id for port in self.unity_system.get_fc_port()]
+        iscsi_ports = [self.ISCSI_PORT_TYPE + port.id for port in self.unity_system.get_iscsi_node()]
         return fc_ports + iscsi_ports
 
     def _get_frontend_port(self, id):
         if id.startswith(self.FC_PORT_TYPE):
             id = id.replace(self.FC_PORT_TYPE, '', 1)
-            return self._get_item(self.get_fc_port(), id=id), self.FC_PORT_TYPE
+            return self._get_item(self.unity_system.get_fc_port(), id=id), self.FC_PORT_TYPE
         if id.startswith(self.ISCSI_PORT_TYPE):
             id = id.replace(self.ISCSI_PORT_TYPE, '', 1)
-            return self._get_item(self.get_iscsi_node(), id=id), self.ISCSI_PORT_TYPE
+            return self._get_item(self.unity_system.get_iscsi_node(), id=id), self.ISCSI_PORT_TYPE
 
     def get_frontend_port_id(self, id):
         port, _ = self._get_frontend_port(id)
@@ -556,49 +481,55 @@ class UnityClient(object):
 
     # backendPortTable
     def get_backend_ports(self):
-        return [port.id for port in self.get_sas_port()]
+        return [port.id for port in self.unity_system.get_sas_port()]
+
+    def _get_backend_port(self, id):
+        return self._get_item(self.unity_system.get_sas_port(), id=id)
 
     def get_backend_port_name(self, id):
-        port = self._get_item(self.get_sas_port(), id=id)
+        port = self._get_backend_port(id)
         return port.name
 
     def get_backend_port_type(self, id):
-        port = self._get_item(self.get_sas_port(), id=id)
+        port = self._get_backend_port(id)
         return port.connector_type.name
 
     def get_backend_port_port_number(self, id):
-        port = self._get_item(self.get_sas_port(), id=id)
+        port = self._get_backend_port(id)
         return str(port.port)
 
     def get_backend_port_current_speed(self, id):
-        port = self._get_item(self.get_sas_port(), id=id)
+        port = self._get_backend_port(id)
         if port.current_speed:
             return port.current_speed.name
 
     def get_backend_port_parent_io_module(self, id):
-        port = self._get_item(self.get_sas_port(), id=id)
+        port = self._get_backend_port(id)
         if port.parent_io_module:
             return port.parent_io_module.name
 
     def get_backend_port_parent_sp(self, id):
-        port = self._get_item(self.get_sas_port(), id=id)
+        port = self._get_backend_port(id)
         if port.parent_storage_processor:
             return port.parent_storage_processor.name
 
     def get_backend_port_health_status(self, id):
-        port = self._get_item(self.get_sas_port(), id=id)
+        port = self._get_backend_port(id)
         return port.health.value.name
 
     # hostTable
     def get_hosts(self):
-        return [host.name for host in self.get_host()]
+        return [host.name for host in self.unity_system.get_host()]
+
+    def _get_host(self, name):
+        return self._get_item(self.unity_system.get_host(), name=name)
 
     def get_host_network_address(self, name):
-        host = self._get_item(self.get_host(), name=name)
+        host = self._get_host(name)
         return ', '.join(host.ip_list)
 
     def get_host_initiators(self, name):
-        host = self._get_item(self.get_host(), name=name)
+        host = self._get_host(name)
         initiators = []
         if host.iscsi_host_initiators:
             initiators.extend(x.initiator_id for x in host.iscsi_host_initiators)
@@ -607,27 +538,27 @@ class UnityClient(object):
         return ', '.join(initiators)
 
     def get_host_os_type(self, name):
-        host = self._get_item(self.get_host(), name=name)
+        host = self._get_host(name)
         return host.os_type
 
     def get_host_assigned_volumes(self, name):
-        host = self._get_item(self.get_host(), name=name)
+        host = self._get_host(name)
         if host.host_luns:
             return ', '.join(x.lun.name for x in host.host_luns)
 
     # enclosureTable
     def get_enclosures(self):
-        daes = ['dae_' + dae.name for dae in self.get_dae()]
-        dpes = ['dpe_' + dpe.name for dpe in self.get_dpe()]
+        daes = ['dae_' + dae.name for dae in self.unity_system.get_dae()]
+        dpes = ['dpe_' + dpe.name for dpe in self.unity_system.get_dpe()]
         return daes + dpes
 
     def _get_enclosure(self, name):
         if name.startswith('dae_'):
             name = name.lstrip('dae_')
-            return self._get_item(self.get_dae(), name=name)
+            return self._get_item(self.unity_system.get_dae(), name=name)
         if name.startswith('dpe_'):
             name = name.lstrip('dpe_')
-            return self._get_item(self.get_dpe(), name=name)
+            return self._get_item(self.unity_system.get_dpe(), name=name)
 
     def get_enclosure_name(self, name):
         enclosure = self._get_enclosure(name)
@@ -675,22 +606,25 @@ class UnityClient(object):
 
     # powerSupplyTable
     def get_power_supplies(self):
-        return [power_supply.name for power_supply in self.get_power_supply()]
+        return [power_supply.name for power_supply in self.unity_system.get_power_supply()]
+
+    def _get_power_supply(self, name):
+        return self._get_item(self.unity_system.get_power_supply(), name=name)
 
     def get_power_supply_manufacturer(self, name):
-        power_supply = self._get_item(self.get_power_supply(), name=name)
+        power_supply = self._get_power_supply(name)
         return power_supply.manufacturer
 
     def get_power_supply_model(self, name):
-        power_supply = self._get_item(self.get_power_supply(), name=name)
+        power_supply = self._get_power_supply(name)
         return power_supply.model
 
     def get_power_supply_firmware_version(self, name):
-        power_supply = self._get_item(self.get_power_supply(), name=name)
+        power_supply = self._get_power_supply(name)
         return power_supply.firmware_version
 
     def get_power_supply_parent_enclosure(self, name):
-        power_supply = self._get_item(self.get_power_supply(), name=name)
+        power_supply = self._get_power_supply(name)
         parents = []
         if power_supply.parent_dpe:
             parents.append(power_supply.parent_dpe)
@@ -699,23 +633,26 @@ class UnityClient(object):
         return ', '.join(x.name for x in parents)
 
     def get_power_supply_sp(self, name):
-        power_supply = self._get_item(self.get_power_supply(), name=name)
+        power_supply = self._get_power_supply(name)
         return power_supply.storage_processor.name
 
     def get_power_supply_health_status(self, name):
-        power_supply = self._get_item(self.get_power_supply(), name=name)
+        power_supply = self._get_power_supply(name)
         return power_supply.health.value.name
 
     # fanTable
     def get_fans(self):
-        return [fan.name for fan in self.get_fan()]
+        return [fan.name for fan in self.unity_system.get_fan()]
+
+    def _get_fan(self, name):
+        return self._get_item(self.unity_system.get_fan(), name=name)
 
     def get_fan_slot_number(self, name):
-        fan = self._get_item(self.get_fan(), name=name)
+        fan = self._get_fan(name)
         return str(fan.slot_number)
 
     def get_fan_parent_enclosure(self, name):
-        fan = self._get_item(self.get_fan(), name=name)
+        fan = self._get_fan(name)
         parents = []
         if fan.parent_dpe:
             parents.append(fan.parent_dpe)
@@ -724,29 +661,32 @@ class UnityClient(object):
         return ', '.join(x.name for x in parents)
 
     def get_fan_health_status(self, name):
-        fan = self._get_item(self.get_fan(), name=name)
+        fan = self._get_fan(name)
         return fan.health.value.name
 
     # BBUTable
     def get_bbus(self):
-        return [bbu.name for bbu in self.get_battery()]
+        return [bbu.name for bbu in self.unity_system.get_battery()]
+
+    def _get_bbu(self, name):
+        return self._get_item(self.unity_system.get_battery(), name=name)
 
     def get_bbu_manufacturer(self, name):
-        bbu = self._get_item(self.get_battery(), name=name)
+        bbu = self._get_bbu(name)
         return bbu.manufacturer
 
     def get_bbu_model(self, name):
-        bbu = self._get_item(self.get_battery(), name=name)
+        bbu = self._get_bbu(name)
         return bbu.model
 
     def get_bbu_firmware_version(self, name):
-        bbu = self._get_item(self.get_battery(), name=name)
+        bbu = self._get_bbu(name)
         return bbu.firmware_version
 
     def get_bbu_parent_sp(self, name):
-        bbu = self._get_item(self.get_battery(), name=name)
+        bbu = self._get_bbu(name)
         return bbu.parent_storage_processor.name
 
     def get_bbu_health_status(self, name):
-        bbu = self._get_item(self.get_battery(), name=name)
+        bbu = self._get_bbu(name)
         return bbu.health.value.name
