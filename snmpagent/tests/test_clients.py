@@ -1,7 +1,6 @@
-import os
 import pytest
-
-from .unityclient_mock import MockUnityClient
+from snmpagent.tests import utils
+from snmpagent.tests.unityclient_mock import MockUnityClient
 
 
 @pytest.fixture()
@@ -10,7 +9,7 @@ def unity_client(request):
 
 
 # class TestSystem(object):
-#     path = '.\\unity_data\\disk\\all.json'
+#     path = '.\\unity\\disk\\all.json'
 #
 #     @pytest.fixture(scope='class')
 #     def client(self, unity_client):
@@ -26,7 +25,8 @@ def unity_client(request):
 
 
 # @pytest.mark.usefixtures('unity_client')
-# @pytest.mark.parametrize('unity_client', ['.\\unity_data\\disk\\all.json',], indirect=True)
+# @pytest.mark.parametrize('unity_client', ['.\\unity\\disk\\all.json',],
+#                          indirect=True)
 # class TestDisk(object):
 #     name = 'DAE 0 1 Disk 0'
 #
@@ -34,13 +34,15 @@ def unity_client(request):
 #     #     pass
 #
 #     def test_get_disk_model(self, unity_client):
-#         assert unity_client.get_disk_model(name=self.name) == 'ST2000NK EMC2000'
+#         assert (unity_client.get_disk_model(name=self.name)
+#                 == 'ST2000NK EMC2000')
 
 
+path_battery_positive = utils.unity_data('battery', 'battery_positive.json')
 
-dir_battery = os.path.abspath('./unity_data/battery/')
-path_battery_positive = os.path.join(dir_battery, "battery_positive.json")
-@pytest.mark.parametrize('unity_client', [path_battery_positive], indirect=True)
+
+@pytest.mark.parametrize('unity_client', [path_battery_positive],
+                         indirect=True)
 class TestBattery(object):
     name = 'SP A Battery 0'
 
@@ -51,13 +53,17 @@ class TestBattery(object):
         assert set(actual) == set(expected)
 
     def test_get_bbu_manufacturer(self, unity_client):
-        assert unity_client.get_bbu_manufacturer(name=self.name) == 'ACBEL POLYTECH INC.'
+        assert unity_client.get_bbu_manufacturer(
+            name=self.name) == 'ACBEL POLYTECH INC.'
 
     def test_get_bbu_model(self, unity_client):
-        assert unity_client.get_bbu_model(name=self.name) == 'LITHIUM-ION, UNIVERSAL BOB'
+        assert unity_client.get_bbu_model(
+            name=self.name) == 'LITHIUM-ION, UNIVERSAL BOB'
 
     def test_get_bbu_firmware_version(self, unity_client):
-        assert unity_client.get_bbu_firmware_version(name=self.name) == '073.91'
+        assert unity_client.get_bbu_firmware_version(
+            name=self.name) == '073.91'
+
     def test_get_bbu_parent_sp(self, unity_client):
         assert unity_client.get_bbu_parent_sp(name=self.name) == 'SP A'
 

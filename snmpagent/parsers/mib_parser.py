@@ -30,7 +30,7 @@ class InMemoryMibParser(object):
 def get_mib_symbols(name):
     mib_parser = InMemoryMibParser()
     mibCompiler = MibCompiler(SmiV2Parser(), SymtableCodeGen(), mib_parser)
-    mibCompiler.addSources(FileReader(os.path.abspath('../mib')))
+    mibCompiler.addSources(FileReader(os.path.abspath('../mibs')))
     mibCompiler.addSearchers(StubSearcher(*baseMibs))
     mibCompiler.compile(name)
 
