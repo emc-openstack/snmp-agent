@@ -18,9 +18,10 @@ class UnityClient(object):
     manager = CachedUnityClientManager()
 
     def __init__(self, host=None, username=None, password=None, port=443):
+        print("connecting to unity %s ..." % host)
         self.unity_system = UnitySystem(host=host, username=username, password=password, port=port, cache_interval=30)
+        print('enable metric')
         self.unity_system.enable_perf_stats()
-        self.cache_dict = {}
 
     @classmethod
     def get_unity_client(cls, name, *args):
@@ -457,7 +458,7 @@ class UnityClient(object):
 
     def get_frontend_port_total_iops(self, id):
         port, _ = self._get_frontend_port(id)
-        return str(port.read_iops + port.write_iops)
+        return str(port.total_iops)
 
     def get_frontend_port_read_iops(self, id):
         port, _ = self._get_frontend_port(id)
@@ -469,7 +470,7 @@ class UnityClient(object):
 
     def get_frontend_port_total_byte_rate(self, id):
         port, _ = self._get_frontend_port(id)
-        return str(port.read_byte_rate + port.write_byte_rate)
+        return str(port.total_byte_rate)
 
     def get_frontend_port_read_byte_rate(self, id):
         port, _ = self._get_frontend_port(id)

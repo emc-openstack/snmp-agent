@@ -64,6 +64,9 @@ class SNMPAgent(object):
         for idx, unity in enumerate(self.unity_config):
             transport_domain = udp.domainName + (idx,)
             engine = snmp_engine.SNMPEngine(unity)
+            #
+            # engine.enable_observer()
+
             engine.registerTransportDispatcher(self.transport_dispatcher, transport_domain)
 
             port = int(unity.port)
@@ -89,7 +92,7 @@ if __name__ == '__main__':
     # printer = debug.Printer(handler=logging.FileHandler(log_file))
     # debug.setLogger(debug.Debug('all', printer=printer))
 
-    debug.setLogger(debug.Debug('all'))
+    # debug.setLogger(debug.Debug('io'))
     config_file = os.path.abspath('conf/snmpagent.conf')
     auth_config_file = os.path.abspath('conf/access.conf')
     agent = SNMPAgent(config_file, auth_config_file)

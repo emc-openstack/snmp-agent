@@ -7,11 +7,14 @@ from pysnmp.entity import engine, config
 from pysnmp.entity.rfc3413 import cmdrsp, context
 from pysnmp.smi import builder
 
-debug.setLogger(debug.Debug('all'))
+from pysnmp.proto import rfc1902
+
+# debug.setLogger(debug.Debug('all'))
 
 
 class SNMPEngine(object):
     def __init__(self, storage_context):
+        # self.snmp_engine = engine.SnmpEngine(rfc1902.OctetString(hexValue=storage_context.id))
         self.snmp_engine = engine.SnmpEngine()
         self.snmp_engine.storage_context = storage_context
 
@@ -66,6 +69,7 @@ class SNMPEngine(object):
                                                         storage_context.password)
         except:
             # TODO: log
+            print('Failed to connect unity: %s' % storage_context.spa)
             self.snmp_engine.unity_client = None
 
     def create_managed_object_instance(self):
@@ -129,16 +133,36 @@ class SNMPEngine(object):
         cmdrsp.NextCommandResponder(self.snmp_engine, snmp_context)
         cmdrsp.BulkCommandResponder(self.snmp_engine, snmp_context)
 
-        # Register an imaginary never-ending job to keep I/O dispatcher running forever
-        self.snmp_engine.transportDispatcher.jobStarted(1)
+    #     # Register an imaginary never-ending job to keep I/O dispatcher running forever
+    #     self.snmp_engine.transportDispatcher.jobStarted(1)
+    #
+    # def run(self):
+    #     # Run I/O dispatcher which would receive queries and send responses
+    #     try:
+    #         self.snmp_engine.transportDispatcher.runDispatcher()
+    #     except:
+    #         self.snmp_engine.transportDispatcher.closeDispatcher()
+    #         raise
 
-    def run(self):
-        # Run I/O dispatcher which would receive queries and send responses
-        try:
-            self.snmp_engine.transportDispatcher.runDispatcher()
-        except:
-            self.snmp_engine.transportDispatcher.closeDispatcher()
-            raise
+    def enable_observer(self):
+        self.snmp_engine.observer.registerObserver(
+            self.request_observer,
+            'rfc3412.receiveMessage:request',
+            'rfc3412.returnResponsePdu'
+        )
+
+    def request_observer(self, snmpEngine, execpoint, variables, cbCtx):
+        print('Execution point: %s' % execpoint)
+        print('* transportDomain: %s' % '.'.join([str(x) for x in variables['transportDomain']]))
+        print('* transportAddress: %s (local %s)' % ('@'.join([str(x) for x in variables['transportAddress']]),
+                                                     '@'.join([str(x) for x in
+                                                               variables['transportAddress'].getLocalAddress()])))
+        print('* securityModel: %s' % variables['securityModel'])
+        print('* securityName: %s' % variables['securityName'])
+        print('* securityLevel: %s' % variables['securityLevel'])
+        print('* contextEngineId: %s' % variables['contextEngineId'].prettyPrint())
+        print('* contextName: %s' % variables['contextName'].prettyPrint())
+        print('* PDU: %s' % variables['pdu'].prettyPrint())
 
 
 if __name__ == "__main__":

@@ -1,65 +1,74 @@
-import os
-import pytest
+# import mock
+import sys
+import unittest
 
-from .unityclient_mock import MockUnityClient
-
-
-@pytest.fixture()
-def unity_client(request):
-    return MockUnityClient(request.param)
+from storops import UnitySystem
+import storops
+from unittest.mock import patch, Mock, MagicMock
 
 
-# class TestSystem(object):
-#     path = '.\\unity_data\\disk\\all.json'
+# from ddt import ddt, data, file_data, unpack
+
+sys.path.append('..\\..\\')
+# from snmpagent.clients import UnityClient
+import snmpagent.clients
+
+
+# class UnityClient(object):
+#     def __init__(self):
+#         self.client = UnitySystem()
 #
-#     @pytest.fixture(scope='class')
-#     def client(self, unity_client):
-#         return unity_client()
-#
-#     # @pytest.fixture(autouse=True)
-#     def test_get_agent_version(self, unity_client):
-#         # pytest.set_trace()
-#         assert unity_client.get_agent_version() == '1.0'
-#
-#     def test_get_mib_version(self, unity_client):
-#         assert unity_client.get_mib_version() == '1.0'
+#     def get_xx(self):
+#         print(self.client.get_sp())
 
 
-# @pytest.mark.usefixtures('unity_client')
-# @pytest.mark.parametrize('unity_client', ['.\\unity_data\\disk\\all.json',], indirect=True)
-# class TestDisk(object):
-#     name = 'DAE 0 1 Disk 0'
-#
-#     # def test_get_disks(self):
-#     #     pass
-#
-#     def test_get_disk_model(self, unity_client):
-#         assert unity_client.get_disk_model(name=self.name) == 'ST2000NK EMC2000'
+class MockUnitySystem(object):
+    def __init__(self):
+        self.model = 'model 100'
+
+    def enable_perf_stats(self):
+        pass
+
+    def get_sp(self):
+        return 100
+
+    # def __getattr__(self, item):
+    #     import pdb; pdb.set_trace()
+
+    def get_sps(self):
+        return [1, 2, 3]
 
 
+# @ddt
+class TestUnityClient(unittest.TestCase):
+    @patch(target='storops.UnitySystem')
+    def setUp(self, mock_unity_system):
+        print('setting up')
+        # mock_unity_system.return_value = Mock()
+        mock_unity_system.return_value = MockUnitySystem()
+        self.uc = snmpagent.clients.UnityClient()
 
-dir_battery = os.path.abspath('./unity_data/battery/')
-path_battery_positive = os.path.join(dir_battery, "battery_positive.json")
-@pytest.mark.parametrize('unity_client', [path_battery_positive], indirect=True)
-class TestBattery(object):
-    name = 'SP A Battery 0'
+    def tearDown(self):
+        print('tearing down')
 
-    def test_get_bbus(self, unity_client):
-        actual = unity_client.get_bbus()
-        expected = ['SP A Battery 0', 'SP B Battery 0']
-        assert len(actual) == len(expected)
-        assert set(actual) == set(expected)
+    def test_get_sp(self):
+        print(self.uc.get_sp())
+        self.assertEqual(self.uc.get_sp(), 10)
 
-    def test_get_bbu_manufacturer(self, unity_client):
-        assert unity_client.get_bbu_manufacturer(name=self.name) == 'ACBEL POLYTECH INC.'
+    def test_get_sp2(self):
+        print(self.uc.get_sp())
 
-    def test_get_bbu_model(self, unity_client):
-        assert unity_client.get_bbu_model(name=self.name) == 'LITHIUM-ION, UNIVERSAL BOB'
+    def test_get_model(self):
+        print(self.uc.get_model())
 
-    def test_get_bbu_firmware_version(self, unity_client):
-        assert unity_client.get_bbu_firmware_version(name=self.name) == '073.91'
-    def test_get_bbu_parent_sp(self, unity_client):
-        assert unity_client.get_bbu_parent_sp(name=self.name) == 'SP A'
+    # @patch(target='storops.UnitySystem')
+    # def test_get_serial_number(self, mock_unity_system):
+    #     mock_unity_system.return_value = MagicMock()
+    #     # mock_unity_system.serial_number = MagicMock(return_value='abc')
+    #     self.uc = snmpagent.clients.UnityClient()
+    #     print(self.uc.get_serial_number())
 
-    def test_get_bbu_health_status(self, unity_client):
-        assert unity_client.get_bbu_health_status(name=self.name) == 'OK'
+class TestUnityImpl(unittest.TestCase):
+    @patch()
+    def test_agent_version(self):
+        pass

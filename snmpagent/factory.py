@@ -1,6 +1,20 @@
 from clients import UnityClient
 
 
+def create_unity_client(engine):
+    storage_context = engine.storage_context
+    client_name = storage_context.spa + '_' + storage_context.port
+    try:
+        engine.unity_client = UnityClient.get_unity_client(client_name,
+                                                           storage_context.spa,
+                                                           storage_context.user,
+                                                           storage_context.password)
+    except:
+        print('Failed to connect unity: %s' % storage_context.spa)
+        engine.unity_client = None
+    return engine
+
+
 class ScalarInstanceFactory(object):
     @staticmethod
     def build(name, base_class, impl_class):
@@ -10,16 +24,9 @@ class ScalarInstanceFactory(object):
 
         def __read_get__(self, name, val, idx, acInfo):
             engine = acInfo[1]
+
             if engine.unity_client == None:
-                storage_context = engine.storage_context
-                client_name = storage_context.spa + '_' + storage_context.port
-                try:
-                    engine.unity_client = UnityClient.get_unity_client(client_name, storage_context.spa,
-                                                                       storage_context.user,
-                                                                       storage_context.password)
-                except:
-                    print('Failed to connect unity.')
-                    engine.unity_client = None
+                engine = create_unity_client(engine)
 
             if engine.unity_client == None:
                 # return name, self.getSyntax().clone('Failed to connect unity.')
@@ -30,7 +37,8 @@ class ScalarInstanceFactory(object):
 
             try:
                 return name, self.getSyntax().clone(
-                    self.impl_class().read_get(name, idx_name, engine.unity_client)
+                    self.impl_class().read_get(name, idx_name,
+                                               engine.unity_client)
                 )
             except:
                 # TODO: logging ...
@@ -56,32 +64,20 @@ class TableColumnInstanceFactory(object):
         def __read_getnext__(self, name, val, idx, acInfo, oName=None):
             engine = acInfo[1]
             if engine.unity_client == None:
-                storage_context = engine.storage_context
-                client_name = storage_context.spa + '_' + storage_context.port
-                try:
-                    engine.unity_client = UnityClient.get_unity_client(client_name, storage_context.spa,
-                                                                       storage_context.user,
-                                                                       storage_context.password)
-                except:
-                    engine.unity_client = None
+                engine = create_unity_client(engine)
 
             if engine.unity_client == None:
                 # TODO: need to consider how to handle this scenario
                 return
 
             if self.name == name:
-                # TODO: need to get row_list first
-                row_list = self.impl_class().get_idx(name, idx, engine.unity_client)
+                row_list = self.impl_class().get_idx(name, idx,
+                                                     engine.unity_client)
+                self.unregisterSubtrees(*self._vars.keys())
                 for row in row_list:
                     row_instance_id = self.entry.getInstIdFromIndices(row)
-                    # TODO: destory subtree first?
                     self.createTest(name + row_instance_id, val, idx, acInfo)
                     self.createCommit(name + row_instance_id, val, idx, acInfo)
-                    # TODO: use 1, 2, 3, ... as idx
-                    # for row_id, row in enumerate(row_list, 1):
-                    #     val = self.entry.getInstIdFromIndices(row)
-                    #     self.createTest(name + (row_id,), val, idx, acInfo)
-                    #     self.createCommit(name + (row_id,), val, idx, acInfo)
             next_node = self.getNextNode(name, idx)
             return next_node.readGet(next_node.name, val, idx, acInfo)
 
