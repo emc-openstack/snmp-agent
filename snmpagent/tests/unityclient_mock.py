@@ -1,8 +1,7 @@
-import sys
 import json
 
-sys.path.append('..\\..\\')
 from snmpagent.clients import UnityClient
+
 
 def camel_to_underline(camel_format):
     underline_format = ''
@@ -34,6 +33,7 @@ class MockUnityClient(UnityClient):
     def __init__(self, data_file):
         self.unity_system = self
         self.data_file = data_file
+        self.path_disk = None
 
     def _get_data(self, name=None):
         with open(self.path_disk, 'r') as f:
@@ -43,10 +43,10 @@ class MockUnityClient(UnityClient):
         for item in data['entries']:
             obj_list.append(Data(content=item['content']))
 
-        if name == None:
+        if name is None:
             return obj_list
         else:
-            obj = [obj for obj in obj_list if obj.name==name][0]
+            obj = [obj for obj in obj_list if obj.name == name][0]
             return obj
 
     def get_disk(self, name=None):
@@ -62,6 +62,6 @@ if __name__ == '__main__':
     # mock = MockUnityClient()
     # mock.get_datas()
     # print(mock.unity_system.get_disk(name='DAE 0 1 Disk 0'))
-    mock = MockUnityClient('.\\unity_data\\battery\\battery_positive.json')
+    mock = MockUnityClient('.\\unity\\battery\\battery_positive.json')
     print(mock.unity_system.get_battery(name='SP A Battery 0'))
     print(mock.unity_system.get_bbu_parent_sp(name='SP A Battery 0'))

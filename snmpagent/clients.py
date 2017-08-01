@@ -18,8 +18,10 @@ class UnityClient(object):
     manager = CachedUnityClientManager()
 
     def __init__(self, host=None, username=None, password=None, port=443):
-        print("connecting to unity %s ..." % host)
-        self.unity_system = UnitySystem(host=host, username=username, password=password, port=port, cache_interval=30)
+        print("connecting to unity {} ...".format(host))
+        self.unity_system = UnitySystem(host=host, username=username,
+                                        password=password.raw, port=port,
+                                        cache_interval=30)
         print('enable metric')
         self.unity_system.enable_perf_stats()
 
@@ -54,7 +56,8 @@ class UnityClient(object):
         return self.unity_system.system_version
 
     def get_mgmt_ip(self):
-        return ', '.join(x.ip_address for x in self.unity_system.get_mgmt_interface())
+        return ', '.join(
+            x.ip_address for x in self.unity_system.get_mgmt_interface())
 
     def get_current_power(self):
         self.unity_system.update()
@@ -86,13 +89,16 @@ class UnityClient(object):
         return len(self.get_backend_ports())
 
     def get_total_capacity(self):
-        return str(sum(x.size_total for x in self.unity_system.get_system_capacity()))
+        return str(
+            sum(x.size_total for x in self.unity_system.get_system_capacity()))
 
     def get_used_capacity(self):
-        return str(sum(x.size_used for x in self.unity_system.get_system_capacity()))
+        return str(
+            sum(x.size_used for x in self.unity_system.get_system_capacity()))
 
     def get_free_capacity(self):
-        return str(sum(x.size_free for x in self.unity_system.get_system_capacity()))
+        return str(
+            sum(x.size_free for x in self.unity_system.get_system_capacity()))
 
     def get_total_iops(self):
         self.unity_system.update()
@@ -394,17 +400,21 @@ class UnityClient(object):
     ISCSI_PORT_TYPE = 'iscsi_port_'
 
     def get_frontend_ports(self):
-        fc_ports = [self.FC_PORT_TYPE + port.id for port in self.unity_system.get_fc_port()]
-        iscsi_ports = [self.ISCSI_PORT_TYPE + port.id for port in self.unity_system.get_iscsi_node()]
+        fc_ports = [self.FC_PORT_TYPE + port.id for port in
+                    self.unity_system.get_fc_port()]
+        iscsi_ports = [self.ISCSI_PORT_TYPE + port.id for port in
+                       self.unity_system.get_iscsi_node()]
         return fc_ports + iscsi_ports
 
     def _get_frontend_port(self, id):
         if id.startswith(self.FC_PORT_TYPE):
             id = id.replace(self.FC_PORT_TYPE, '', 1)
-            return self._get_item(self.unity_system.get_fc_port(), id=id), self.FC_PORT_TYPE
+            return self._get_item(self.unity_system.get_fc_port(),
+                                  id=id), self.FC_PORT_TYPE
         if id.startswith(self.ISCSI_PORT_TYPE):
             id = id.replace(self.ISCSI_PORT_TYPE, '', 1)
-            return self._get_item(self.unity_system.get_iscsi_node(), id=id), self.ISCSI_PORT_TYPE
+            return self._get_item(self.unity_system.get_iscsi_node(),
+                                  id=id), self.ISCSI_PORT_TYPE
 
     def get_frontend_port_id(self, id):
         port, _ = self._get_frontend_port(id)
@@ -420,7 +430,9 @@ class UnityClient(object):
             return
         if type == self.ISCSI_PORT_TYPE:
             return ', '.join(
-                portal.ip_address for portal in self.unity_system.get_iscsi_portal() if portal.iscsi_node.id == id)
+                portal.ip_address for portal in
+                self.unity_system.get_iscsi_portal() if
+                portal.iscsi_node.id == id)
 
     def get_frontend_port_type(self, id):
         port, type = self._get_frontend_port(id)
@@ -445,7 +457,8 @@ class UnityClient(object):
                 return ', '.join(x.name for x in port.available_speeds)
         if type == self.ISCSI_PORT_TYPE:
             if port.ethernet_port.supported_speeds:
-                return ', '.join(x.name for x in port.ethernet_port.supported_speeds)
+                return ', '.join(
+                    x.name for x in port.ethernet_port.supported_speeds)
 
     def get_frontend_port_health_status(self, id):
         port, type = self._get_frontend_port(id)
@@ -533,7 +546,8 @@ class UnityClient(object):
         host = self._get_host(name)
         initiators = []
         if host.iscsi_host_initiators:
-            initiators.extend(x.initiator_id for x in host.iscsi_host_initiators)
+            initiators.extend(
+                x.initiator_id for x in host.iscsi_host_initiators)
         if host.fc_host_initiators:
             initiators.extend(x.initiator_id for x in host.fc_host_initiators)
         return ', '.join(initiators)
@@ -607,7 +621,8 @@ class UnityClient(object):
 
     # powerSupplyTable
     def get_power_supplies(self):
-        return [power_supply.name for power_supply in self.unity_system.get_power_supply()]
+        return [power_supply.name for power_supply in
+                self.unity_system.get_power_supply()]
 
     def _get_power_supply(self, name):
         return self._get_item(self.unity_system.get_power_supply(), name=name)

@@ -30,7 +30,8 @@ class InMemoryMibParser(object):
 def get_mib_symbols(name):
     mib_parser = InMemoryMibParser()
     mibCompiler = MibCompiler(SmiV2Parser(), SymtableCodeGen(), mib_parser)
-    mibCompiler.addSources(FileReader(os.path.abspath('../mib')))
+    # Add Unity-MIB mib file to source dir
+    mibCompiler.addSources(FileReader(os.path.abspath('../docs/mibs')))
     mibCompiler.addSearchers(StubSearcher(*baseMibs))
     mibCompiler.compile(name)
 

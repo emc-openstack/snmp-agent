@@ -1,20 +1,6 @@
 from clients import UnityClient
 
 
-def create_unity_client(engine):
-    storage_context = engine.storage_context
-    client_name = storage_context.spa + '_' + storage_context.port
-    try:
-        engine.unity_client = UnityClient.get_unity_client(client_name,
-                                                           storage_context.spa,
-                                                           storage_context.user,
-                                                           storage_context.password)
-    except:
-        print('Failed to connect unity: %s' % storage_context.spa)
-        engine.unity_client = None
-    return engine
-
-
 class ScalarInstanceFactory(object):
     @staticmethod
     def build(name, base_class, impl_class):
@@ -26,7 +12,7 @@ class ScalarInstanceFactory(object):
             engine = acInfo[1]
 
             if engine.unity_client == None:
-                engine = create_unity_client(engine)
+                engine.parent.connect_backend_device()
 
             if engine.unity_client == None:
                 # return name, self.getSyntax().clone('Failed to connect unity.')
@@ -64,7 +50,7 @@ class TableColumnInstanceFactory(object):
         def __read_getnext__(self, name, val, idx, acInfo, oName=None):
             engine = acInfo[1]
             if engine.unity_client == None:
-                engine = create_unity_client(engine)
+                engine.parent.connect_backend_device()
 
             if engine.unity_client == None:
                 # TODO: need to consider how to handle this scenario
