@@ -8,6 +8,7 @@ from snmpagent import config as snmp_config
 from snmpagent.parsers import mib_parser
 
 READ_SUB_TREE = (1, 3, 6)
+WRITE_SUB_TREE = READ_SUB_TREE
 
 
 class SNMPEngine(object):
@@ -59,12 +60,12 @@ class SNMPEngine(object):
                                  obj.priv_key.raw)
                 config.addVacmUser(self.engine, 3, name,
                                    obj.security_level.value, READ_SUB_TREE,
-                                   READ_SUB_TREE)
+                                   AgentConfigParser)
             else:
                 config.addV1System(self.engine, name, obj.community.value)
                 config.addVacmUser(self.engine, 2, name,
                                    enums.SecurityLevel.NO_AUTH_NO_PRIV.value,
-                                   READ_SUB_TREE, READ_SUB_TREE)
+                                   READ_SUB_TREE, AgentConfigParser)
 
     def connect_backend_device(self):
         client_name = '{ip}_{port}'.format(ip=self.array_config.mgmt_ip,

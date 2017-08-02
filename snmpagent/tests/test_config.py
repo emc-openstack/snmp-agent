@@ -74,7 +74,7 @@ class TestConfig(unittest.TestCase):
             elif name == 'user-public':
                 self.assertEqual('user-public', entry.name)
                 self.assertEqual('SNMPv2c', entry.mode.value)
-                self.assertEqual('Public', entry.community.value)
+                self.assertEqual('public', entry.community.value)
             else:
                 self.assertTrue(False)
 

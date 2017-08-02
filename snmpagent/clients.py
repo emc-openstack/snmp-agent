@@ -1,4 +1,4 @@
-from storops import UnitySystem
+import storops
 
 
 class CachedUnityClientManager(object):
@@ -19,8 +19,9 @@ class UnityClient(object):
 
     def __init__(self, host=None, username=None, password=None, port=443):
         print("connecting to unity {} ...".format(host))
-        self.unity_system = UnitySystem(host=host, username=username,
-                                        password=password.raw, port=port,
+        password = password.raw if hasattr(password, 'raw') else password
+        self.unity_system = storops.UnitySystem(host=host, username=username,
+                                        password=password, port=port,
                                         cache_interval=30)
         print('enable metric')
         self.unity_system.enable_perf_stats()

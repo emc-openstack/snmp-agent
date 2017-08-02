@@ -1,8 +1,8 @@
-import sys
-from contextlib import contextmanager
 import os
 import shutil
+import sys
 import tempfile
+from contextlib import contextmanager
 
 try:
     from StringIO import StringIO

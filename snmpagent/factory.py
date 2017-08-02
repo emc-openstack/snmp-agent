@@ -1,6 +1,3 @@
-from clients import UnityClient
-
-
 class ScalarInstanceFactory(object):
     @staticmethod
     def build(name, base_class, impl_class):
