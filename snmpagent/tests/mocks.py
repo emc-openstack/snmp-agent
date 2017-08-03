@@ -210,7 +210,7 @@ class MockUnitySystem(object):
                                speed=FakeObject(name='_10GbPS'),
                                supported_speeds=[FakeObject(name='_1GbPS'),
                                                  FakeObject(name='_10GbPS'),
-                                                 FakeObject(name='_100GbPS'),
+                                                 FakeObject(name='_100MbPS'),
                                                  FakeObject(name='AUTO')],
                                health=FakeObject(
                                    value=FakeObject(name='OK BUT')), ),
@@ -226,40 +226,124 @@ class MockUnitySystem(object):
     def get_iscsi_portal(self):
         return [FakeObject(ip_address='10.0.0.10',
                            iscsi_node=FakeObject(id='iscsinode_spa_eth2')),
-                FakeObject(iscsi_node=FakeObject(id='iscsinode_spa_eth2'))]
+                FakeObject(iscsi_node=FakeObject(id='iscsinode_spb_eth2'))]
 
     def get_sas_port(self):
-        return [FakeObject(id='spa_sas0'),
-                FakeObject(id='spb_sas0')]
+        return [FakeObject(id='spa_sas0',
+                           name='SP A SAS Port 0',
+                           connector_type=FakeObject(name='MINI_SAS_HD'),
+                           port=0,
+                           current_speed=FakeObject(name='_12Gbps'),
+                           parent_io_module=FakeObject(name='IO Module A'),
+                           parent_storage_processor=FakeObject(name='SP A'),
+                           health=FakeObject(value=FakeObject(name='OK')),
+                           ),
+                FakeObject(id='spb_sas0',
+                           name='SP B SAS Port 0',
+                           connector_type=FakeObject(name='NOT_PRESENT'),
+                           port=1,
+                           current_speed=FakeObject(name='_12Gbps'),
+                           parent_io_module=FakeObject(name='IO Module B'),
+                           parent_storage_processor=FakeObject(name='SP B'),
+                           health=FakeObject(value=FakeObject(name='OK BUT')),
+                           )]
 
     def get_host(self):
-        pass
+        return [FakeObject(name='ubuntu1604',
+                           ip_list=['10.207.84.27'],
+                           iscsi_host_initiators=[FakeObject(
+                               initiator_id='iqn.1993-08.org.debian:01:b974ee37fea')],
+                           fc_host_initiators=[FakeObject(
+                               initiator_id='20:00:00:90:FA:53:49:28:10:00:00:90:FA:53:49:28'),
+                               FakeObject(
+                                   initiator_id='20:00:00:90:FA:53:49:29:10:00:00:90:FA:53:49:29')],
+                           os_type='Linux',
+                           host_luns=[FakeObject(
+                               lun=FakeObject(name='storops_dummy_lun'))],
+                           ),
+                FakeObject(name='10.245.54.151',
+                           ip_list=['10.245.54.151',
+                                    '2620:0:170:1d34:a236:9fff:fe66:8960',
+                                    '2620:0:170:1d36:a236:9fff:fe66:8960'],
+                           iscsi_host_initiators=[],
+                           fc_host_initiators=[FakeObject(
+                               initiator_id='20:00:00:90:FA:53:49'),
+                               FakeObject(
+                                   initiator_id='20:00:00:90:FA:53:50')],
+                           os_type='VMware ESXi 6.0.0',
+                           host_luns=[
+                               FakeObject(lun=FakeObject(name='goock_test')),
+                               FakeObject(
+                                   lun=FakeObject(name='goock_test-00')),
+                               FakeObject(
+                                   lun=FakeObject(name='goock_test-01')), ],
+                           )]
 
     def get_dae(self):
-        return [FakeObject(name='DAE 0 1'),
+        return [FakeObject(name='DAE 0 1',
+                           model='ANCHO LF 12G SAS DAE',
+                           emc_serial_number='CF22W145100058',
+                           emc_part_number='100-900-000-04',
+                           health=FakeObject(value=FakeObject(name='OK')),
+                           current_power=430,
+                           avg_power=428,
+                           max_power=458,
+                           current_temperature=26,
+                           avg_temperature=25,
+                           max_temperature=30,
+                           ),
                 FakeObject(name='DAE 0 2')]
 
     def get_dpe(self):
-        return [FakeObject(name='DPE 1'),
+        return [FakeObject(name='DPE 1',
+                           model='OBERON 25 DRIVE CHASSIS',
+                           emc_serial_number='CF2CV145000001',
+                           emc_part_number='100-542-901-05',
+                           health=FakeObject(
+                               value=FakeObject(name='CRITICAL')),
+                           current_power=0,
+                           avg_power=0,
+                           max_power=0,
+                           current_temperature=0,
+                           avg_temperature=0,
+                           max_temperature=0, ),
                 FakeObject(name='DPE 2')]
 
     def get_power_supply(self):
-        return [FakeObject(name='DPE Power Supply A0'),
-                FakeObject(name='DPE Power Supply B0'),
-                FakeObject(name='DAE 0 1 Power Supply A0'),
-                FakeObject(name='DAE 0 1 Power Supply B0')]
+        return [FakeObject(name='DPE Power Supply A0',
+                           manufacturer='FLEXTRONICS POWER INC.',
+                           model='12V P/S WITH 12VSTBY AND FAN',
+                           firmware_version='0501',
+                           parent_dpe=FakeObject(name='DPE'),
+                           storage_processor=FakeObject(name='SP A'),
+                           health=FakeObject(
+                               value=FakeObject(name='OK')),
+                           ),
+                FakeObject(name='DAE 0 1 Power Supply B0',
+                           manufacturer='ACBEL POLYTECH INC.',
+                           model='Third Gen VE.400W, Dual +12V P/S',
+                           firmware_version='0421',
+                           parent_dae=FakeObject(name='DAE 0 1'),
+                           health=FakeObject(
+                               value=FakeObject(name='CRITICAL')),
+                           )]
 
     def get_fan(self):
-        return [FakeObject(name='DPE Cooling Module A0'),
-                FakeObject(name='DPE Cooling Module A1'),
-                FakeObject(name='DPE Cooling Module A2'),
-                FakeObject(name='DPE Cooling Module A3'),
-                FakeObject(name='DPE Cooling Module A4'),
-                FakeObject(name='DPE Cooling Module B1'),
-                FakeObject(name='DPE Cooling Module B2'),
-                FakeObject(name='DPE Cooling Module B3'),
-                FakeObject(name='DPE Cooling Module B4'),
-                FakeObject(name='DPE Cooling Module B5')]
+        return [FakeObject(name='DPE Cooling Module A0',
+                           slot_number=0,
+                           parent_dae=FakeObject(name='DAE 0 1'),
+                           parent_dpe=FakeObject(name='DPE'),
+                           health=FakeObject(value=FakeObject(name='OK')),
+                           ),
+                FakeObject(name='DPE Cooling Module B1',
+                           slot_number=None,
+                           )]
 
-    def get_bbu(self):
-        pass
+    def get_battery(self):
+        return [FakeObject(name='SP A Battery 0',
+                           manufacturer='ACBEL POLYTECH INC.',
+                           model='LITHIUM-ION, UNIVERSAL BOB',
+                           firmware_version='073.91',
+                           parent_storage_processor=FakeObject(name='SP A'),
+                           health=FakeObject(value=FakeObject(name='OK')), ),
+                FakeObject(name='SP B Battery 0')]

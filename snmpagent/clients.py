@@ -21,10 +21,11 @@ class UnityClient(object):
         print("connecting to unity {} ...".format(host))
         password = password.raw if hasattr(password, 'raw') else password
         self.unity_system = storops.UnitySystem(host=host, username=username,
-                                        password=password, port=port,
-                                        cache_interval=30)
+                                                password=password, port=port,
+                                                cache_interval=30)
         print('enable metric')
         self.unity_system.enable_perf_stats()
+        self.NA = 'N/A'
 
     @classmethod
     def get_unity_client(cls, name, *args):
@@ -428,12 +429,12 @@ class UnityClient(object):
     def get_frontend_port_address(self, id):
         port, type = self._get_frontend_port(id)
         if type == self.FC_PORT_TYPE:
-            return
+            return self.NA
         if type == self.ISCSI_PORT_TYPE:
             return ', '.join(
                 portal.ip_address for portal in
                 self.unity_system.get_iscsi_portal() if
-                portal.iscsi_node.id == id)
+                portal.iscsi_node.id == port.id)
 
     def get_frontend_port_type(self, id):
         port, type = self._get_frontend_port(id)
@@ -563,17 +564,22 @@ class UnityClient(object):
             return ', '.join(x.lun.name for x in host.host_luns)
 
     # enclosureTable
+    DAE_TYPE = 'dae_'
+    DPE_TYPE = 'dpe_'
+
     def get_enclosures(self):
-        daes = ['dae_' + dae.name for dae in self.unity_system.get_dae()]
-        dpes = ['dpe_' + dpe.name for dpe in self.unity_system.get_dpe()]
+        daes = [self.DAE_TYPE + dae.name for dae in
+                self.unity_system.get_dae()]
+        dpes = [self.DPE_TYPE + dpe.name for dpe in
+                self.unity_system.get_dpe()]
         return daes + dpes
 
     def _get_enclosure(self, name):
-        if name.startswith('dae_'):
-            name = name.lstrip('dae_')
+        if name.startswith(self.DAE_TYPE):
+            name = name.replace(self.DAE_TYPE, '', 1)
             return self._get_item(self.unity_system.get_dae(), name=name)
-        if name.startswith('dpe_'):
-            name = name.lstrip('dpe_')
+        if name.startswith(self.DPE_TYPE):
+            name = name.replace(self.DPE_TYPE, '', 1)
             return self._get_item(self.unity_system.get_dpe(), name=name)
 
     def get_enclosure_name(self, name):

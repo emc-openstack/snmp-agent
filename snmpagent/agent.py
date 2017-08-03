@@ -60,12 +60,12 @@ class SNMPEngine(object):
                                  obj.priv_key.raw)
                 config.addVacmUser(self.engine, 3, name,
                                    obj.security_level.value, READ_SUB_TREE,
-                                   AgentConfigParser)
+                                   WRITE_SUB_TREE)
             else:
                 config.addV1System(self.engine, name, obj.community.value)
                 config.addVacmUser(self.engine, 2, name,
                                    enums.SecurityLevel.NO_AUTH_NO_PRIV.value,
-                                   READ_SUB_TREE, AgentConfigParser)
+                                   READ_SUB_TREE, WRITE_SUB_TREE)
 
     def connect_backend_device(self):
         client_name = '{ip}_{port}'.format(ip=self.array_config.mgmt_ip,
