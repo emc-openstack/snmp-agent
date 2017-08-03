@@ -1,6 +1,5 @@
 class EnclosureName(object):
     def read_get(self, name, idx_name, unity_client):
-        # return idx_name
         return unity_client.get_enclosure_name(idx_name)
 
 
