@@ -49,6 +49,7 @@ user_config = patch_config('UserConfig')
 user_v3_entry = mock.patch('snmpagent.config.UserV3ConfigEntry')
 user_v2_entry = mock.patch('snmpagent.config.UserV2ConfigEntry')
 
+unity_client = mock.patch('snmpagent.clients.UnityClient')
 
 @contextmanager
 def stdout():
