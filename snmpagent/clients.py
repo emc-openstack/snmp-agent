@@ -1,4 +1,67 @@
+from functools import wraps, partial
+
+import six
+
 import storops
+
+NONE_STRING = 'n/a'
+
+
+def to_string(func):
+    @wraps(func)
+    def _inner(*args, **kwargs):
+        try:
+            result = func(*args, **kwargs)
+            if result is not None:
+                result = str(result)
+            else:
+                result = NONE_STRING
+        except:
+            result = NONE_STRING
+        return result
+
+    return _inner
+
+
+def to_number(func=None, length=2):
+    if func is None:
+        return partial(to_number, length=length)
+
+    @wraps(func)
+    def _inner(*args, **kwargs):
+        try:
+            result = func(*args, **kwargs)
+            if isinstance(result, six.integer_types):
+                result = result
+            elif isinstance(result, float):
+                result = round(result, length)
+            else:
+                result = 0
+        except:
+            result = 0
+        return result
+
+    return _inner
+
+
+def change_unit(func=None, from_unit='b', to_unit='gb'):
+    if func is None:
+        return partial(change_unit, from_unit=from_unit, to_unit=to_unit)
+
+    unit_dict = {'tb': 2 ** 40,
+                 'gb': 2 ** 30,
+                 'mb': 2 ** 20,
+                 'kb': 2 ** 10,
+                 'b': 1}
+    fac = unit_dict.get(from_unit, 1)
+    den = unit_dict.get(to_unit, 2 ** 30)
+
+    @wraps(func)
+    def _inner(*args, **kwargs):
+        result = func(*args, **kwargs) * fac / den
+        return result
+
+    return _inner
 
 
 class CachedUnityClientManager(object):
@@ -25,7 +88,7 @@ class UnityClient(object):
                                                 cache_interval=30)
         print('enable metric')
         self.unity_system.enable_perf_stats()
-        self.NA = 'N/A'
+        self.none = 'n/a'
 
     @classmethod
     def get_unity_client(cls, name, *args):
@@ -48,83 +111,120 @@ class UnityClient(object):
     def get_manufacturer(self):
         return "DellEMC"
 
+    @to_string
     def get_model(self):
         return self.unity_system.model
 
+    @to_string
     def get_serial_number(self):
         return self.unity_system.serial_number
 
+    @to_string
     def get_operation_environment_version(self):
         return self.unity_system.system_version
 
+    @to_string
     def get_mgmt_ip(self):
         return ', '.join(
             x.ip_address for x in self.unity_system.get_mgmt_interface())
 
+    @to_string
     def get_current_power(self):
         self.unity_system.update()
-        return str(self.unity_system.current_power)
+        return self.unity_system.current_power
 
+    @to_string
     def get_avg_power(self):
         self.unity_system.update()
-        return str(self.unity_system.avg_power)
+        return self.unity_system.avg_power
 
+    @to_number
     def get_number_of_sp(self):
         return len(self.get_sps())
 
+    @to_number
     def get_number_of_enclosure(self):
         return len(self.get_enclosures())
 
+    @to_number
     def get_number_of_power_supply(self):
         return len(self.get_power_supplies())
 
+    @to_number
     def get_number_of_fan(self):
         return len(self.get_fans())
 
+    @to_number
     def get_number_of_disk(self):
         return len(self.get_disks())
 
+    @to_number
     def get_number_of_frontend_port(self):
         return len(self.get_frontend_ports())
 
+    @to_number
     def get_number_of_backend_port(self):
         return len(self.get_backend_ports())
 
+    @to_string
+    @to_number
+    @change_unit
     def get_total_capacity(self):
-        return str(
-            sum(x.size_total for x in self.unity_system.get_system_capacity()))
+        return sum(
+            x.size_total for x in self.unity_system.get_system_capacity())
 
+    @to_string
+    @to_number
+    @change_unit
     def get_used_capacity(self):
-        return str(
-            sum(x.size_used for x in self.unity_system.get_system_capacity()))
+        return sum(
+            x.size_used for x in self.unity_system.get_system_capacity())
 
+    @to_string
+    @to_number
+    @change_unit
     def get_free_capacity(self):
-        return str(
-            sum(x.size_free for x in self.unity_system.get_system_capacity()))
+        return sum(
+            x.size_free for x in self.unity_system.get_system_capacity())
 
+    @to_string
+    @to_number
     def get_total_iops(self):
         self.unity_system.update()
-        return str(self.unity_system.total_iops)
+        return self.unity_system.total_iops
 
+    @to_string
+    @to_number
     def get_read_iops(self):
         self.unity_system.update()
-        return str(self.unity_system.read_iops)
+        return self.unity_system.read_iops
 
+    @to_string
+    @to_number
     def get_write_iops(self):
         self.unity_system.update()
-        return str(self.unity_system.write_iops)
+        return self.unity_system.write_iops
 
+    @to_string
+    @to_number
+    @change_unit(to_unit='mb')
     def get_total_byte_rate(self):
         self.unity_system.update()
-        return str(self.unity_system.total_byte_rate)
+        return self.unity_system.total_byte_rate
 
+    @to_string
+    @to_number
+    @change_unit(to_unit='mb')
     def get_read_byte_rate(self):
         self.unity_system.update()
-        return str(self.unity_system.read_byte_rate)
+        return self.unity_system.read_byte_rate
 
+    @to_string
+    @to_number
+    @change_unit(to_unit='mb')
     def get_write_byte_rate(self):
         self.unity_system.update()
-        return str(self.unity_system.write_byte_rate)
+        return self.unity_system.write_byte_rate
 
     # storageProcessorTable
     def get_sps(self):
@@ -133,53 +233,78 @@ class UnityClient(object):
     def _get_sp(self, name):
         return self._get_item(self.unity_system.get_sp(), name=name)
 
+    @to_string
     def get_sp_serial_number(self, name):
         sp = self._get_sp(name)
         return sp.emc_serial_number
 
+    @to_string
     def get_sp_health_status(self, name):
         sp = self._get_sp(name)
         return sp.health.value.name
 
+    @to_string
+    @to_number
     def get_sp_utilization(self, name):
         sp = self._get_sp(name)
-        return str(sp.utilization)
+        return sp.utilization
 
+    @to_string
+    @to_number
     def get_sp_block_total_iops(self, name):
         sp = self._get_sp(name)
-        return str(sp.block_total_iops)
+        return sp.block_total_iops
 
+    @to_string
+    @to_number
     def get_sp_block_read_iops(self, name):
         sp = self._get_sp(name)
-        return str(sp.block_read_iops)
+        return sp.block_read_iops
 
+    @to_string
+    @to_number
     def get_sp_block_write_iops(self, name):
         sp = self._get_sp(name)
-        return str(sp.block_write_iops)
+        return sp.block_write_iops
 
+    @to_string
+    @to_number
+    @change_unit(to_unit='mb')
     def get_sp_total_byte_rate(self, name):
         sp = self._get_sp(name)
-        return str(sp.total_byte_rate)
+        return sp.total_byte_rate
 
+    @to_string
+    @to_number
+    @change_unit(to_unit='mb')
     def get_sp_read_byte_rate(self, name):
         sp = self._get_sp(name)
-        return str(sp.read_byte_rate)
+        return sp.read_byte_rate
 
+    @to_string
+    @to_number
+    @change_unit(to_unit='mb')
     def get_sp_write_byte_rate(self, name):
         sp = self._get_sp(name)
-        return str(sp.write_byte_rate)
+        return sp.write_byte_rate
 
+    @to_string
+    @to_number()
     def get_sp_cache_dirty_size(self, name):
         sp = self._get_sp(name)
-        return str(sp.block_cache_dirty_size)
+        return sp.block_cache_dirty_size
 
+    @to_string
+    @to_number()
     def get_sp_block_cache_read_hit_ratio(self, name):
         sp = self._get_sp(name)
-        return str(sp.block_cache_read_hit_ratio)
+        return sp.block_cache_read_hit_ratio
 
+    @to_string
+    @to_number()
     def get_sp_block_cache_write_hit_ratio(self, name):
         sp = self._get_sp(name)
-        return str(sp.block_cache_write_hit_ratio)
+        return sp.block_cache_write_hit_ratio
 
     # poolTable
     def get_pools(self):
@@ -429,7 +554,7 @@ class UnityClient(object):
     def get_frontend_port_address(self, id):
         port, type = self._get_frontend_port(id)
         if type == self.FC_PORT_TYPE:
-            return self.NA
+            return self.none
         if type == self.ISCSI_PORT_TYPE:
             return ', '.join(
                 portal.ip_address for portal in

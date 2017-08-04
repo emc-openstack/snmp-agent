@@ -170,7 +170,7 @@ class SNMPAgent(object):
 if __name__ == '__main__':
     from pysnmp import debug
 
-    debug.setLogger(debug.Debug('all'))
+    # debug.setLogger(debug.Debug('all'))
     import os
 
     config_file = os.path.abspath('configs/agent.conf')

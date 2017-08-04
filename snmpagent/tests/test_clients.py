@@ -14,45 +14,45 @@ class TestUnityClient(unittest.TestCase):
         self.client = clients.UnityClient()
 
     # system
-    def test_get_agent_version(self):
-        self.assertEqual('1.0', self.client.get_agent_version())
-
-    def test_get_mib_version(self):
-        self.assertEqual('1.0', self.client.get_mib_version())
-
-    def test_get_manufacturer(self):
-        self.assertEqual('DellEMC', self.client.get_manufacturer())
-
-    def test_system_model(self):
-        self.assertEqual('Unity 500', self.client.get_model())
-
-    def test_get_serial_number(self):
-        self.assertEqual('FNM00150600267', self.client.get_serial_number())
-
-    def test_get_operation_environment_version(self):
-        self.assertEqual('4.2.0',
-                         self.client.get_operation_environment_version())
-
-    def test_get_mgmt_ip(self):
-        self.assertEqual('10.10.10.10, 10.10.10.11', self.client.get_mgmt_ip())
-
-    def test_get_current_power(self):
-        self.assertEqual('542', self.client.get_current_power())
-
-    def test_get_avg_power(self):
-        self.assertEqual('540', self.client.get_avg_power())
-
+    # def test_get_agent_version(self):
+    #     self.assertEqual('1.0', self.client.get_agent_version())
+    #
+    # def test_get_mib_version(self):
+    #     self.assertEqual('1.0', self.client.get_mib_version())
+    #
+    # def test_get_manufacturer(self):
+    #     self.assertEqual('DellEMC', self.client.get_manufacturer())
+    #
+    # def test_system_model(self):
+    #     self.assertEqual('Unity 500', self.client.get_model())
+    #
+    # def test_get_serial_number(self):
+    #     self.assertEqual('FNM00150600267', self.client.get_serial_number())
+    #
+    # def test_get_operation_environment_version(self):
+    #     self.assertEqual('4.2.0',
+    #                      self.client.get_operation_environment_version())
+    #
+    # def test_get_mgmt_ip(self):
+    #     self.assertEqual('10.10.10.10, 10.10.10.11', self.client.get_mgmt_ip())
+    #
+    # def test_get_current_power(self):
+    #     self.assertEqual('542', self.client.get_current_power())
+    #
+    # def test_get_avg_power(self):
+    #     self.assertEqual('540', self.client.get_avg_power())
+    #
     def test_get_number_of_sp(self):
-        self.assertEqual(2, self.client.get_number_of_sp())
+        self.assertEqual(3, self.client.get_number_of_sp())
 
     def test_get_number_of_enclosure(self):
         self.assertEqual(4, self.client.get_number_of_enclosure())
 
     def test_get_number_of_power_supply(self):
-        self.assertEqual(4, self.client.get_number_of_power_supply())
+        self.assertEqual(2, self.client.get_number_of_power_supply())
 
     def test_get_number_of_fan(self):
-        self.assertEqual(10, self.client.get_number_of_fan())
+        self.assertEqual(2, self.client.get_number_of_fan())
 
     def test_get_number_of_disk(self):
         self.assertEqual(2, self.client.get_number_of_disk())
@@ -64,13 +64,13 @@ class TestUnityClient(unittest.TestCase):
         self.assertEqual(2, self.client.get_number_of_backend_port())
 
     def test_get_total_capacity(self):
-        self.assertEqual('10000', self.client.get_total_capacity())
+        self.assertEqual('10240', self.client.get_total_capacity())
 
     def test_get_used_capacity(self):
-        self.assertEqual('3000', self.client.get_used_capacity())
+        self.assertEqual('3072', self.client.get_used_capacity())
 
     def test_get_free_capacity(self):
-        self.assertEqual('7000', self.client.get_free_capacity())
+        self.assertEqual('7168', self.client.get_free_capacity())
 
     def test_get_total_iops(self):
         self.assertEqual('0.53', self.client.get_total_iops())
@@ -82,95 +82,106 @@ class TestUnityClient(unittest.TestCase):
         self.assertEqual('0.4', self.client.get_write_iops())
 
     def test_get_total_byte_rate(self):
-        self.assertEqual('2.74', self.client.get_total_byte_rate())
+        self.assertEqual('2.63', self.client.get_total_byte_rate())
 
     def test_get_read_byte_rate(self):
         self.assertEqual('0.18', self.client.get_read_byte_rate())
 
     def test_get_write_byte_rate(self):
-        self.assertEqual('2.56', self.client.get_write_byte_rate())
+        self.assertEqual('2.45', self.client.get_write_byte_rate())
 
     # storageProcessorTable
     def test_get_sps(self):
         items = self.client.get_sps()
-        self.assertEqual(2, len(items))
-        self.assertEqual({'SP A', 'SP B'}, set(items))
+        self.assertEqual(3, len(items))
+        self.assertEqual({'SP A', 'SP B', 'SP C'}, set(items))
 
     @ddt.data({'key': 'SP A', 'emc_serial_number': 'CF2HF144300003'},
-              {'key': 'SP B', 'emc_serial_number': 'CF2HF144600021'}, )
+              {'key': 'SP B', 'emc_serial_number': 'n/a'}, )
     def test_get_sp_serial_number(self, param_dict):
         self.assertEqual(param_dict['emc_serial_number'],
                          self.client.get_sp_serial_number(param_dict['key']))
 
     @ddt.data({'key': 'SP A', 'health': 'OK'},
-              {'key': 'SP B', 'health': 'OK'}, )
+              {'key': 'SP B', 'health': 'n/a'},
+              {'key': 'SP C', 'health': 'n/a'}, )
     def test_get_sp_health_status(self, param_dict):
         self.assertEqual(param_dict['health'],
                          self.client.get_sp_health_status(param_dict['key']))
 
-    @ddt.data({'key': 'SP A', 'utilization': '2.62'},
-              {'key': 'SP B', 'utilization': '29.03'}, )
+    @ddt.data({'key': 'SP A', 'utilization': '2.63'},
+              {'key': 'SP B', 'utilization': '0'},
+              {'key': 'SP C', 'utilization': '0'},)
     def test_get_sp_utilization(self, param_dict):
         self.assertEqual(param_dict['utilization'],
                          self.client.get_sp_utilization(param_dict['key']))
 
     @ddt.data({'key': 'SP A', 'block_total_iops': '0.53'},
-              {'key': 'SP B', 'block_total_iops': '0'}, )
+              {'key': 'SP B', 'block_total_iops': '0'},
+              {'key': 'SP C', 'block_total_iops': '0'}, )
     def test_get_sp_block_total_iops(self, param_dict):
         self.assertEqual(param_dict['block_total_iops'],
                          self.client.get_sp_block_total_iops(
                              param_dict['key']))
 
     @ddt.data({'key': 'SP A', 'block_read_iops': '0.13'},
-              {'key': 'SP B', 'block_read_iops': '0'}, )
+              {'key': 'SP B', 'block_read_iops': '0'},
+              {'key': 'SP C', 'block_read_iops': '0'}, )
     def test_get_sp_block_read_iops(self, param_dict):
         self.assertEqual(param_dict['block_read_iops'],
                          self.client.get_sp_block_read_iops(
                              param_dict['key']))
 
     @ddt.data({'key': 'SP A', 'block_write_iops': '0.4'},
-              {'key': 'SP B', 'block_write_iops': '0'}, )
+              {'key': 'SP B', 'block_write_iops': '0'},
+              {'key': 'SP C', 'block_write_iops': '0'}, )
     def test_get_sp_block_write_iops(self, param_dict):
         self.assertEqual(param_dict['block_write_iops'],
                          self.client.get_sp_block_write_iops(
                              param_dict['key']))
 
-    @ddt.data({'key': 'SP A', 'total_byte_rate': '2756.26'},
-              {'key': 'SP B', 'total_byte_rate': '0'}, )
+    @ddt.data({'key': 'SP A', 'total_byte_rate': '2.63'},
+              {'key': 'SP B', 'total_byte_rate': '0'},
+              {'key': 'SP C', 'total_byte_rate': '0'}, )
     def test_get_sp_total_byte_rate(self, param_dict):
         self.assertEqual(param_dict['total_byte_rate'],
                          self.client.get_sp_total_byte_rate(
                              param_dict['key']))
 
-    @ddt.data({'key': 'SP A', 'read_byte_rate': '187.73'},
-              {'key': 'SP B', 'read_byte_rate': '0'}, )
+    @ddt.data({'key': 'SP A', 'read_byte_rate': '0.18'},
+              {'key': 'SP B', 'read_byte_rate': '0'},
+              {'key': 'SP C', 'read_byte_rate': '0'}, )
     def test_get_sp_read_byte_rate(self, param_dict):
         self.assertEqual(param_dict['read_byte_rate'],
                          self.client.get_sp_read_byte_rate(param_dict['key']))
 
-    @ddt.data({'key': 'SP A', 'write_byte_rate': '2568.53'},
-              {'key': 'SP B', 'write_byte_rate': '0'}, )
+    @ddt.data({'key': 'SP A', 'write_byte_rate': '2.45'},
+              {'key': 'SP B', 'write_byte_rate': '0'},
+              {'key': 'SP C', 'write_byte_rate': '0'}, )
     def test_get_sp_write_byte_rate(self, param_dict):
         self.assertEqual(param_dict['write_byte_rate'],
                          self.client.get_sp_write_byte_rate(
                              param_dict['key']))
 
     @ddt.data({'key': 'SP A', 'block_cache_dirty_size': '65'},
-              {'key': 'SP B', 'block_cache_dirty_size': '92'}, )
+              {'key': 'SP B', 'block_cache_dirty_size': '0'},
+              {'key': 'SP C', 'block_cache_dirty_size': '0'}, )
     def test_get_sp_cache_dirty_size(self, param_dict):
         self.assertEqual(param_dict['block_cache_dirty_size'],
                          self.client.get_sp_cache_dirty_size(
                              param_dict['key']))
 
     @ddt.data({'key': 'SP A', 'block_cache_read_hit_ratio': '100.53'},
-              {'key': 'SP B', 'block_cache_read_hit_ratio': '100.00'}, )
+              {'key': 'SP B', 'block_cache_read_hit_ratio': '0'},
+              {'key': 'SP C', 'block_cache_read_hit_ratio': '0'}, )
     def test_get_sp_block_cache_read_hit_ratio(self, param_dict):
         self.assertEqual(param_dict['block_cache_read_hit_ratio'],
                          self.client.get_sp_block_cache_read_hit_ratio(
                              param_dict['key']))
 
-    @ddt.data({'key': 'SP A', 'block_cache_write_hit_ratio': '81.96'},
-              {'key': 'SP B', 'block_cache_write_hit_ratio': '38.02'}, )
+    @ddt.data({'key': 'SP A', 'block_cache_write_hit_ratio': '81.97'},
+              {'key': 'SP B', 'block_cache_write_hit_ratio': '0'},
+              {'key': 'SP C', 'block_cache_write_hit_ratio': '0'}, )
     def test_get_sp_block_cache_write_hit_ratio(self, param_dict):
         self.assertEqual(param_dict['block_cache_write_hit_ratio'],
                          self.client.get_sp_block_cache_write_hit_ratio(

@@ -18,49 +18,62 @@ class MockUnitySystem(object):
         self.total_iops = 0.5333333333333333
         self.read_iops = 0.13333333333333333
         self.write_iops = 0.4
-        self.total_byte_rate = 2747.733333333333
-        self.read_byte_rate = 187.73333333333332
-        self.write_byte_rate = 2560.0
+        self.total_byte_rate = 2756000.2666666666664
+        self.read_byte_rate = 187000.73333333333332
+        self.write_byte_rate = 2568000.5333333333333
 
     def get_mgmt_interface(self):
         return [FakeObject(ip_address='10.10.10.10'),
                 FakeObject(ip_address='10.10.10.11')]
 
     def get_system_capacity(self):
-        return [FakeObject(size_total=3000000000000, size_used=1000000000000,
-                           size_free=2000000000000),
-                FakeObject(size_total=3000000000000, size_used=1000000000000,
-                           size_free=2000000000000),
-                FakeObject(size_total=4000000000000, size_used=1000000000000,
-                           size_free=3000000000000)]
+        return [FakeObject(size_total=3298534883328, size_used=1099511627776,
+                           size_free=2199023255552),
+                FakeObject(size_total=3298534883328, size_used=1099511627776,
+                           size_free=2199023255552),
+                FakeObject(size_total=4398046511104, size_used=1099511627776,
+                           size_free=3298534883328)]
 
     def get_sp(self):
-        return [FakeObject(name='SP A', emc_serial_number='CF2HF144300003',
+        return [FakeObject(name='SP A',
+                           emc_serial_number='CF2HF144300003',
                            health=FakeObject(value=FakeObject(name='OK')),
                            utilization=2.628533087310241,
                            block_total_iops=0.5333333333333333,
                            block_read_iops=0.13333333333333333,
                            block_write_iops=0.4003333,
-                           total_byte_rate=2756.2666666666664,
-                           read_byte_rate=187.73333333333332,
-                           write_byte_rate=2568.5333333333333,
+                           total_byte_rate=2756000.2666666666664,
+                           read_byte_rate=187000.73333333333332,
+                           write_byte_rate=2568000.5333333333333,
                            block_cache_dirty_size=65,
                            block_cache_read_hit_ratio=100.5333333333333,
                            block_cache_write_hit_ratio=81.9672131147541
                            ),
-                FakeObject(name='SP B', emc_serial_number='CF2HF144600021',
-                           health=FakeObject(value=FakeObject(name='OK')),
-                           utilization=29.030090220258398,
+                FakeObject(name='SP B',
                            block_total_iops=0,
                            block_read_iops=0,
                            block_write_iops=0,
                            total_byte_rate=0,
                            read_byte_rate=0,
                            write_byte_rate=0,
-                           block_cache_dirty_size=92,
-                           block_cache_read_hit_ratio=100.0,
-                           block_cache_write_hit_ratio=38.02597402597402
-                           )]
+                           block_cache_dirty_size=0,
+                           block_cache_read_hit_ratio=0,
+                           block_cache_write_hit_ratio=0
+                           ),
+                FakeObject(name='SP C',
+                           health=FakeObject(value=FakeObject()),
+                           utilization='na',
+                           block_total_iops='na',
+                           block_read_iops='na',
+                           block_write_iops='na',
+                           total_byte_rate='na',
+                           read_byte_rate='na',
+                           write_byte_rate='na',
+                           block_cache_dirty_size='na',
+                           block_cache_read_hit_ratio='na',
+                           block_cache_write_hit_ratio='na'
+                           )
+                ]
 
     def get_pool(self):
         return [FakeObject(name='Beijing',
