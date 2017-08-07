@@ -543,9 +543,9 @@ class UnityClient(object):
     @to_string
     def get_lun_host_access(self, id):
         lun = self._get_lun(id)
-        hosts = lun.host_access
-        if hosts:
-            return ', '.join(x.host.name for x in lun.host_access)
+        host_list = [x.host.name for x in lun.host_access]
+        if host_list:
+            return ', '.join(host_list)
         else:
             return NONE_STRING
 
@@ -661,6 +661,7 @@ class UnityClient(object):
     FC_PORT_TYPE = 'fc_port_'
     ISCSI_PORT_TYPE = 'iscsi_port_'
 
+    @to_list
     def get_frontend_ports(self):
         fc_ports = [self.FC_PORT_TYPE + port.id for port in
                     self.unity_system.get_fc_port()]
@@ -678,24 +679,32 @@ class UnityClient(object):
             return self._get_item(self.unity_system.get_iscsi_node(),
                                   id=id), self.ISCSI_PORT_TYPE
 
+    @to_string
     def get_frontend_port_id(self, id):
         port, _ = self._get_frontend_port(id)
         return port.id
 
+    @to_string
     def get_frontend_port_name(self, id):
         port, _ = self._get_frontend_port(id)
         return port.name
 
+    @to_string
     def get_frontend_port_address(self, id):
         port, type = self._get_frontend_port(id)
         if type == self.FC_PORT_TYPE:
-            return self.none
+            return NONE_STRING
         if type == self.ISCSI_PORT_TYPE:
-            return ', '.join(
-                portal.ip_address for portal in
-                self.unity_system.get_iscsi_portal() if
-                portal.iscsi_node.id == port.id)
+            ip_list = [portal.ip_address for portal in
+                       self.unity_system.get_iscsi_portal() if
+                       portal.iscsi_node.id == port.id]
 
+        if ip_list:
+            return ', '.join(ip_list)
+        else:
+            return NONE_STRING
+
+    @to_string
     def get_frontend_port_type(self, id):
         port, type = self._get_frontend_port(id)
         if type == self.FC_PORT_TYPE:
@@ -703,107 +712,130 @@ class UnityClient(object):
         if type == self.ISCSI_PORT_TYPE:
             return port.ethernet_port.connector_type.name
 
+    @to_string
     def get_frontend_port_current_speed(self, id):
         port, type = self._get_frontend_port(id)
         if type == self.FC_PORT_TYPE:
-            if port.current_speed:
-                return port.current_speed.name
+            return port.current_speed.name
         if type == self.ISCSI_PORT_TYPE:
-            if port.ethernet_port.speed:
-                return port.ethernet_port.speed.name
+            return port.ethernet_port.speed.name
 
+    @to_string
     def get_frontend_port_supported_speed(self, id):
         port, type = self._get_frontend_port(id)
         if type == self.FC_PORT_TYPE:
-            if port.available_speeds is not None:
-                return ', '.join(x.name for x in port.available_speeds)
+            return ', '.join(x.name for x in port.available_speeds)
         if type == self.ISCSI_PORT_TYPE:
-            if port.ethernet_port.supported_speeds:
-                return ', '.join(
-                    x.name for x in port.ethernet_port.supported_speeds)
+            return ', '.join(
+                x.name for x in port.ethernet_port.supported_speeds)
 
+    @to_string
     def get_frontend_port_health_status(self, id):
         port, type = self._get_frontend_port(id)
         if type == self.FC_PORT_TYPE:
-            if port.health:
-                return port.health.value.name
+            return port.health.value.name
         if type == self.ISCSI_PORT_TYPE:
-            if port.ethernet_port.health:
-                return port.ethernet_port.health.value.name
+            return port.ethernet_port.health.value.name
 
+    @to_string
+    @to_number
     def get_frontend_port_total_iops(self, id):
         port, _ = self._get_frontend_port(id)
-        return str(port.total_iops)
+        return port.total_iops
 
+    @to_string
+    @to_number
     def get_frontend_port_read_iops(self, id):
         port, _ = self._get_frontend_port(id)
-        return str(port.read_iops)
+        return port.read_iops
 
+    @to_string
+    @to_number
     def get_frontend_port_write_iops(self, id):
         port, _ = self._get_frontend_port(id)
-        return str(port.write_iops)
+        return port.write_iops
 
+    @to_string
+    @to_number
+    @change_size_unit(to_unit='mb')
     def get_frontend_port_total_byte_rate(self, id):
         port, _ = self._get_frontend_port(id)
-        return str(port.total_byte_rate)
+        return port.total_byte_rate
 
+    @to_string
+    @to_number
+    @change_size_unit(to_unit='mb')
     def get_frontend_port_read_byte_rate(self, id):
         port, _ = self._get_frontend_port(id)
-        return str(port.read_byte_rate)
+        return port.read_byte_rate
 
+    @to_string
+    @to_number
+    @change_size_unit(to_unit='mb')
     def get_frontend_port_write_byte_rate(self, id):
         port, _ = self._get_frontend_port(id)
-        return str(port.write_byte_rate)
+        return port.write_byte_rate
 
     # backendPortTable
+    @to_list
     def get_backend_ports(self):
         return [port.id for port in self.unity_system.get_sas_port()]
 
     def _get_backend_port(self, id):
         return self._get_item(self.unity_system.get_sas_port(), id=id)
 
+    @to_string
     def get_backend_port_name(self, id):
         port = self._get_backend_port(id)
         return port.name
 
+    @to_string
     def get_backend_port_type(self, id):
         port = self._get_backend_port(id)
         return port.connector_type.name
 
+    @to_string
     def get_backend_port_port_number(self, id):
         port = self._get_backend_port(id)
-        return str(port.port)
+        return port.port
 
+    @to_string
     def get_backend_port_current_speed(self, id):
         port = self._get_backend_port(id)
-        if port.current_speed:
-            return port.current_speed.name
+        return port.current_speed.name
 
+    @to_string
     def get_backend_port_parent_io_module(self, id):
         port = self._get_backend_port(id)
-        if port.parent_io_module:
-            return port.parent_io_module.name
+        return port.parent_io_module.name
 
+    @to_string
     def get_backend_port_parent_sp(self, id):
         port = self._get_backend_port(id)
-        if port.parent_storage_processor:
-            return port.parent_storage_processor.name
+        return port.parent_storage_processor.name
 
+    @to_string
     def get_backend_port_health_status(self, id):
         port = self._get_backend_port(id)
         return port.health.value.name
 
     # hostTable
+    @to_list
     def get_hosts(self):
         return [host.name for host in self.unity_system.get_host()]
 
     def _get_host(self, name):
         return self._get_item(self.unity_system.get_host(), name=name)
 
+    @to_string
     def get_host_network_address(self, name):
         host = self._get_host(name)
-        return ', '.join(host.ip_list)
+        if host.ip_list:
+            return ', '.join(host.ip_list)
+        else:
+            return NONE_STRING
 
+    @to_string
     def get_host_initiators(self, name):
         host = self._get_host(name)
         initiators = []
@@ -812,21 +844,30 @@ class UnityClient(object):
                 x.initiator_id for x in host.iscsi_host_initiators)
         if host.fc_host_initiators:
             initiators.extend(x.initiator_id for x in host.fc_host_initiators)
-        return ', '.join(initiators)
 
+        if initiators:
+            return ', '.join(initiators)
+        else:
+            return NONE_STRING
+
+    @to_string
     def get_host_os_type(self, name):
         host = self._get_host(name)
         return host.os_type
 
+    @to_string
     def get_host_assigned_volumes(self, name):
         host = self._get_host(name)
         if host.host_luns:
             return ', '.join(x.lun.name for x in host.host_luns)
+        else:
+            return NONE_STRING
 
     # enclosureTable
     DAE_TYPE = 'dae_'
     DPE_TYPE = 'dpe_'
 
+    @to_list
     def get_enclosures(self):
         daes = [self.DAE_TYPE + dae.name for dae in
                 self.unity_system.get_dae()]
@@ -842,51 +883,69 @@ class UnityClient(object):
             name = name.replace(self.DPE_TYPE, '', 1)
             return self._get_item(self.unity_system.get_dpe(), name=name)
 
+    @to_string
     def get_enclosure_name(self, name):
         enclosure = self._get_enclosure(name)
         return enclosure.name
 
+    @to_string
     def get_enclosure_model(self, name):
         enclosure = self._get_enclosure(name)
         return enclosure.model
 
+    @to_string
     def get_enclosure_serial_number(self, name):
         enclosure = self._get_enclosure(name)
         return enclosure.emc_serial_number
 
+    @to_string
     def get_enclosure_part_number(self, name):
         enclosure = self._get_enclosure(name)
         return enclosure.emc_part_number
 
+    @to_string
     def get_enclosure_health_status(self, name):
         enclosure = self._get_enclosure(name)
         return enclosure.health.value.name
 
+    @to_string
+    @to_number
     def get_enclosure_current_power(self, name):
         enclosure = self._get_enclosure(name)
-        return str(enclosure.current_power)
+        return enclosure.current_power
 
+    @to_string
+    @to_number
     def get_enclosure_avg_power(self, name):
         enclosure = self._get_enclosure(name)
-        return str(enclosure.avg_power)
+        return enclosure.avg_power
 
+    @to_string
+    @to_number
     def get_enclosure_max_power(self, name):
         enclosure = self._get_enclosure(name)
-        return str(enclosure.max_power)
+        return enclosure.max_power
 
+    @to_string
+    @to_number
     def get_enclosure_current_temperature(self, name):
         enclosure = self._get_enclosure(name)
-        return str(enclosure.current_temperature)
+        return enclosure.current_temperature
 
+    @to_string
+    @to_number
     def get_enclosure_avg_temperature(self, name):
         enclosure = self._get_enclosure(name)
-        return str(enclosure.avg_temperature)
+        return enclosure.avg_temperature
 
+    @to_string
+    @to_number
     def get_enclosure_max_temperature(self, name):
         enclosure = self._get_enclosure(name)
-        return str(enclosure.max_temperature)
+        return enclosure.max_temperature
 
     # powerSupplyTable
+    @to_list
     def get_power_supplies(self):
         return [power_supply.name for power_supply in
                 self.unity_system.get_power_supply()]
@@ -894,18 +953,22 @@ class UnityClient(object):
     def _get_power_supply(self, name):
         return self._get_item(self.unity_system.get_power_supply(), name=name)
 
+    @to_string
     def get_power_supply_manufacturer(self, name):
         power_supply = self._get_power_supply(name)
         return power_supply.manufacturer
 
+    @to_string
     def get_power_supply_model(self, name):
         power_supply = self._get_power_supply(name)
         return power_supply.model
 
+    @to_string
     def get_power_supply_firmware_version(self, name):
         power_supply = self._get_power_supply(name)
         return power_supply.firmware_version
 
+    @to_string
     def get_power_supply_parent_enclosure(self, name):
         power_supply = self._get_power_supply(name)
         parents = []
@@ -913,27 +976,36 @@ class UnityClient(object):
             parents.append(power_supply.parent_dpe)
         if power_supply.parent_dae:
             parents.append(power_supply.parent_dae)
-        return ', '.join(x.name for x in parents)
 
+        if parents:
+            return ', '.join(x.name for x in parents)
+        else:
+            return NONE_STRING
+
+    @to_string
     def get_power_supply_sp(self, name):
         power_supply = self._get_power_supply(name)
         return power_supply.storage_processor.name
 
+    @to_string
     def get_power_supply_health_status(self, name):
         power_supply = self._get_power_supply(name)
         return power_supply.health.value.name
 
     # fanTable
+    @to_list
     def get_fans(self):
         return [fan.name for fan in self.unity_system.get_fan()]
 
     def _get_fan(self, name):
         return self._get_item(self.unity_system.get_fan(), name=name)
 
+    @to_string
     def get_fan_slot_number(self, name):
         fan = self._get_fan(name)
-        return str(fan.slot_number)
+        return fan.slot_number
 
+    @to_string
     def get_fan_parent_enclosure(self, name):
         fan = self._get_fan(name)
         parents = []
@@ -941,35 +1013,46 @@ class UnityClient(object):
             parents.append(fan.parent_dpe)
         if fan.parent_dae:
             parents.append(fan.parent_dae)
-        return ', '.join(x.name for x in parents)
 
+        if parents:
+            return ', '.join(x.name for x in parents)
+        else:
+            return NONE_STRING
+
+    @to_string
     def get_fan_health_status(self, name):
         fan = self._get_fan(name)
         return fan.health.value.name
 
     # BBUTable
+    @to_list
     def get_bbus(self):
         return [bbu.name for bbu in self.unity_system.get_battery()]
 
     def _get_bbu(self, name):
         return self._get_item(self.unity_system.get_battery(), name=name)
 
+    @to_string
     def get_bbu_manufacturer(self, name):
         bbu = self._get_bbu(name)
         return bbu.manufacturer
 
+    @to_string
     def get_bbu_model(self, name):
         bbu = self._get_bbu(name)
         return bbu.model
 
+    @to_string
     def get_bbu_firmware_version(self, name):
         bbu = self._get_bbu(name)
         return bbu.firmware_version
 
+    @to_string
     def get_bbu_parent_sp(self, name):
         bbu = self._get_bbu(name)
         return bbu.parent_storage_processor.name
 
+    @to_string
     def get_bbu_health_status(self, name):
         bbu = self._get_bbu(name)
         return bbu.health.value.name

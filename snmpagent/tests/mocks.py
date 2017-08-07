@@ -247,27 +247,8 @@ class MockUnitySystem(object):
                            ),
                 ]
 
-    def get_fc_port(self):
-        return [FakeObject(id='spa_fc4',
-                           name='SP A FC Port 4',
-                           connector_type=FakeObject(name='LC'),
-                           current_speed=FakeObject(name='_8GbPS'),
-                           available_speeds=[FakeObject(name='_4GbPS'),
-                                             FakeObject(name='_8GbPS'),
-                                             FakeObject(name='_16GbPS'),
-                                             FakeObject(name='AUTO')],
-                           health=FakeObject(value=FakeObject(name='OK')),
-                           total_iops=0,
-                           read_iops=0,
-                           write_iops=0,
-                           total_byte_rate=0,
-                           read_byte_rate=0,
-                           write_byte_rate=0,
-                           ),
-                FakeObject(id='spb_fc4')]
-
     def get_iscsi_node(self):
-        return [FakeObject(id='iscsinode_spa_eth2',
+        return [FakeObject(id='iscsinode_spa_eth1',
                            name='iqn.1992-04.com.emc:cx.fnm00150600267.a0',
                            ethernet_port=FakeObject(
                                connector_type=FakeObject(name='RJ45'),
@@ -285,11 +266,45 @@ class MockUnitySystem(object):
                            read_byte_rate=187.73333333333332,
                            write_byte_rate=2457.6,
                            ),
-                FakeObject(id='iscsinode_spb_eth2')]
+                FakeObject(id='iscsinode_spa_eth2',
+                           ethernet_port=FakeObject(
+                               connector_type=FakeObject(),
+                               supported_speeds=[FakeObject(name='_1GbPS'),
+                                                 FakeObject(),
+                                                 FakeObject(name='_100MbPS'),
+                                                 FakeObject(name='AUTO')],
+                               health=FakeObject(value=FakeObject())),
+                           total_iops='nan',
+                           read_iops='nan',
+                           write_iops='nan',
+                           total_byte_rate='nan',
+                           read_byte_rate='nan',
+                           write_byte_rate='nan',
+                           ),
+                ]
+
+    def get_fc_port(self):
+        return [FakeObject(id='spa_fc1',
+                           name='SP A FC Port 1',
+                           connector_type=FakeObject(name='LC'),
+                           current_speed=FakeObject(name='_8GbPS'),
+                           available_speeds=[FakeObject(name='_4GbPS'),
+                                             FakeObject(name='_8GbPS'),
+                                             FakeObject(name='_16GbPS'),
+                                             FakeObject(name='AUTO')],
+                           health=FakeObject(value=FakeObject(name='MAJOR')),
+                           total_iops=0,
+                           read_iops=0,
+                           write_iops=0,
+                           total_byte_rate=0,
+                           read_byte_rate=0,
+                           write_byte_rate=0,
+                           ),
+                FakeObject(id='spb_fc2'), ]
 
     def get_iscsi_portal(self):
         return [FakeObject(ip_address='10.0.0.10',
-                           iscsi_node=FakeObject(id='iscsinode_spa_eth2')),
+                           iscsi_node=FakeObject(id='iscsinode_spa_eth1')),
                 FakeObject(iscsi_node=FakeObject(id='iscsinode_spb_eth2'))]
 
     def get_sas_port(self):
@@ -302,19 +317,13 @@ class MockUnitySystem(object):
                            parent_storage_processor=FakeObject(name='SP A'),
                            health=FakeObject(value=FakeObject(name='OK')),
                            ),
-                FakeObject(id='spb_sas0',
-                           name='SP B SAS Port 0',
-                           connector_type=FakeObject(name='NOT_PRESENT'),
-                           port=1,
-                           current_speed=FakeObject(name='_12Gbps'),
-                           parent_io_module=FakeObject(name='IO Module B'),
-                           parent_storage_processor=FakeObject(name='SP B'),
-                           health=FakeObject(value=FakeObject(name='OK BUT')),
-                           )]
+                FakeObject(id='spb_sas0')]
 
     def get_host(self):
         return [FakeObject(name='ubuntu1604',
-                           ip_list=['10.207.84.27'],
+                           ip_list=['10.207.84.27',
+                                    '2620:0:170:1d34:a236:9fff:fe66:8960',
+                                    '2620:0:170:1d36:a236:9fff:fe66:8960'],
                            iscsi_host_initiators=[FakeObject(
                                initiator_id='iqn.1993-08.org.debian:01:b974ee37fea')],
                            fc_host_initiators=[FakeObject(
@@ -325,23 +334,18 @@ class MockUnitySystem(object):
                            host_luns=[FakeObject(
                                lun=FakeObject(name='storops_dummy_lun'))],
                            ),
-                FakeObject(name='10.245.54.151',
-                           ip_list=['10.245.54.151',
-                                    '2620:0:170:1d34:a236:9fff:fe66:8960',
-                                    '2620:0:170:1d36:a236:9fff:fe66:8960'],
+                FakeObject(name='10.245.54.151'),
+                FakeObject(name='10.245.54.152',
+                           ip_list=[],
                            iscsi_host_initiators=[],
                            fc_host_initiators=[FakeObject(
                                initiator_id='20:00:00:90:FA:53:49'),
                                FakeObject(
                                    initiator_id='20:00:00:90:FA:53:50')],
                            os_type='VMware ESXi 6.0.0',
-                           host_luns=[
-                               FakeObject(lun=FakeObject(name='goock_test')),
-                               FakeObject(
-                                   lun=FakeObject(name='goock_test-00')),
-                               FakeObject(
-                                   lun=FakeObject(name='goock_test-01')), ],
-                           )]
+                           host_luns=[],
+                           )
+                ]
 
     def get_dae(self):
         return [FakeObject(name='DAE 0 1',
@@ -371,7 +375,13 @@ class MockUnitySystem(object):
                            current_temperature=0,
                            avg_temperature=0,
                            max_temperature=0, ),
-                FakeObject(name='DPE 2')]
+                FakeObject(name='DPE 2',
+                           current_power='nan',
+                           avg_power='nan',
+                           max_power='nan',
+                           current_temperature='nan',
+                           avg_temperature='nan',
+                           max_temperature='nan',)]
 
     def get_power_supply(self):
         return [FakeObject(name='DPE Power Supply A0',
@@ -379,24 +389,18 @@ class MockUnitySystem(object):
                            model='12V P/S WITH 12VSTBY AND FAN',
                            firmware_version='0501',
                            parent_dpe=FakeObject(name='DPE'),
+                           parent_dae=FakeObject(name='DAE'),
                            storage_processor=FakeObject(name='SP A'),
                            health=FakeObject(
                                value=FakeObject(name='OK')),
                            ),
-                FakeObject(name='DAE 0 1 Power Supply B0',
-                           manufacturer='ACBEL POLYTECH INC.',
-                           model='Third Gen VE.400W, Dual +12V P/S',
-                           firmware_version='0421',
-                           parent_dae=FakeObject(name='DAE 0 1'),
-                           health=FakeObject(
-                               value=FakeObject(name='CRITICAL')),
-                           )]
+                FakeObject(name='DAE 0 1 Power Supply B0')]
 
     def get_fan(self):
         return [FakeObject(name='DPE Cooling Module A0',
                            slot_number=0,
-                           parent_dae=FakeObject(name='DAE 0 1'),
                            parent_dpe=FakeObject(name='DPE'),
+                           parent_dae=FakeObject(name='DAE 0 1'),
                            health=FakeObject(value=FakeObject(name='OK')),
                            ),
                 FakeObject(name='DPE Cooling Module B1',
