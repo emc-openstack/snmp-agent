@@ -1,3 +1,4 @@
+import math
 from functools import wraps, partial
 
 import six
@@ -7,18 +8,34 @@ import storops
 NONE_STRING = 'n/a'
 
 
+def to_list(func):
+    @wraps(func)
+    def _inner(*args, **kwargs):
+        try:
+            result = func(*args, **kwargs)
+            if isinstance(result, list):
+                rst = result
+            else:
+                rst = []
+        except:
+            rst = []
+        return rst
+
+    return _inner
+
+
 def to_string(func):
     @wraps(func)
     def _inner(*args, **kwargs):
         try:
             result = func(*args, **kwargs)
             if result is not None:
-                result = str(result)
+                rst = str(result)
             else:
-                result = NONE_STRING
+                rst = NONE_STRING
         except:
-            result = NONE_STRING
-        return result
+            rst = NONE_STRING
+        return rst
 
     return _inner
 
@@ -32,21 +49,23 @@ def to_number(func=None, length=2):
         try:
             result = func(*args, **kwargs)
             if isinstance(result, six.integer_types):
-                result = result
+                rst = result
+            elif math.isnan(float(result)):
+                rst = NONE_STRING
             elif isinstance(result, float):
-                result = round(result, length)
+                rst = round(result, length)
             else:
-                result = 0
+                rst = 0
         except:
-            result = 0
-        return result
+            rst = 0
+        return rst
 
     return _inner
 
 
-def change_unit(func=None, from_unit='b', to_unit='gb'):
+def change_size_unit(func=None, from_unit='b', to_unit='gb'):
     if func is None:
-        return partial(change_unit, from_unit=from_unit, to_unit=to_unit)
+        return partial(change_size_unit, from_unit=from_unit, to_unit=to_unit)
 
     unit_dict = {'tb': 2 ** 40,
                  'gb': 2 ** 30,
@@ -58,8 +77,32 @@ def change_unit(func=None, from_unit='b', to_unit='gb'):
 
     @wraps(func)
     def _inner(*args, **kwargs):
-        result = func(*args, **kwargs) * fac / den
-        return result
+        result = func(*args, **kwargs)
+        if result == 0:
+            return result
+        else:
+            return float(result) * fac / den
+
+    return _inner
+
+
+def change_time_unit(func=None, from_unit='us', to_unit='ms'):
+    if func is None:
+        return partial(change_time_unit, from_unit=from_unit, to_unit=to_unit)
+
+    unit_dict = {'s': 1000000,
+                 'ms': 1000,
+                 'us': 1}
+    fac = unit_dict.get(from_unit, 1)
+    den = unit_dict.get(to_unit, 1000)
+
+    @wraps(func)
+    def _inner(*args, **kwargs):
+        result = func(*args, **kwargs)
+        if result == 0:
+            return result
+        else:
+            return float(result) * fac / den
 
     return _inner
 
@@ -168,21 +211,21 @@ class UnityClient(object):
 
     @to_string
     @to_number
-    @change_unit
+    @change_size_unit
     def get_total_capacity(self):
         return sum(
             x.size_total for x in self.unity_system.get_system_capacity())
 
     @to_string
     @to_number
-    @change_unit
+    @change_size_unit
     def get_used_capacity(self):
         return sum(
             x.size_used for x in self.unity_system.get_system_capacity())
 
     @to_string
     @to_number
-    @change_unit
+    @change_size_unit
     def get_free_capacity(self):
         return sum(
             x.size_free for x in self.unity_system.get_system_capacity())
@@ -206,27 +249,28 @@ class UnityClient(object):
         return self.unity_system.write_iops
 
     @to_string
-    @to_number
-    @change_unit(to_unit='mb')
+    @to_number(length=3)
+    @change_size_unit(to_unit='mb')
     def get_total_byte_rate(self):
         self.unity_system.update()
         return self.unity_system.total_byte_rate
 
     @to_string
-    @to_number
-    @change_unit(to_unit='mb')
+    @to_number(length=3)
+    @change_size_unit(to_unit='mb')
     def get_read_byte_rate(self):
         self.unity_system.update()
         return self.unity_system.read_byte_rate
 
     @to_string
-    @to_number
-    @change_unit(to_unit='mb')
+    @to_number(length=3)
+    @change_size_unit(to_unit='mb')
     def get_write_byte_rate(self):
         self.unity_system.update()
         return self.unity_system.write_byte_rate
 
     # storageProcessorTable
+    @to_list
     def get_sps(self):
         return [pool.name for pool in self.unity_system.get_sp()]
 
@@ -268,22 +312,22 @@ class UnityClient(object):
         return sp.block_write_iops
 
     @to_string
-    @to_number
-    @change_unit(to_unit='mb')
+    @to_number(length=3)
+    @change_size_unit(to_unit='mb')
     def get_sp_total_byte_rate(self, name):
         sp = self._get_sp(name)
         return sp.total_byte_rate
 
     @to_string
-    @to_number
-    @change_unit(to_unit='mb')
+    @to_number(length=3)
+    @change_size_unit(to_unit='mb')
     def get_sp_read_byte_rate(self, name):
         sp = self._get_sp(name)
         return sp.read_byte_rate
 
     @to_string
-    @to_number
-    @change_unit(to_unit='mb')
+    @to_number(length=3)
+    @change_size_unit(to_unit='mb')
     def get_sp_write_byte_rate(self, name):
         sp = self._get_sp(name)
         return sp.write_byte_rate
@@ -307,143 +351,203 @@ class UnityClient(object):
         return sp.block_cache_write_hit_ratio
 
     # poolTable
+    @to_list
     def get_pools(self):
         return [pool.name for pool in self.unity_system.get_pool()]
 
     def _get_pool(self, name):
         return self._get_item(self.unity_system.get_pool(), name=name)
 
+    @to_string
     def get_pool_disk_types(self, name):
         pool = self._get_pool(name)
-        if pool.tiers:
-            return ', '.join(x.name for x in pool.tiers)
+        return ', '.join(x.name for x in pool.tiers)
 
+    @to_string
     def get_pool_raid_levels(self, name):
         pool = self._get_pool(name)
         return pool.raid_type.name
 
+    @to_string
     def get_pool_fast_cache_status(self, name):
         pool = self._get_pool(name)
-        return str(pool.is_fast_cache_enabled)
+        return pool.is_fast_cache_enabled
 
+    @to_string
+    @to_number
     def get_pool_number_of_disk(self, name):
         pool = self._get_pool(name)
-        if pool.tiers:
-            return str(sum(x.disk_count for x in pool.tiers))
+        return sum(x.disk_count for x in pool.tiers)
 
+    @to_string
+    @to_number
+    @change_size_unit
     def get_pool_size_total(self, name):
         pool = self._get_pool(name)
-        return str(pool.size_total)
+        return pool.size_total
 
+    @to_string
+    @to_number
+    @change_size_unit
     def get_pool_size_free(self, name):
         pool = self._get_pool(name)
-        return str(pool.size_free)
+        return pool.size_free
 
+    @to_string
+    @to_number
+    @change_size_unit
     def get_pool_size_used(self, name):
         pool = self._get_pool(name)
-        return str(pool.size_used)
+        return pool.size_used
 
+    @to_string
+    @to_number
     def get_pool_size_ultilization(self, name):
         pool = self._get_pool(name)
-        if pool.size_total != 0:
-            return str(pool.size_used / pool.size_total)
+        return float(pool.size_used) / float(pool.size_total)
 
     # volumeTable
+    @to_list
     def get_luns(self):
         return [lun.id for lun in self.unity_system.get_lun()]
 
     def _get_lun(self, id):
         return self._get_item(self.unity_system.get_lun(), id=id)
 
+    @to_string
     def get_lun_name(self, id):
         lun = self._get_lun(id)
         return lun.name
 
+    @to_string
     def get_lun_raid_type(self, id):
         lun = self._get_lun(id)
-        if lun.pool:
-            return lun.pool.raid_type.name
+        return lun.pool.raid_type.name
 
+    @to_string
+    @to_number
+    @change_size_unit
     def get_lun_size_allocated(self, id):
         lun = self._get_lun(id)
-        return str(lun.size_allocated)
+        return lun.size_allocated
 
+    @to_string
+    @to_number
+    @change_size_unit
     def get_lun_size_total(self, id):
         lun = self._get_lun(id)
-        return str(lun.size_total)
+        return lun.size_total
 
+    @to_string
     def get_lun_health_status(self, id):
         lun = self._get_lun(id)
         return lun.health.value.name
 
+    @to_string
     def get_lun_fast_cache_status(self, id):
         lun = self._get_lun(id)
-        return str(lun.pool.is_fast_cache_enabled)
+        return lun.pool.is_fast_cache_enabled
 
+    @to_string
     def get_lun_default_sp(self, id):
         lun = self._get_lun(id)
         return lun.default_node.name
 
+    @to_string
     def get_lun_current_sp(self, id):
         lun = self._get_lun(id)
         return lun.current_node.name
 
+    @to_string
+    @to_number
+    @change_time_unit
     def get_lun_response_time(self, id):
         lun = self._get_lun(id)
-        return str(lun.response_time)
+        return lun.response_time
 
+    @to_string
+    @to_number
     def get_lun_queue_length(self, id):
         lun = self._get_lun(id)
-        return str(lun.queue_length)
+        return lun.queue_length
 
+    @to_string
+    @to_number
     def get_lun_total_iops(self, id):
         lun = self._get_lun(id)
-        return str(lun.total_iops)
+        return lun.total_iops
 
+    @to_string
+    @to_number
     def get_lun_read_iops(self, id):
         lun = self._get_lun(id)
-        return str(lun.read_iops)
+        return lun.read_iops
 
+    @to_string
+    @to_number
     def get_lun_write_iops(self, id):
         lun = self._get_lun(id)
-        return str(lun.write_iops)
+        return lun.write_iops
 
+    @to_string
+    @to_number(length=3)
+    @change_size_unit(to_unit='mb')
     def get_lun_total_byte_rate(self, id):
         lun = self._get_lun(id)
-        return str(lun.total_byte_rate)
+        return lun.total_byte_rate
 
+    @to_string
+    @to_number(length=3)
+    @change_size_unit(to_unit='mb')
     def get_lun_read_byte_rate(self, id):
         lun = self._get_lun(id)
-        return str(lun.read_byte_rate)
+        return lun.read_byte_rate
 
+    @to_string
+    @to_number(length=3)
+    @change_size_unit(to_unit='mb')
     def get_lun_write_byte_rate(self, id):
         lun = self._get_lun(id)
-        return str(lun.write_byte_rate)
+        return lun.write_byte_rate
 
+    @to_string
+    @to_number
     def get_lun_fast_cache_read_hits(self, id):
         lun = self._get_lun(id)
-        return str(lun.fast_cache_read_hits)
+        return lun.fast_cache_read_hits
 
+    @to_string
+    @to_number
     def get_lun_fast_cache_write_hits(self, id):
         lun = self._get_lun(id)
-        return str(lun.fast_cache_write_hits)
+        return lun.fast_cache_write_hits
 
+    @to_string
+    @to_number
     def get_lun_fast_cache_read_hit_rate(self, id):
         lun = self._get_lun(id)
-        return str(lun.fast_cache_read_hit_rate)
+        return lun.fast_cache_read_hit_rate
 
+    @to_string
+    @to_number
     def get_lun_fast_cache_write_hit_rate(self, id):
         lun = self._get_lun(id)
-        return str(lun.fast_cache_write_hit_rate)
+        return lun.fast_cache_write_hit_rate
 
+    @to_string
+    @to_number
     def get_lun_utilization(self, id):
         lun = self._get_lun(id)
-        return str(lun.utilization)
+        return lun.utilization
 
+    @to_string
     def get_lun_host_access(self, id):
         lun = self._get_lun(id)
-        if lun.host_access:
+        hosts = lun.host_access
+        if hosts:
             return ', '.join(x.host.name for x in lun.host_access)
+        else:
+            return NONE_STRING
 
     # diskTable
     def get_disks(self):
