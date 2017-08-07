@@ -40,7 +40,7 @@ def to_string(func):
     return _inner
 
 
-def to_number(func=None, length=2):
+def to_number(func=None, length=3):
     if func is None:
         return partial(to_number, length=length)
 
@@ -249,21 +249,21 @@ class UnityClient(object):
         return self.unity_system.write_iops
 
     @to_string
-    @to_number(length=3)
+    @to_number
     @change_size_unit(to_unit='mb')
     def get_total_byte_rate(self):
         self.unity_system.update()
         return self.unity_system.total_byte_rate
 
     @to_string
-    @to_number(length=3)
+    @to_number
     @change_size_unit(to_unit='mb')
     def get_read_byte_rate(self):
         self.unity_system.update()
         return self.unity_system.read_byte_rate
 
     @to_string
-    @to_number(length=3)
+    @to_number
     @change_size_unit(to_unit='mb')
     def get_write_byte_rate(self):
         self.unity_system.update()
@@ -312,21 +312,21 @@ class UnityClient(object):
         return sp.block_write_iops
 
     @to_string
-    @to_number(length=3)
+    @to_number
     @change_size_unit(to_unit='mb')
     def get_sp_total_byte_rate(self, name):
         sp = self._get_sp(name)
         return sp.total_byte_rate
 
     @to_string
-    @to_number(length=3)
+    @to_number
     @change_size_unit(to_unit='mb')
     def get_sp_read_byte_rate(self, name):
         sp = self._get_sp(name)
         return sp.read_byte_rate
 
     @to_string
-    @to_number(length=3)
+    @to_number
     @change_size_unit(to_unit='mb')
     def get_sp_write_byte_rate(self, name):
         sp = self._get_sp(name)
@@ -490,21 +490,21 @@ class UnityClient(object):
         return lun.write_iops
 
     @to_string
-    @to_number(length=3)
+    @to_number
     @change_size_unit(to_unit='mb')
     def get_lun_total_byte_rate(self, id):
         lun = self._get_lun(id)
         return lun.total_byte_rate
 
     @to_string
-    @to_number(length=3)
+    @to_number
     @change_size_unit(to_unit='mb')
     def get_lun_read_byte_rate(self, id):
         lun = self._get_lun(id)
         return lun.read_byte_rate
 
     @to_string
-    @to_number(length=3)
+    @to_number
     @change_size_unit(to_unit='mb')
     def get_lun_write_byte_rate(self, id):
         lun = self._get_lun(id)
@@ -550,81 +550,112 @@ class UnityClient(object):
             return NONE_STRING
 
     # diskTable
+    @to_list
     def get_disks(self):
         return [disk.name for disk in self.unity_system.get_disk()]
 
     def _get_disk(self, name):
         return self._get_item(self.unity_system.get_disk(), name=name)
 
+    @to_string
     def get_disk_model(self, name):
         disk = self._get_disk(name)
         return disk.model
 
+    @to_string
     def get_disk_serial_number(self, name):
         disk = self._get_disk(name)
         return disk.emc_serial_number
 
+    @to_string
     def get_disk_version(self, name):
         disk = self._get_disk(name)
         return disk.version
 
+    @to_string
     def get_disk_type(self, name):
         disk = self._get_disk(name)
-        if disk.disk_technology:
-            return disk.disk_technology.name
+        return disk.disk_technology.name
 
+    @to_string
     def get_disk_slot_number(self, name):
         disk = self._get_disk(name)
-        return str(disk.slot_number)
+        return disk.slot_number
 
+    @to_string
     def get_disk_health_status(self, name):
         disk = self._get_disk(name)
         return disk.health.value.name
 
+    @to_string
+    @to_number
+    @change_size_unit
     def get_disk_raw_size(self, name):
         disk = self._get_disk(name)
-        return str(disk.raw_size)
+        return disk.raw_size
 
+    @to_string
     def get_disk_current_pool(self, name):
         disk = self._get_disk(name)
-        if disk.pool:
-            return disk.pool.name
+        return disk.pool.name
 
+    @to_string
+    @to_number
+    @change_time_unit
     def get_disk_response_time(self, name):
         disk = self._get_disk(name)
-        return str(disk.response_time)
+        return disk.response_time
 
+    @to_string
+    @to_number
     def get_disk_queue_length(self, name):
         disk = self._get_disk(name)
-        return str(disk.queue_length)
+        return disk.queue_length
 
+    @to_string
+    @to_number
     def get_disk_total_iops(self, name):
         disk = self._get_disk(name)
-        return str(disk.total_iops)
+        return disk.total_iops
 
+    @to_string
+    @to_number
     def get_disk_read_iops(self, name):
         disk = self._get_disk(name)
-        return str(disk.read_iops)
+        return disk.read_iops
 
+    @to_string
+    @to_number
     def get_disk_write_iops(self, name):
         disk = self._get_disk(name)
-        return str(disk.write_iops)
+        return disk.write_iops
 
+    @to_string
+    @to_number
+    @change_size_unit(to_unit='mb')
     def get_disk_total_byte_rate(self, name):
         disk = self._get_disk(name)
-        return str(disk.total_byte_rate)
+        return disk.total_byte_rate
 
+    @to_string
+    @to_number
+    @change_size_unit(to_unit='mb')
     def get_disk_read_byte_rate(self, name):
         disk = self._get_disk(name)
-        return str(disk.read_byte_rate)
+        return disk.read_byte_rate
 
+    @to_string
+    @to_number
+    @change_size_unit(to_unit='mb')
     def get_disk_write_byte_rate(self, name):
         disk = self._get_disk(name)
-        return str(disk.write_byte_rate)
+        return disk.write_byte_rate
 
+    @to_string
+    @to_number
     def get_disk_utilization(self, name):
         disk = self._get_disk(name)
-        return str(disk.utilization)
+        return disk.utilization
 
     # frontendPortTable
     FC_PORT_TYPE = 'fc_port_'
