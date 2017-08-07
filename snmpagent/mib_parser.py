@@ -1,14 +1,10 @@
 import os
 
-from pysmi.codegen import JsonCodeGen
 from pysmi.codegen.symtable import SymtableCodeGen
 from pysmi.reader.localfile import FileReader
-from pysmi.searcher.pyfile import PyFileSearcher
-from pysmi.searcher.pypackage import PyPackageSearcher
 from pysmi.searcher.stub import StubSearcher
-from pysmi.writer.pyfile import PyFileWriter
 from pysmi.parser.smi import SmiV2Parser
-from pysmi.codegen.pysnmp import PySnmpCodeGen, baseMibs
+from pysmi.codegen.pysnmp import baseMibs
 from pysmi.compiler import MibCompiler
 
 

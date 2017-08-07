@@ -3,11 +3,10 @@ from pysnmp.carrier.asyncore.dgram import udp
 from pysnmp.entity import engine, config
 from pysnmp.entity.rfc3413 import cmdrsp, context
 from pysnmp.smi import builder as snmp_builder
-from snmpagent import clients, enums, factory
+from snmpagent import clients, enums, factory, mib_parser
 from snmpagent import config as snmp_config
-from snmpagent.parsers import mib_parser
 
-READ_SUB_TREE = (1, 3, 6)
+READ_SUB_TREE = (1, 3, 6, 1, 4, 1, 1139, 103)
 WRITE_SUB_TREE = READ_SUB_TREE
 
 
