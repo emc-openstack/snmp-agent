@@ -839,10 +839,11 @@ class UnityClient(object):
     def get_host_initiators(self, name):
         host = self._get_host(name)
         initiators = []
-        if host.iscsi_host_initiators:
+        if hasattr(host,
+                   'iscsi_host_initiators') and host.iscsi_host_initiators:
             initiators.extend(
                 x.initiator_id for x in host.iscsi_host_initiators)
-        if host.fc_host_initiators:
+        if hasattr(host, 'fc_host_initiators') and host.fc_host_initiators:
             initiators.extend(x.initiator_id for x in host.fc_host_initiators)
 
         if initiators:
@@ -972,9 +973,9 @@ class UnityClient(object):
     def get_power_supply_parent_enclosure(self, name):
         power_supply = self._get_power_supply(name)
         parents = []
-        if power_supply.parent_dpe:
+        if hasattr(power_supply, 'parent_dpe') and power_supply.parent_dpe:
             parents.append(power_supply.parent_dpe)
-        if power_supply.parent_dae:
+        if hasattr(power_supply, 'parent_dae') and power_supply.parent_dae:
             parents.append(power_supply.parent_dae)
 
         if parents:
@@ -1009,9 +1010,9 @@ class UnityClient(object):
     def get_fan_parent_enclosure(self, name):
         fan = self._get_fan(name)
         parents = []
-        if fan.parent_dpe:
+        if hasattr(fan, 'parent_dpe') and fan.parent_dpe:
             parents.append(fan.parent_dpe)
-        if fan.parent_dae:
+        if hasattr(fan, 'parent_dae') and fan.parent_dae:
             parents.append(fan.parent_dae)
 
         if parents:

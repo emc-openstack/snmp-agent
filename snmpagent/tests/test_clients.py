@@ -7,6 +7,7 @@ from snmpagent.tests import mocks
 
 NONE_STRING = 'n/a'
 
+
 @ddt.ddt
 class TestUnityClient(unittest.TestCase):
     @mock.patch(target='snmpagent.clients.storops.UnitySystem',
@@ -53,7 +54,7 @@ class TestUnityClient(unittest.TestCase):
         self.assertEqual(2, self.client.get_number_of_power_supply())
 
     def test_get_number_of_fan(self):
-        self.assertEqual(2, self.client.get_number_of_fan())
+        self.assertEqual(4, self.client.get_number_of_fan())
 
     def test_get_number_of_disk(self):
         self.assertEqual(4, self.client.get_number_of_disk())
@@ -581,7 +582,8 @@ class TestUnityClient(unittest.TestCase):
 
     @ddt.data({'key': 'fc_port_spa_fc1', 'name': 'SP A FC Port 1'},
               {'key': 'fc_port_spa_fc2', 'name': 'n/a'},
-              {'key': 'iscsi_port_iscsinode_spa_eth1', 'name': 'iqn.1992-04.com.emc:cx.fnm00150600267.a0'},
+              {'key': 'iscsi_port_iscsinode_spa_eth1',
+               'name': 'iqn.1992-04.com.emc:cx.fnm00150600267.a0'},
               {'key': 'iscsi_port_iscsinode_spa_eth2', 'name': 'n/a'}, )
     def test_get_frontend_port_name(self, param_dict):
         self.assertEqual(param_dict['name'],
@@ -609,7 +611,8 @@ class TestUnityClient(unittest.TestCase):
               {'key': 'fc_port_spa_fc2', 'current_speed': 'n/a'},
               {'key': 'iscsi_port_iscsinode_spa_eth1',
                'current_speed': '_10GbPS'},
-              {'key': 'iscsi_port_iscsinode_spa_eth2', 'current_speed': 'n/a'},  )
+              {'key': 'iscsi_port_iscsinode_spa_eth2',
+               'current_speed': 'n/a'}, )
     def test_get_frontend_port_current_speed(self, param_dict):
         self.assertEqual(param_dict['current_speed'],
                          self.client.get_frontend_port_current_speed(
@@ -620,7 +623,8 @@ class TestUnityClient(unittest.TestCase):
               {'key': 'fc_port_spa_fc2', 'support_speed': 'n/a'},
               {'key': 'iscsi_port_iscsinode_spa_eth1',
                'support_speed': '_1GbPS, _10GbPS, _100MbPS, AUTO'},
-              {'key': 'iscsi_port_iscsinode_spa_eth2', 'support_speed': 'n/a'}, )
+              {'key': 'iscsi_port_iscsinode_spa_eth2',
+               'support_speed': 'n/a'}, )
     def test_get_frontend_port_supported_speed(self, param_dict):
         self.assertEqual(param_dict['support_speed'],
                          self.client.get_frontend_port_supported_speed(
@@ -629,7 +633,7 @@ class TestUnityClient(unittest.TestCase):
     @ddt.data({'key': 'fc_port_spa_fc1', 'health': 'MAJOR'},
               {'key': 'fc_port_spa_fc2', 'health': 'n/a'},
               {'key': 'iscsi_port_iscsinode_spa_eth1', 'health': 'OK BUT'},
-              {'key': 'iscsi_port_iscsinode_spa_eth2', 'health': 'n/a'},)
+              {'key': 'iscsi_port_iscsinode_spa_eth2', 'health': 'n/a'}, )
     def test_get_frontend_port_health_status(self, param_dict):
         self.assertEqual(param_dict['health'],
                          self.client.get_frontend_port_health_status(
@@ -638,7 +642,7 @@ class TestUnityClient(unittest.TestCase):
     @ddt.data({'key': 'fc_port_spa_fc1', 'total_iops': '0'},
               {'key': 'fc_port_spa_fc2', 'total_iops': '0'},
               {'key': 'iscsi_port_iscsinode_spa_eth1', 'total_iops': '0.533'},
-              {'key': 'iscsi_port_iscsinode_spa_eth2', 'total_iops': 'n/a'},)
+              {'key': 'iscsi_port_iscsinode_spa_eth2', 'total_iops': 'n/a'}, )
     def test_get_frontend_port_total_iops(self, param_dict):
         self.assertEqual(param_dict['total_iops'],
                          self.client.get_frontend_port_total_iops(
@@ -664,8 +668,10 @@ class TestUnityClient(unittest.TestCase):
 
     @ddt.data({'key': 'fc_port_spa_fc1', 'total_byte_rate': '0'},
               {'key': 'fc_port_spa_fc2', 'total_byte_rate': '0'},
-              {'key': 'iscsi_port_iscsinode_spa_eth1', 'total_byte_rate': '0.003'},
-              {'key': 'iscsi_port_iscsinode_spa_eth2', 'total_byte_rate': 'n/a'}, )
+              {'key': 'iscsi_port_iscsinode_spa_eth1',
+               'total_byte_rate': '0.003'},
+              {'key': 'iscsi_port_iscsinode_spa_eth2',
+               'total_byte_rate': 'n/a'}, )
     def test_get_frontend_port_total_byte_rate(self, param_dict):
         self.assertEqual(param_dict['total_byte_rate'],
                          self.client.get_frontend_port_total_byte_rate(
@@ -673,8 +679,10 @@ class TestUnityClient(unittest.TestCase):
 
     @ddt.data({'key': 'fc_port_spa_fc1', 'read_byte_rate': '0'},
               {'key': 'fc_port_spa_fc2', 'read_byte_rate': '0'},
-              {'key': 'iscsi_port_iscsinode_spa_eth1', 'read_byte_rate': '0.0'},
-              {'key': 'iscsi_port_iscsinode_spa_eth2', 'read_byte_rate': 'n/a'}, )
+              {'key': 'iscsi_port_iscsinode_spa_eth1',
+               'read_byte_rate': '0.0'},
+              {'key': 'iscsi_port_iscsinode_spa_eth2',
+               'read_byte_rate': 'n/a'}, )
     def test_get_frontend_port_read_byte_rate(self, param_dict):
         self.assertEqual(param_dict['read_byte_rate'],
                          self.client.get_frontend_port_read_byte_rate(
@@ -682,8 +690,10 @@ class TestUnityClient(unittest.TestCase):
 
     @ddt.data({'key': 'fc_port_spa_fc1', 'write_byte_rate': '0'},
               {'key': 'fc_port_spa_fc2', 'write_byte_rate': '0'},
-              {'key': 'iscsi_port_iscsinode_spa_eth1', 'write_byte_rate': '0.002'},
-              {'key': 'iscsi_port_iscsinode_spa_eth2', 'write_byte_rate': 'n/a'}, )
+              {'key': 'iscsi_port_iscsinode_spa_eth1',
+               'write_byte_rate': '0.002'},
+              {'key': 'iscsi_port_iscsinode_spa_eth2',
+               'write_byte_rate': 'n/a'}, )
     def test_get_frontend_port_write_byte_rate(self, param_dict):
         self.assertEqual(param_dict['write_byte_rate'],
                          self.client.get_frontend_port_write_byte_rate(
@@ -745,8 +755,11 @@ class TestUnityClient(unittest.TestCase):
     # hostTable
     def test_get_hosts(self):
         items = self.client.get_hosts()
-        self.assertEqual(3, len(items))
-        self.assertEqual({'ubuntu1604', '10.245.54.151', '10.245.54.152'}, set(items))
+        self.assertEqual(5, len(items))
+        self.assertEqual(
+            {'ubuntu1604', '10.245.54.151', '10.245.54.152', '10.245.54.153',
+             '10.245.54.154'},
+            set(items))
 
     @ddt.data({'key': 'ubuntu1604',
                'ip_list': '10.207.84.27, 2620:0:170:1d34:a236:9fff:fe66:8960, 2620:0:170:1d36:a236:9fff:fe66:8960'},
@@ -761,7 +774,11 @@ class TestUnityClient(unittest.TestCase):
                'initiators': 'iqn.1993-08.org.debian:01:b974ee37fea, 20:00:00:90:FA:53:49:28:10:00:00:90:FA:53:49:28, 20:00:00:90:FA:53:49:29:10:00:00:90:FA:53:49:29'},
               {'key': '10.245.54.151', 'initiators': 'n/a'},
               {'key': '10.245.54.152',
-               'initiators': '20:00:00:90:FA:53:49, 20:00:00:90:FA:53:50'}, )
+               'initiators': '20:00:00:90:FA:53:49, 20:00:00:90:FA:53:50'},
+              {'key': '10.245.54.153',
+               'initiators': 'iqn.1993-08.org.debian:01:b974ee37fea'},
+              {'key': '10.245.54.154',
+               'initiators': 'n/a'}, )
     def test_get_host_initiators(self, param_dict):
         self.assertEqual(param_dict['initiators'],
                          self.client.get_host_initiators(param_dict['key']))
@@ -934,8 +951,9 @@ class TestUnityClient(unittest.TestCase):
     # fanTable
     def test_get_fans(self):
         items = self.client.get_fans()
-        self.assertEqual(2, len(items))
-        self.assertEqual({'DPE Cooling Module A0', 'DPE Cooling Module B1'},
+        self.assertEqual(4, len(items))
+        self.assertEqual({'DPE Cooling Module A0', 'DPE Cooling Module A1',
+                          'DPE Cooling Module A2', 'DPE Cooling Module B1'},
                          set(items))
 
     @ddt.data({'key': 'DPE Cooling Module A0', 'slot_number': '0'},
@@ -946,8 +964,11 @@ class TestUnityClient(unittest.TestCase):
 
     @ddt.data(
         {'key': 'DPE Cooling Module A0', 'parent_enclosure': 'DPE, DAE 0 1'},
+        {'key': 'DPE Cooling Module A1', 'parent_enclosure': 'DPE'},
+        {'key': 'DPE Cooling Module A2', 'parent_enclosure': 'DAE 0 1'},
         {'key': 'DPE Cooling Module B1', 'parent_enclosure': 'n/a'}, )
     def test_get_fan_parent_enclosure(self, param_dict):
+        # import pdb; pdb.set_trace()
         self.assertEqual(param_dict['parent_enclosure'],
                          self.client.get_fan_parent_enclosure(
                              param_dict['key']))

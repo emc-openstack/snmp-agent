@@ -344,7 +344,21 @@ class MockUnitySystem(object):
                                    initiator_id='20:00:00:90:FA:53:50')],
                            os_type='VMware ESXi 6.0.0',
                            host_luns=[],
-                           )
+                           ),
+                FakeObject(name='10.245.54.153',
+                           ip_list=[],
+                           iscsi_host_initiators=[FakeObject(
+                               initiator_id='iqn.1993-08.org.debian:01:b974ee37fea')],
+                           os_type='VMware ESXi 6.0.0',
+                           host_luns=[],
+                           ),
+                FakeObject(name='10.245.54.154',
+                           ip_list=[],
+                           iscsi_host_initiators=[],
+                           fc_host_initiators=[],
+                           os_type='VMware ESXi 6.0.0',
+                           host_luns=[],
+                           ),
                 ]
 
     def get_dae(self):
@@ -381,7 +395,7 @@ class MockUnitySystem(object):
                            max_power='nan',
                            current_temperature='nan',
                            avg_temperature='nan',
-                           max_temperature='nan',)]
+                           max_temperature='nan', )]
 
     def get_power_supply(self):
         return [FakeObject(name='DPE Power Supply A0',
@@ -400,6 +414,16 @@ class MockUnitySystem(object):
         return [FakeObject(name='DPE Cooling Module A0',
                            slot_number=0,
                            parent_dpe=FakeObject(name='DPE'),
+                           parent_dae=FakeObject(name='DAE 0 1'),
+                           health=FakeObject(value=FakeObject(name='OK')),
+                           ),
+                FakeObject(name='DPE Cooling Module A1',
+                           slot_number=0,
+                           parent_dpe=FakeObject(name='DPE'),
+                           health=FakeObject(value=FakeObject(name='OK')),
+                           ),
+                FakeObject(name='DPE Cooling Module A2',
+                           slot_number=0,
                            parent_dae=FakeObject(name='DAE 0 1'),
                            health=FakeObject(value=FakeObject(name='OK')),
                            ),
