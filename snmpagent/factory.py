@@ -1,3 +1,6 @@
+import logging
+
+
 class ScalarInstanceFactory(object):
     @staticmethod
     def build(name, base_class, impl_class):
@@ -9,11 +12,17 @@ class ScalarInstanceFactory(object):
             engine = acInfo[1]
 
             if engine.unity_client == None:
+                logging.info(
+                    'Reconnecting to unity: {}, agent port: {}'.format(
+                        engine.parent.array_config.mgmt_ip,
+                        engine.parent.port))
                 engine.parent.connect_backend_device()
 
             if engine.unity_client == None:
-                print('failed to connect to unity.')
-                # return name, self.getSyntax().clone('Failed to connect unity.')
+                logging.info(
+                    'Failed to reconnect unity: {}, agent port: {}'.format(
+                        engine.parent.array_config.mgmt_ip,
+                        engine.parent.port))
                 return name, self.getSyntax().clone()
 
             idx_len = self.instId[0]
@@ -48,10 +57,17 @@ class TableColumnInstanceFactory(object):
         def __read_getnext__(self, name, val, idx, acInfo, oName=None):
             engine = acInfo[1]
             if engine.unity_client == None:
+                logging.info(
+                    'Reconnecting to unity: {}, agent port: {}'.format(
+                        engine.parent.array_config.mgmt_ip,
+                        engine.parent.port))
                 engine.parent.connect_backend_device()
 
             if engine.unity_client == None:
-                print('failed to connect to unity.')
+                logging.info(
+                    'Failed to reconnect unity: {}, agent port: {}'.format(
+                        engine.parent.array_config.mgmt_ip,
+                        engine.parent.port))
                 # TODO: need to consider how to handle this scenario
                 return
 

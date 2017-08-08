@@ -1,3 +1,4 @@
+import logging
 import math
 from functools import wraps, partial
 
@@ -124,13 +125,15 @@ class UnityClient(object):
     manager = CachedUnityClientManager()
 
     def __init__(self, host=None, username=None, password=None, port=443):
-        import time
-        print("{}: connecting to unity {} ...".format(time.time(), host))
         password = password.raw if hasattr(password, 'raw') else password
+        logging.debug(
+            'Create UnitySystem: host: {}, username: {}, port: {}'.format(host,
+                                                                          username,
+                                                                          port))
         self.unity_system = storops.UnitySystem(host=host, username=username,
                                                 password=password, port=port,
                                                 retries=0, cache_interval=30)
-        print('enable metric')
+        logging.debug('Enable metric query')
         self.unity_system.enable_perf_stats()
 
     @classmethod
