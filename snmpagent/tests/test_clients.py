@@ -99,14 +99,14 @@ class TestUnityClient(unittest.TestCase):
         self.assertEqual({'SP A', 'SP B', 'SP C'}, set(items))
 
     @ddt.data({'key': 'SP A', 'emc_serial_number': 'CF2HF144300003'},
-              {'key': 'SP B', 'emc_serial_number': 'n/a'}, )
+              {'key': 'SP B', 'emc_serial_number': NONE_STRING}, )
     def test_get_sp_serial_number(self, param_dict):
         self.assertEqual(param_dict['emc_serial_number'],
                          self.client.get_sp_serial_number(param_dict['key']))
 
     @ddt.data({'key': 'SP A', 'health': 'OK'},
-              {'key': 'SP B', 'health': 'n/a'},
-              {'key': 'SP C', 'health': 'n/a'}, )
+              {'key': 'SP B', 'health': NONE_STRING},
+              {'key': 'SP C', 'health': NONE_STRING}, )
     def test_get_sp_health_status(self, param_dict):
         self.assertEqual(param_dict['health'],
                          self.client.get_sp_health_status(param_dict['key']))
@@ -197,19 +197,19 @@ class TestUnityClient(unittest.TestCase):
 
     @ddt.data({'key': 'Beijing',
                'tiers': 'Extreme Performance, Performance, Capacity'},
-              {'key': 'Shanghai', 'tiers': 'n/a'}, )
+              {'key': 'Shanghai', 'tiers': NONE_STRING}, )
     def test_get_pool_disk_types(self, param_dict):
         self.assertEqual(param_dict['tiers'],
                          self.client.get_pool_disk_types(param_dict['key']))
 
     @ddt.data({'key': 'Beijing', 'raid_type': 'RAID10'},
-              {'key': 'Shanghai', 'raid_type': 'n/a'}, )
+              {'key': 'Shanghai', 'raid_type': NONE_STRING}, )
     def test_get_pool_raid_levels(self, param_dict):
         self.assertEqual(param_dict['raid_type'],
                          self.client.get_pool_raid_levels(param_dict['key']))
 
     @ddt.data({'key': 'Beijing', 'is_fast_cache_enabled': 'True'},
-              {'key': 'Shanghai', 'is_fast_cache_enabled': 'n/a'}, )
+              {'key': 'Shanghai', 'is_fast_cache_enabled': NONE_STRING}, )
     def test_get_pool_fast_cache_status(self, param_dict):
         self.assertEqual(param_dict['is_fast_cache_enabled'],
                          self.client.get_pool_fast_cache_status(
@@ -261,8 +261,8 @@ class TestUnityClient(unittest.TestCase):
                          self.client.get_lun_name(param_dict['key']))
 
     @ddt.data({'key': 'sv_1', 'raid_type': 'RAID10'},
-              {'key': 'sv_2', 'raid_type': 'n/a'},
-              {'key': 'sv_3', 'raid_type': 'n/a'}, )
+              {'key': 'sv_2', 'raid_type': NONE_STRING},
+              {'key': 'sv_3', 'raid_type': NONE_STRING}, )
     def test_get_lun_raid_type(self, param_dict):
         self.assertEqual(param_dict['raid_type'],
                          self.client.get_lun_raid_type(param_dict['key']))
@@ -270,7 +270,7 @@ class TestUnityClient(unittest.TestCase):
     @ddt.data({'key': 'sv_1', 'size_allocated': '0.0'},
               {'key': 'sv_2', 'size_allocated': '0'},
               {'key': 'sv_3', 'size_allocated': '0'},
-              {'key': 'sv_4', 'size_allocated': 'n/a'}, )
+              {'key': 'sv_4', 'size_allocated': NONE_STRING}, )
     def test_get_lun_size_allocated(self, param_dict):
         self.assertEqual(param_dict['size_allocated'],
                          self.client.get_lun_size_allocated(param_dict['key']))
@@ -278,22 +278,22 @@ class TestUnityClient(unittest.TestCase):
     @ddt.data({'key': 'sv_1', 'size_total': '100.0'},
               {'key': 'sv_2', 'size_total': '0'},
               {'key': 'sv_3', 'size_total': '0'},
-              {'key': 'sv_4', 'size_total': 'n/a'}, )
+              {'key': 'sv_4', 'size_total': NONE_STRING}, )
     def test_get_lun_size_total(self, param_dict):
         self.assertEqual(param_dict['size_total'],
                          self.client.get_lun_size_total(param_dict['key']))
 
     @ddt.data({'key': 'sv_1', 'health': 'OK'},
-              {'key': 'sv_2', 'health': 'n/a'},
-              {'key': 'sv_3', 'health': 'n/a'},
+              {'key': 'sv_2', 'health': NONE_STRING},
+              {'key': 'sv_3', 'health': NONE_STRING},
               {'key': 'sv_4', 'health': 'OK BUT'}, )
     def test_get_lun_health_status(self, param_dict):
         self.assertEqual(param_dict['health'],
                          self.client.get_lun_health_status(param_dict['key']))
 
     @ddt.data({'key': 'sv_1', 'is_fast_cache_enabled': 'False'},
-              {'key': 'sv_2', 'is_fast_cache_enabled': 'n/a'},
-              {'key': 'sv_3', 'is_fast_cache_enabled': 'n/a'},
+              {'key': 'sv_2', 'is_fast_cache_enabled': NONE_STRING},
+              {'key': 'sv_3', 'is_fast_cache_enabled': NONE_STRING},
               {'key': 'sv_4', 'is_fast_cache_enabled': 'True'}, )
     def test_get_lun_fast_cache_status(self, param_dict):
         self.assertEqual(param_dict['is_fast_cache_enabled'],
@@ -301,15 +301,15 @@ class TestUnityClient(unittest.TestCase):
                              param_dict['key']))
 
     @ddt.data({'key': 'sv_1', 'default_node': 'SP B'},
-              {'key': 'sv_2', 'default_node': 'n/a'},
-              {'key': 'sv_3', 'default_node': 'n/a'}, )
+              {'key': 'sv_2', 'default_node': NONE_STRING},
+              {'key': 'sv_3', 'default_node': NONE_STRING}, )
     def test_get_lun_default_sp(self, param_dict):
         self.assertEqual(param_dict['default_node'],
                          self.client.get_lun_default_sp(param_dict['key']))
 
     @ddt.data({'key': 'sv_1', 'current_node': 'SP A'},
-              {'key': 'sv_2', 'current_node': 'n/a'},
-              {'key': 'sv_3', 'current_node': 'n/a'}, )
+              {'key': 'sv_2', 'current_node': NONE_STRING},
+              {'key': 'sv_3', 'current_node': NONE_STRING}, )
     def test_get_lun_current_sp(self, param_dict):
         self.assertEqual(param_dict['current_node'],
                          self.client.get_lun_current_sp(param_dict['key']))
@@ -317,7 +317,7 @@ class TestUnityClient(unittest.TestCase):
     @ddt.data({'key': 'sv_1', 'response_time': '5.08'},
               {'key': 'sv_2', 'response_time': '0'},
               {'key': 'sv_3', 'response_time': '0'},
-              {'key': 'sv_4', 'response_time': 'n/a'}, )
+              {'key': 'sv_4', 'response_time': NONE_STRING}, )
     def test_get_lun_response_time(self, param_dict):
         self.assertEqual(param_dict['response_time'],
                          self.client.get_lun_response_time(param_dict['key']))
@@ -325,7 +325,7 @@ class TestUnityClient(unittest.TestCase):
     @ddt.data({'key': 'sv_1', 'queue_length': '0.01'},
               {'key': 'sv_2', 'queue_length': '0'},
               {'key': 'sv_3', 'queue_length': '0'},
-              {'key': 'sv_4', 'queue_length': 'n/a'}, )
+              {'key': 'sv_4', 'queue_length': NONE_STRING}, )
     def test_get_lun_queue_length(self, param_dict):
         self.assertEqual(param_dict['queue_length'],
                          self.client.get_lun_queue_length(param_dict['key']))
@@ -333,7 +333,7 @@ class TestUnityClient(unittest.TestCase):
     @ddt.data({'key': 'sv_1', 'total_iops': '0.433'},
               {'key': 'sv_2', 'total_iops': '0'},
               {'key': 'sv_3', 'total_iops': '0'},
-              {'key': 'sv_4', 'total_iops': 'n/a'}, )
+              {'key': 'sv_4', 'total_iops': NONE_STRING}, )
     def test_get_lun_total_iops(self, param_dict):
         self.assertEqual(param_dict['total_iops'],
                          self.client.get_lun_total_iops(param_dict['key']))
@@ -341,7 +341,7 @@ class TestUnityClient(unittest.TestCase):
     @ddt.data({'key': 'sv_1', 'read_iops': '0.033'},
               {'key': 'sv_2', 'read_iops': '0'},
               {'key': 'sv_3', 'read_iops': '0'},
-              {'key': 'sv_4', 'read_iops': 'n/a'}, )
+              {'key': 'sv_4', 'read_iops': NONE_STRING}, )
     def test_get_lun_read_iops(self, param_dict):
         self.assertEqual(param_dict['read_iops'],
                          self.client.get_lun_read_iops(param_dict['key']))
@@ -349,7 +349,7 @@ class TestUnityClient(unittest.TestCase):
     @ddt.data({'key': 'sv_1', 'write_iops': '0.4'},
               {'key': 'sv_2', 'write_iops': '0'},
               {'key': 'sv_3', 'write_iops': '0'},
-              {'key': 'sv_4', 'write_iops': 'n/a'}, )
+              {'key': 'sv_4', 'write_iops': NONE_STRING}, )
     def test_get_lun_write_iops(self, param_dict):
         self.assertEqual(param_dict['write_iops'],
                          self.client.get_lun_write_iops(param_dict['key']))
@@ -357,7 +357,7 @@ class TestUnityClient(unittest.TestCase):
     @ddt.data({'key': 'sv_1', 'total_byte_rate': '0.003'},
               {'key': 'sv_2', 'total_byte_rate': '0'},
               {'key': 'sv_3', 'total_byte_rate': '0'},
-              {'key': 'sv_4', 'total_byte_rate': 'n/a'}, )
+              {'key': 'sv_4', 'total_byte_rate': NONE_STRING}, )
     def test_get_lun_total_byte_rate(self, param_dict):
         self.assertEqual(param_dict['total_byte_rate'],
                          self.client.get_lun_total_byte_rate(
@@ -366,7 +366,7 @@ class TestUnityClient(unittest.TestCase):
     @ddt.data({'key': 'sv_1', 'read_byte_rate': '0.0'},
               {'key': 'sv_2', 'read_byte_rate': '0'},
               {'key': 'sv_3', 'read_byte_rate': '0'},
-              {'key': 'sv_4', 'read_byte_rate': 'n/a'}, )
+              {'key': 'sv_4', 'read_byte_rate': NONE_STRING}, )
     def test_get_lun_read_byte_rate(self, param_dict):
         self.assertEqual(param_dict['read_byte_rate'],
                          self.client.get_lun_read_byte_rate(param_dict['key']))
@@ -374,7 +374,7 @@ class TestUnityClient(unittest.TestCase):
     @ddt.data({'key': 'sv_1', 'write_byte_rate': '0.002'},
               {'key': 'sv_2', 'write_byte_rate': '0'},
               {'key': 'sv_3', 'write_byte_rate': '0'},
-              {'key': 'sv_4', 'write_byte_rate': 'n/a'}, )
+              {'key': 'sv_4', 'write_byte_rate': NONE_STRING}, )
     def test_get_lun_write_byte_rate(self, param_dict):
         self.assertEqual(param_dict['write_byte_rate'],
                          self.client.get_lun_write_byte_rate(
@@ -383,7 +383,7 @@ class TestUnityClient(unittest.TestCase):
     @ddt.data({'key': 'sv_1', 'fast_cache_read_hits': '30.0'},
               {'key': 'sv_2', 'fast_cache_read_hits': '0'},
               {'key': 'sv_3', 'fast_cache_read_hits': '0'},
-              {'key': 'sv_4', 'fast_cache_read_hits': 'n/a'}, )
+              {'key': 'sv_4', 'fast_cache_read_hits': NONE_STRING}, )
     def test_get_lun_fast_cache_read_hits(self, param_dict):
         self.assertEqual(param_dict['fast_cache_read_hits'],
                          self.client.get_lun_fast_cache_read_hits(
@@ -392,7 +392,7 @@ class TestUnityClient(unittest.TestCase):
     @ddt.data({'key': 'sv_1', 'fast_cache_write_hits': '30.0'},
               {'key': 'sv_2', 'fast_cache_write_hits': '0'},
               {'key': 'sv_3', 'fast_cache_write_hits': '0'},
-              {'key': 'sv_4', 'fast_cache_write_hits': 'n/a'}, )
+              {'key': 'sv_4', 'fast_cache_write_hits': NONE_STRING}, )
     def test_get_lun_fast_cache_write_hits(self, param_dict):
         self.assertEqual(param_dict['fast_cache_write_hits'],
                          self.client.get_lun_fast_cache_write_hits(
@@ -401,7 +401,7 @@ class TestUnityClient(unittest.TestCase):
     @ddt.data({'key': 'sv_1', 'fast_cache_read_hit_rate': '30.0'},
               {'key': 'sv_2', 'fast_cache_read_hit_rate': '0'},
               {'key': 'sv_3', 'fast_cache_read_hit_rate': '0'},
-              {'key': 'sv_4', 'fast_cache_read_hit_rate': 'n/a'}, )
+              {'key': 'sv_4', 'fast_cache_read_hit_rate': NONE_STRING}, )
     def test_get_lun_fast_cache_read_hit_rate(self, param_dict):
         self.assertEqual(param_dict['fast_cache_read_hit_rate'],
                          self.client.get_lun_fast_cache_read_hit_rate(
@@ -410,7 +410,7 @@ class TestUnityClient(unittest.TestCase):
     @ddt.data({'key': 'sv_1', 'fast_cache_write_hit_rate': '30.03'},
               {'key': 'sv_2', 'fast_cache_write_hit_rate': '0'},
               {'key': 'sv_3', 'fast_cache_write_hit_rate': '0'},
-              {'key': 'sv_4', 'fast_cache_write_hit_rate': 'n/a'}, )
+              {'key': 'sv_4', 'fast_cache_write_hit_rate': NONE_STRING}, )
     def test_get_lun_fast_cache_write_hit_rate(self, param_dict):
         self.assertEqual(param_dict['fast_cache_write_hit_rate'],
                          self.client.get_lun_fast_cache_write_hit_rate(
@@ -419,15 +419,15 @@ class TestUnityClient(unittest.TestCase):
     @ddt.data({'key': 'sv_1', 'utilization': '0.081'},
               {'key': 'sv_2', 'utilization': '0'},
               {'key': 'sv_3', 'utilization': '0'},
-              {'key': 'sv_4', 'utilization': 'n/a'}, )
+              {'key': 'sv_4', 'utilization': NONE_STRING}, )
     def test_get_lun_utilization(self, param_dict):
         self.assertEqual(param_dict['utilization'],
                          self.client.get_lun_utilization(param_dict['key']))
 
     @ddt.data({'key': 'sv_1',
                'host_access': 'ESD-HOST193221.meng.lab.emc.com, 10.245.54.151, VPI25224'},
-              {'key': 'sv_2', 'host_access': 'n/a'},
-              {'key': 'sv_3', 'host_access': 'n/a'}, )
+              {'key': 'sv_2', 'host_access': NONE_STRING},
+              {'key': 'sv_3', 'host_access': NONE_STRING}, )
     def test_get_lun_host_access(self, param_dict):
         self.assertEqual(param_dict['host_access'],
                          self.client.get_lun_host_access(param_dict['key']))
@@ -440,37 +440,37 @@ class TestUnityClient(unittest.TestCase):
                           'DAE 0 1 Drive 1'}, set(items))
 
     @ddt.data({'key': 'DPE Drive 0', 'model': 'HU415606 EMC600'},
-              {'key': 'DPE Drive 1', 'model': 'n/a'}, )
+              {'key': 'DPE Drive 1', 'model': NONE_STRING}, )
     def test_get_disk_model(self, param_dict):
         self.assertEqual(param_dict['model'],
                          self.client.get_disk_model(param_dict['key']))
 
     @ddt.data({'key': 'DPE Drive 0', 'emc_serial_number': '0XG507BJ'},
-              {'key': 'DPE Drive 1', 'emc_serial_number': 'n/a'}, )
+              {'key': 'DPE Drive 1', 'emc_serial_number': NONE_STRING}, )
     def test_get_disk_serial_number(self, param_dict):
         self.assertEqual(param_dict['emc_serial_number'],
                          self.client.get_disk_serial_number(param_dict['key']))
 
     @ddt.data({'key': 'DPE Drive 0', 'version': 'K7P0'},
-              {'key': 'DPE Drive 1', 'version': 'n/a'}, )
+              {'key': 'DPE Drive 1', 'version': NONE_STRING}, )
     def test_get_disk_version(self, param_dict):
         self.assertEqual(param_dict['version'],
                          self.client.get_disk_version(param_dict['key']))
 
     @ddt.data({'key': 'DPE Drive 0', 'disk_technology': 'SAS'},
-              {'key': 'DPE Drive 1', 'disk_technology': 'n/a'}, )
+              {'key': 'DPE Drive 1', 'disk_technology': NONE_STRING}, )
     def test_get_disk_type(self, param_dict):
         self.assertEqual(param_dict['disk_technology'],
                          self.client.get_disk_type(param_dict['key']))
 
     @ddt.data({'key': 'DPE Drive 0', 'slot_number': '0'},
-              {'key': 'DPE Drive 1', 'slot_number': 'n/a'}, )
+              {'key': 'DPE Drive 1', 'slot_number': NONE_STRING}, )
     def test_get_disk_slot_number(self, param_dict):
         self.assertEqual(param_dict['slot_number'],
                          self.client.get_disk_slot_number(param_dict['key']))
 
     @ddt.data({'key': 'DPE Drive 0', 'health': 'OK'},
-              {'key': 'DPE Drive 1', 'health': 'n/a'}, )
+              {'key': 'DPE Drive 1', 'health': NONE_STRING}, )
     def test_get_disk_health_status(self, param_dict):
         self.assertEqual(param_dict['health'],
                          self.client.get_disk_health_status(param_dict['key']))
@@ -478,14 +478,14 @@ class TestUnityClient(unittest.TestCase):
     @ddt.data({'key': 'DPE Drive 0', 'raw_size': '550.313'},
               {'key': 'DPE Drive 1', 'raw_size': '0'},
               {'key': 'DAE 0 1 Drive 0', 'raw_size': '0'},
-              {'key': 'DAE 0 1 Drive 1', 'raw_size': 'n/a'}, )
+              {'key': 'DAE 0 1 Drive 1', 'raw_size': NONE_STRING}, )
     def test_get_disk_raw_size(self, param_dict):
         self.assertEqual(param_dict['raw_size'],
                          self.client.get_disk_raw_size(param_dict['key']))
 
     @ddt.data({'key': 'DPE Drive 0', 'pool': 'Shanghai'},
-              {'key': 'DPE Drive 1', 'pool': 'n/a'},
-              {'key': 'DAE 0 1 Drive 0', 'pool': 'n/a'}, )
+              {'key': 'DPE Drive 1', 'pool': NONE_STRING},
+              {'key': 'DAE 0 1 Drive 0', 'pool': NONE_STRING}, )
     def test_get_disk_current_pool(self, param_dict):
         self.assertEqual(param_dict['pool'],
                          self.client.get_disk_current_pool(param_dict['key']))
@@ -493,7 +493,7 @@ class TestUnityClient(unittest.TestCase):
     @ddt.data({'key': 'DPE Drive 0', 'response_time': '35.337'},
               {'key': 'DPE Drive 1', 'response_time': '0'},
               {'key': 'DAE 0 1 Drive 0', 'response_time': '0'},
-              {'key': 'DAE 0 1 Drive 1', 'response_time': 'n/a'}, )
+              {'key': 'DAE 0 1 Drive 1', 'response_time': NONE_STRING}, )
     def test_get_disk_response_time(self, param_dict):
         self.assertEqual(param_dict['response_time'],
                          self.client.get_disk_response_time(param_dict['key']))
@@ -501,7 +501,7 @@ class TestUnityClient(unittest.TestCase):
     @ddt.data({'key': 'DPE Drive 0', 'queue_length': '1.212'},
               {'key': 'DPE Drive 1', 'queue_length': '0'},
               {'key': 'DAE 0 1 Drive 0', 'queue_length': '0'},
-              {'key': 'DAE 0 1 Drive 1', 'queue_length': 'n/a'}, )
+              {'key': 'DAE 0 1 Drive 1', 'queue_length': NONE_STRING}, )
     def test_get_disk_queue_length(self, param_dict):
         self.assertEqual(param_dict['queue_length'],
                          self.client.get_disk_queue_length(param_dict['key']))
@@ -509,7 +509,7 @@ class TestUnityClient(unittest.TestCase):
     @ddt.data({'key': 'DPE Drive 0', 'total_iops': '2.2'},
               {'key': 'DPE Drive 1', 'total_iops': '0'},
               {'key': 'DAE 0 1 Drive 0', 'total_iops': '0'},
-              {'key': 'DAE 0 1 Drive 1', 'total_iops': 'n/a'}, )
+              {'key': 'DAE 0 1 Drive 1', 'total_iops': NONE_STRING}, )
     def test_get_disk_total_iops(self, param_dict):
         self.assertEqual(param_dict['total_iops'],
                          self.client.get_disk_total_iops(param_dict['key']))
@@ -517,7 +517,7 @@ class TestUnityClient(unittest.TestCase):
     @ddt.data({'key': 'DPE Drive 0', 'read_iops': '1.417'},
               {'key': 'DPE Drive 1', 'read_iops': '0'},
               {'key': 'DAE 0 1 Drive 0', 'read_iops': '0'},
-              {'key': 'DAE 0 1 Drive 1', 'read_iops': 'n/a'}, )
+              {'key': 'DAE 0 1 Drive 1', 'read_iops': NONE_STRING}, )
     def test_get_disk_read_iops(self, param_dict):
         self.assertEqual(param_dict['read_iops'],
                          self.client.get_disk_read_iops(param_dict['key']))
@@ -525,7 +525,7 @@ class TestUnityClient(unittest.TestCase):
     @ddt.data({'key': 'DPE Drive 0', 'write_iops': '0.783'},
               {'key': 'DPE Drive 1', 'write_iops': '0'},
               {'key': 'DAE 0 1 Drive 0', 'write_iops': '0'},
-              {'key': 'DAE 0 1 Drive 1', 'write_iops': 'n/a'}, )
+              {'key': 'DAE 0 1 Drive 1', 'write_iops': NONE_STRING}, )
     def test_get_disk_write_iops(self, param_dict):
         self.assertEqual(param_dict['write_iops'],
                          self.client.get_disk_write_iops(param_dict['key']))
@@ -533,7 +533,7 @@ class TestUnityClient(unittest.TestCase):
     @ddt.data({'key': 'DPE Drive 0', 'total_byte_rate': '1.269'},
               {'key': 'DPE Drive 1', 'total_byte_rate': '0'},
               {'key': 'DAE 0 1 Drive 0', 'total_byte_rate': '0'},
-              {'key': 'DAE 0 1 Drive 1', 'total_byte_rate': 'n/a'}, )
+              {'key': 'DAE 0 1 Drive 1', 'total_byte_rate': NONE_STRING}, )
     def test_get_disk_total_byte_rate(self, param_dict):
         self.assertEqual(param_dict['total_byte_rate'],
                          self.client.get_disk_total_byte_rate(
@@ -542,7 +542,7 @@ class TestUnityClient(unittest.TestCase):
     @ddt.data({'key': 'DPE Drive 0', 'read_byte_rate': '1.072'},
               {'key': 'DPE Drive 1', 'read_byte_rate': '0'},
               {'key': 'DAE 0 1 Drive 0', 'read_byte_rate': '0'},
-              {'key': 'DAE 0 1 Drive 1', 'read_byte_rate': 'n/a'}, )
+              {'key': 'DAE 0 1 Drive 1', 'read_byte_rate': NONE_STRING}, )
     def test_get_disk_read_byte_rate(self, param_dict):
         self.assertEqual(param_dict['read_byte_rate'],
                          self.client.get_disk_read_byte_rate(
@@ -551,7 +551,7 @@ class TestUnityClient(unittest.TestCase):
     @ddt.data({'key': 'DPE Drive 0', 'write_byte_rate': '0.197'},
               {'key': 'DPE Drive 1', 'write_byte_rate': '0'},
               {'key': 'DAE 0 1 Drive 0', 'write_byte_rate': '0'},
-              {'key': 'DAE 0 1 Drive 1', 'write_byte_rate': 'n/a'}, )
+              {'key': 'DAE 0 1 Drive 1', 'write_byte_rate': NONE_STRING}, )
     def test_get_disk_write_byte_rate(self, param_dict):
         self.assertEqual(param_dict['write_byte_rate'],
                          self.client.get_disk_write_byte_rate(
@@ -560,7 +560,7 @@ class TestUnityClient(unittest.TestCase):
     @ddt.data({'key': 'DPE Drive 0', 'utilization': '22.45'},
               {'key': 'DPE Drive 1', 'utilization': '0'},
               {'key': 'DAE 0 1 Drive 0', 'utilization': '0'},
-              {'key': 'DAE 0 1 Drive 1', 'utilization': 'n/a'}, )
+              {'key': 'DAE 0 1 Drive 1', 'utilization': NONE_STRING}, )
     def test_get_disk_utilization(self, param_dict):
         self.assertEqual(param_dict['utilization'],
                          self.client.get_disk_utilization(param_dict['key']))
@@ -581,38 +581,38 @@ class TestUnityClient(unittest.TestCase):
                          self.client.get_frontend_port_id(param_dict['key']))
 
     @ddt.data({'key': 'fc_port_spa_fc1', 'name': 'SP A FC Port 1'},
-              {'key': 'fc_port_spa_fc2', 'name': 'n/a'},
+              {'key': 'fc_port_spa_fc2', 'name': NONE_STRING},
               {'key': 'iscsi_port_iscsinode_spa_eth1',
                'name': 'iqn.1992-04.com.emc:cx.fnm00150600267.a0'},
-              {'key': 'iscsi_port_iscsinode_spa_eth2', 'name': 'n/a'}, )
+              {'key': 'iscsi_port_iscsinode_spa_eth2', 'name': NONE_STRING}, )
     def test_get_frontend_port_name(self, param_dict):
         self.assertEqual(param_dict['name'],
                          self.client.get_frontend_port_name(param_dict['key']))
 
-    @ddt.data({'key': 'fc_port_spa_fc1', 'address': 'n/a'},
-              {'key': 'fc_port_spa_fc2', 'address': 'n/a'},
+    @ddt.data({'key': 'fc_port_spa_fc1', 'address': NONE_STRING},
+              {'key': 'fc_port_spa_fc2', 'address': NONE_STRING},
               {'key': 'iscsi_port_iscsinode_spa_eth1',
                'address': '10.0.0.10'},
-              {'key': 'iscsi_port_iscsinode_spa_eth2', 'address': 'n/a'}, )
+              {'key': 'iscsi_port_iscsinode_spa_eth2', 'address': NONE_STRING}, )
     def test_get_frontend_port_address(self, param_dict):
         self.assertEqual(param_dict['address'],
                          self.client.get_frontend_port_address(
                              param_dict['key']))
 
     @ddt.data({'key': 'fc_port_spa_fc1', 'port_type': 'LC'},
-              {'key': 'fc_port_spa_fc2', 'port_type': 'n/a'},
+              {'key': 'fc_port_spa_fc2', 'port_type': NONE_STRING},
               {'key': 'iscsi_port_iscsinode_spa_eth1', 'port_type': 'RJ45'},
-              {'key': 'iscsi_port_iscsinode_spa_eth2', 'port_type': 'n/a'}, )
+              {'key': 'iscsi_port_iscsinode_spa_eth2', 'port_type': NONE_STRING}, )
     def test_get_frontend_port_type(self, param_dict):
         self.assertEqual(param_dict['port_type'],
                          self.client.get_frontend_port_type(param_dict['key']))
 
     @ddt.data({'key': 'fc_port_spa_fc1', 'current_speed': '_8GbPS'},
-              {'key': 'fc_port_spa_fc2', 'current_speed': 'n/a'},
+              {'key': 'fc_port_spa_fc2', 'current_speed': NONE_STRING},
               {'key': 'iscsi_port_iscsinode_spa_eth1',
                'current_speed': '_10GbPS'},
               {'key': 'iscsi_port_iscsinode_spa_eth2',
-               'current_speed': 'n/a'}, )
+               'current_speed': NONE_STRING}, )
     def test_get_frontend_port_current_speed(self, param_dict):
         self.assertEqual(param_dict['current_speed'],
                          self.client.get_frontend_port_current_speed(
@@ -620,20 +620,20 @@ class TestUnityClient(unittest.TestCase):
 
     @ddt.data({'key': 'fc_port_spa_fc1',
                'support_speed': '_4GbPS, _8GbPS, _16GbPS, AUTO'},
-              {'key': 'fc_port_spa_fc2', 'support_speed': 'n/a'},
+              {'key': 'fc_port_spa_fc2', 'support_speed': NONE_STRING},
               {'key': 'iscsi_port_iscsinode_spa_eth1',
                'support_speed': '_1GbPS, _10GbPS, _100MbPS, AUTO'},
               {'key': 'iscsi_port_iscsinode_spa_eth2',
-               'support_speed': 'n/a'}, )
+               'support_speed': NONE_STRING}, )
     def test_get_frontend_port_supported_speed(self, param_dict):
         self.assertEqual(param_dict['support_speed'],
                          self.client.get_frontend_port_supported_speed(
                              param_dict['key']))
 
     @ddt.data({'key': 'fc_port_spa_fc1', 'health': 'MAJOR'},
-              {'key': 'fc_port_spa_fc2', 'health': 'n/a'},
+              {'key': 'fc_port_spa_fc2', 'health': NONE_STRING},
               {'key': 'iscsi_port_iscsinode_spa_eth1', 'health': 'OK BUT'},
-              {'key': 'iscsi_port_iscsinode_spa_eth2', 'health': 'n/a'}, )
+              {'key': 'iscsi_port_iscsinode_spa_eth2', 'health': NONE_STRING}, )
     def test_get_frontend_port_health_status(self, param_dict):
         self.assertEqual(param_dict['health'],
                          self.client.get_frontend_port_health_status(
@@ -642,7 +642,7 @@ class TestUnityClient(unittest.TestCase):
     @ddt.data({'key': 'fc_port_spa_fc1', 'total_iops': '0'},
               {'key': 'fc_port_spa_fc2', 'total_iops': '0'},
               {'key': 'iscsi_port_iscsinode_spa_eth1', 'total_iops': '0.533'},
-              {'key': 'iscsi_port_iscsinode_spa_eth2', 'total_iops': 'n/a'}, )
+              {'key': 'iscsi_port_iscsinode_spa_eth2', 'total_iops': NONE_STRING}, )
     def test_get_frontend_port_total_iops(self, param_dict):
         self.assertEqual(param_dict['total_iops'],
                          self.client.get_frontend_port_total_iops(
@@ -651,7 +651,7 @@ class TestUnityClient(unittest.TestCase):
     @ddt.data({'key': 'fc_port_spa_fc1', 'read_iops': '0'},
               {'key': 'fc_port_spa_fc2', 'read_iops': '0'},
               {'key': 'iscsi_port_iscsinode_spa_eth1', 'read_iops': '0.133'},
-              {'key': 'iscsi_port_iscsinode_spa_eth2', 'read_iops': 'n/a'}, )
+              {'key': 'iscsi_port_iscsinode_spa_eth2', 'read_iops': NONE_STRING}, )
     def test_get_frontend_port_read_iops(self, param_dict):
         self.assertEqual(param_dict['read_iops'],
                          self.client.get_frontend_port_read_iops(
@@ -660,7 +660,7 @@ class TestUnityClient(unittest.TestCase):
     @ddt.data({'key': 'fc_port_spa_fc1', 'write_iops': '0'},
               {'key': 'fc_port_spa_fc2', 'write_iops': '0'},
               {'key': 'iscsi_port_iscsinode_spa_eth1', 'write_iops': '0.4'},
-              {'key': 'iscsi_port_iscsinode_spa_eth2', 'write_iops': 'n/a'}, )
+              {'key': 'iscsi_port_iscsinode_spa_eth2', 'write_iops': NONE_STRING}, )
     def test_get_frontend_port_write_iops(self, param_dict):
         self.assertEqual(param_dict['write_iops'],
                          self.client.get_frontend_port_write_iops(
@@ -671,7 +671,7 @@ class TestUnityClient(unittest.TestCase):
               {'key': 'iscsi_port_iscsinode_spa_eth1',
                'total_byte_rate': '0.003'},
               {'key': 'iscsi_port_iscsinode_spa_eth2',
-               'total_byte_rate': 'n/a'}, )
+               'total_byte_rate': NONE_STRING}, )
     def test_get_frontend_port_total_byte_rate(self, param_dict):
         self.assertEqual(param_dict['total_byte_rate'],
                          self.client.get_frontend_port_total_byte_rate(
@@ -682,7 +682,7 @@ class TestUnityClient(unittest.TestCase):
               {'key': 'iscsi_port_iscsinode_spa_eth1',
                'read_byte_rate': '0.0'},
               {'key': 'iscsi_port_iscsinode_spa_eth2',
-               'read_byte_rate': 'n/a'}, )
+               'read_byte_rate': NONE_STRING}, )
     def test_get_frontend_port_read_byte_rate(self, param_dict):
         self.assertEqual(param_dict['read_byte_rate'],
                          self.client.get_frontend_port_read_byte_rate(
@@ -693,7 +693,7 @@ class TestUnityClient(unittest.TestCase):
               {'key': 'iscsi_port_iscsinode_spa_eth1',
                'write_byte_rate': '0.002'},
               {'key': 'iscsi_port_iscsinode_spa_eth2',
-               'write_byte_rate': 'n/a'}, )
+               'write_byte_rate': NONE_STRING}, )
     def test_get_frontend_port_write_byte_rate(self, param_dict):
         self.assertEqual(param_dict['write_byte_rate'],
                          self.client.get_frontend_port_write_byte_rate(
@@ -706,83 +706,83 @@ class TestUnityClient(unittest.TestCase):
         self.assertEqual({'spa_sas0', 'spb_sas0'}, set(items))
 
     @ddt.data({'key': 'spa_sas0', 'name': 'SP A SAS Port 0'},
-              {'key': 'spb_sas0', 'name': 'n/a'}, )
+              {'key': 'spb_sas0', 'name': NONE_STRING}, )
     def test_get_backend_port_name(self, param_dict):
         self.assertEqual(param_dict['name'],
                          self.client.get_backend_port_name(param_dict['key']))
 
     @ddt.data({'key': 'spa_sas0', 'connector_type': 'MINI_SAS_HD'},
-              {'key': 'spb_sas0', 'connector_type': 'n/a'}, )
+              {'key': 'spb_sas0', 'connector_type': NONE_STRING}, )
     def test_get_backend_port_type(self, param_dict):
         self.assertEqual(param_dict['connector_type'],
                          self.client.get_backend_port_type(param_dict['key']))
 
     @ddt.data({'key': 'spa_sas0', 'port': '0'},
-              {'key': 'spb_sas0', 'port': 'n/a'}, )
+              {'key': 'spb_sas0', 'port': NONE_STRING}, )
     def test_get_backend_port_port_number(self, param_dict):
         self.assertEqual(param_dict['port'],
                          self.client.get_backend_port_port_number(
                              param_dict['key']))
 
     @ddt.data({'key': 'spa_sas0', 'current_speed': '_12Gbps'},
-              {'key': 'spb_sas0', 'current_speed': 'n/a'}, )
+              {'key': 'spb_sas0', 'current_speed': NONE_STRING}, )
     def test_get_backend_port_current_speed(self, param_dict):
         self.assertEqual(param_dict['current_speed'],
                          self.client.get_backend_port_current_speed(
                              param_dict['key']))
 
     @ddt.data({'key': 'spa_sas0', 'parent_io_module': 'IO Module A'},
-              {'key': 'spb_sas0', 'parent_io_module': 'n/a'}, )
+              {'key': 'spb_sas0', 'parent_io_module': NONE_STRING}, )
     def test_get_backend_port_parent_io_module(self, param_dict):
         self.assertEqual(param_dict['parent_io_module'],
                          self.client.get_backend_port_parent_io_module(
                              param_dict['key']))
 
     @ddt.data({'key': 'spa_sas0', 'parent_storage_processor': 'SP A'},
-              {'key': 'spb_sas0', 'parent_storage_processor': 'n/a'}, )
+              {'key': 'spb_sas0', 'parent_storage_processor': NONE_STRING}, )
     def test_get_backend_port_parent_sp(self, param_dict):
         self.assertEqual(param_dict['parent_storage_processor'],
                          self.client.get_backend_port_parent_sp(
                              param_dict['key']))
 
     @ddt.data({'key': 'spa_sas0', 'health': 'OK'},
-              {'key': 'spb_sas0', 'health': 'n/a'}, )
+              {'key': 'spb_sas0', 'health': NONE_STRING}, )
     def test_get_backend_port_health_status(self, param_dict):
         self.assertEqual(param_dict['health'],
                          self.client.get_backend_port_health_status(
                              param_dict['key']))
 
-    @ddt.data({'key': 'spa_sas0', 'total_iops': 'n/a'})
+    @ddt.data({'key': 'spa_sas0', 'total_iops': NONE_STRING})
     def test_get_backend_port_total_iops(self, param_dict):
         self.assertEqual(param_dict['total_iops'],
                          self.client.get_backend_port_total_iops(
                              param_dict['key']))
 
-    @ddt.data({'key': 'spa_sas0', 'read_iops': 'n/a'})
+    @ddt.data({'key': 'spa_sas0', 'read_iops': NONE_STRING})
     def test_get_backend_port_read_iops(self, param_dict):
         self.assertEqual(param_dict['read_iops'],
                          self.client.get_backend_port_read_iops(
                              param_dict['key']))
 
-    @ddt.data({'key': 'spa_sas0', 'write_iops': 'n/a'})
+    @ddt.data({'key': 'spa_sas0', 'write_iops': NONE_STRING})
     def test_get_backend_port_write_iops(self, param_dict):
         self.assertEqual(param_dict['write_iops'],
                          self.client.get_backend_port_write_iops(
                              param_dict['key']))
 
-    @ddt.data({'key': 'spa_sas0', 'total_byte_rate': 'n/a'})
+    @ddt.data({'key': 'spa_sas0', 'total_byte_rate': NONE_STRING})
     def test_get_backend_port_total_byte_rate(self, param_dict):
         self.assertEqual(param_dict['total_byte_rate'],
                          self.client.get_backend_port_total_byte_rate(
                              param_dict['key']))
 
-    @ddt.data({'key': 'spa_sas0', 'read_byte_rate': 'n/a'})
+    @ddt.data({'key': 'spa_sas0', 'read_byte_rate': NONE_STRING})
     def test_get_backend_port_read_byte_rate(self, param_dict):
         self.assertEqual(param_dict['read_byte_rate'],
                          self.client.get_backend_port_read_byte_rate(
                              param_dict['key']))
 
-    @ddt.data({'key': 'spa_sas0', 'write_byte_rate': 'n/a'})
+    @ddt.data({'key': 'spa_sas0', 'write_byte_rate': NONE_STRING})
     def test_get_backend_port_write_byte_rate(self, param_dict):
         self.assertEqual(param_dict['write_byte_rate'],
                          self.client.get_backend_port_write_byte_rate(
@@ -799,8 +799,8 @@ class TestUnityClient(unittest.TestCase):
 
     @ddt.data({'key': 'ubuntu1604',
                'ip_list': '10.207.84.27, 2620:0:170:1d34:a236:9fff:fe66:8960, 2620:0:170:1d36:a236:9fff:fe66:8960'},
-              {'key': '10.245.54.151', 'ip_list': 'n/a'},
-              {'key': '10.245.54.152', 'ip_list': 'n/a'}, )
+              {'key': '10.245.54.151', 'ip_list': NONE_STRING},
+              {'key': '10.245.54.152', 'ip_list': NONE_STRING}, )
     def test_get_host_network_address(self, param_dict):
         self.assertEqual(param_dict['ip_list'],
                          self.client.get_host_network_address(
@@ -808,13 +808,13 @@ class TestUnityClient(unittest.TestCase):
 
     @ddt.data({'key': 'ubuntu1604',
                'initiators': 'iqn.1993-08.org.debian:01:b974ee37fea, 20:00:00:90:FA:53:49:28:10:00:00:90:FA:53:49:28, 20:00:00:90:FA:53:49:29:10:00:00:90:FA:53:49:29'},
-              {'key': '10.245.54.151', 'initiators': 'n/a'},
+              {'key': '10.245.54.151', 'initiators': NONE_STRING},
               {'key': '10.245.54.152',
                'initiators': '20:00:00:90:FA:53:49, 20:00:00:90:FA:53:50'},
               {'key': '10.245.54.153',
                'initiators': 'iqn.1993-08.org.debian:01:b974ee37fea'},
               {'key': '10.245.54.154',
-               'initiators': 'n/a'}, )
+               'initiators': NONE_STRING}, )
     def test_get_host_initiators(self, param_dict):
         self.assertEqual(param_dict['initiators'],
                          self.client.get_host_initiators(param_dict['key']))
@@ -825,8 +825,8 @@ class TestUnityClient(unittest.TestCase):
                          self.client.get_host_os_type(param_dict['key']))
 
     @ddt.data({'key': 'ubuntu1604', 'host_luns': 'storops_dummy_lun'},
-              {'key': '10.245.54.151', 'host_luns': 'n/a'},
-              {'key': '10.245.54.152', 'host_luns': 'n/a'}, )
+              {'key': '10.245.54.151', 'host_luns': NONE_STRING},
+              {'key': '10.245.54.152', 'host_luns': NONE_STRING}, )
     def test_get_host_assigned_volumes(self, param_dict):
         self.assertEqual(param_dict['host_luns'],
                          self.client.get_host_assigned_volumes(
@@ -847,35 +847,35 @@ class TestUnityClient(unittest.TestCase):
                          self.client.get_enclosure_name(param_dict['key']))
 
     @ddt.data({'key': 'dae_DAE 0 1', 'model': 'ANCHO LF 12G SAS DAE'},
-              {'key': 'dae_DAE 0 2', 'model': 'n/a'},
+              {'key': 'dae_DAE 0 2', 'model': NONE_STRING},
               {'key': 'dpe_DPE 1', 'model': 'OBERON 25 DRIVE CHASSIS'},
-              {'key': 'dpe_DPE 2', 'model': 'n/a'}, )
+              {'key': 'dpe_DPE 2', 'model': NONE_STRING}, )
     def test_get_enclosure_model(self, param_dict):
         self.assertEqual(param_dict['model'],
                          self.client.get_enclosure_model(param_dict['key']))
 
     @ddt.data({'key': 'dae_DAE 0 1', 'emc_serial_number': 'CF22W145100058'},
-              {'key': 'dae_DAE 0 2', 'emc_serial_number': 'n/a'},
+              {'key': 'dae_DAE 0 2', 'emc_serial_number': NONE_STRING},
               {'key': 'dpe_DPE 1', 'emc_serial_number': 'CF2CV145000001'},
-              {'key': 'dpe_DPE 2', 'emc_serial_number': 'n/a'}, )
+              {'key': 'dpe_DPE 2', 'emc_serial_number': NONE_STRING}, )
     def test_get_enclosure_serial_number(self, param_dict):
         self.assertEqual(param_dict['emc_serial_number'],
                          self.client.get_enclosure_serial_number(
                              param_dict['key']))
 
     @ddt.data({'key': 'dae_DAE 0 1', 'emc_part_number': '100-900-000-04'},
-              {'key': 'dae_DAE 0 2', 'emc_part_number': 'n/a'},
+              {'key': 'dae_DAE 0 2', 'emc_part_number': NONE_STRING},
               {'key': 'dpe_DPE 1', 'emc_part_number': '100-542-901-05'},
-              {'key': 'dpe_DPE 2', 'emc_part_number': 'n/a'}, )
+              {'key': 'dpe_DPE 2', 'emc_part_number': NONE_STRING}, )
     def test_get_enclosure_part_number(self, param_dict):
         self.assertEqual(param_dict['emc_part_number'],
                          self.client.get_enclosure_part_number(
                              param_dict['key']))
 
     @ddt.data({'key': 'dae_DAE 0 1', 'health': 'OK'},
-              {'key': 'dae_DAE 0 2', 'health': 'n/a'},
+              {'key': 'dae_DAE 0 2', 'health': NONE_STRING},
               {'key': 'dpe_DPE 1', 'health': 'CRITICAL'},
-              {'key': 'dpe_DPE 2', 'health': 'n/a'}, )
+              {'key': 'dpe_DPE 2', 'health': NONE_STRING}, )
     def test_get_enclosure_health_status(self, param_dict):
         self.assertEqual(param_dict['health'],
                          self.client.get_enclosure_health_status(
@@ -884,7 +884,7 @@ class TestUnityClient(unittest.TestCase):
     @ddt.data({'key': 'dae_DAE 0 1', 'current_power': '430'},
               {'key': 'dae_DAE 0 2', 'current_power': '0'},
               {'key': 'dpe_DPE 1', 'current_power': '0'},
-              {'key': 'dpe_DPE 2', 'current_power': 'n/a'}, )
+              {'key': 'dpe_DPE 2', 'current_power': NONE_STRING}, )
     def test_get_enclosure_current_power(self, param_dict):
         self.assertEqual(param_dict['current_power'],
                          self.client.get_enclosure_current_power(
@@ -893,7 +893,7 @@ class TestUnityClient(unittest.TestCase):
     @ddt.data({'key': 'dae_DAE 0 1', 'avg_power': '428'},
               {'key': 'dae_DAE 0 2', 'avg_power': '0'},
               {'key': 'dpe_DPE 1', 'avg_power': '0'},
-              {'key': 'dpe_DPE 2', 'avg_power': 'n/a'}, )
+              {'key': 'dpe_DPE 2', 'avg_power': NONE_STRING}, )
     def test_get_enclosure_avg_power(self, param_dict):
         self.assertEqual(param_dict['avg_power'],
                          self.client.get_enclosure_avg_power(
@@ -902,7 +902,7 @@ class TestUnityClient(unittest.TestCase):
     @ddt.data({'key': 'dae_DAE 0 1', 'max_power': '458'},
               {'key': 'dae_DAE 0 2', 'max_power': '0'},
               {'key': 'dpe_DPE 1', 'max_power': '0'},
-              {'key': 'dpe_DPE 2', 'max_power': 'n/a'}, )
+              {'key': 'dpe_DPE 2', 'max_power': NONE_STRING}, )
     def test_get_enclosure_max_power(self, param_dict):
         self.assertEqual(param_dict['max_power'],
                          self.client.get_enclosure_max_power(
@@ -911,7 +911,7 @@ class TestUnityClient(unittest.TestCase):
     @ddt.data({'key': 'dae_DAE 0 1', 'current_temperature': '26'},
               {'key': 'dae_DAE 0 2', 'current_temperature': '0'},
               {'key': 'dpe_DPE 1', 'current_temperature': '0'},
-              {'key': 'dpe_DPE 2', 'current_temperature': 'n/a'}, )
+              {'key': 'dpe_DPE 2', 'current_temperature': NONE_STRING}, )
     def test_get_enclosure_current_temperature(self, param_dict):
         self.assertEqual(param_dict['current_temperature'],
                          self.client.get_enclosure_current_temperature(
@@ -920,7 +920,7 @@ class TestUnityClient(unittest.TestCase):
     @ddt.data({'key': 'dae_DAE 0 1', 'avg_temperature': '25'},
               {'key': 'dae_DAE 0 2', 'avg_temperature': '0'},
               {'key': 'dpe_DPE 1', 'avg_temperature': '0'},
-              {'key': 'dpe_DPE 2', 'avg_temperature': 'n/a'}, )
+              {'key': 'dpe_DPE 2', 'avg_temperature': NONE_STRING}, )
     def test_get_enclosure_avg_temperature(self, param_dict):
         self.assertEqual(param_dict['avg_temperature'],
                          self.client.get_enclosure_avg_temperature(
@@ -929,7 +929,7 @@ class TestUnityClient(unittest.TestCase):
     @ddt.data({'key': 'dae_DAE 0 1', 'max_temperature': '30'},
               {'key': 'dae_DAE 0 2', 'max_temperature': '0'},
               {'key': 'dpe_DPE 1', 'max_temperature': '0'},
-              {'key': 'dpe_DPE 2', 'max_temperature': 'n/a'}, )
+              {'key': 'dpe_DPE 2', 'max_temperature': NONE_STRING}, )
     def test_get_enclosure_max_temperature(self, param_dict):
         self.assertEqual(param_dict['max_temperature'],
                          self.client.get_enclosure_max_temperature(
@@ -944,7 +944,7 @@ class TestUnityClient(unittest.TestCase):
 
     @ddt.data({'key': 'DPE Power Supply A0',
                'manufacturer': 'FLEXTRONICS POWER INC.'},
-              {'key': 'DAE 0 1 Power Supply B0', 'manufacturer': 'n/a'}, )
+              {'key': 'DAE 0 1 Power Supply B0', 'manufacturer': NONE_STRING}, )
     def test_get_power_supply_manufacturer(self, param_dict):
         self.assertEqual(param_dict['manufacturer'],
                          self.client.get_power_supply_manufacturer(
@@ -952,33 +952,33 @@ class TestUnityClient(unittest.TestCase):
 
     @ddt.data({'key': 'DPE Power Supply A0',
                'model': '12V P/S WITH 12VSTBY AND FAN'},
-              {'key': 'DAE 0 1 Power Supply B0', 'model': 'n/a'}, )
+              {'key': 'DAE 0 1 Power Supply B0', 'model': NONE_STRING}, )
     def test_get_power_supply_model(self, param_dict):
         self.assertEqual(param_dict['model'],
                          self.client.get_power_supply_model(param_dict['key']))
 
     @ddt.data({'key': 'DPE Power Supply A0', 'firmware_version': '0501'},
-              {'key': 'DAE 0 1 Power Supply B0', 'firmware_version': 'n/a'}, )
+              {'key': 'DAE 0 1 Power Supply B0', 'firmware_version': NONE_STRING}, )
     def test_get_power_supply_firmware_version(self, param_dict):
         self.assertEqual(param_dict['firmware_version'],
                          self.client.get_power_supply_firmware_version(
                              param_dict['key']))
 
     @ddt.data({'key': 'DPE Power Supply A0', 'parent_enclosure': 'DPE, DAE'},
-              {'key': 'DAE 0 1 Power Supply B0', 'parent_enclosure': 'n/a'}, )
+              {'key': 'DAE 0 1 Power Supply B0', 'parent_enclosure': NONE_STRING}, )
     def test_get_power_supply_parent_enclosure(self, param_dict):
         self.assertEqual(param_dict['parent_enclosure'],
                          self.client.get_power_supply_parent_enclosure(
                              param_dict['key']))
 
     @ddt.data({'key': 'DPE Power Supply A0', 'storage_processor': 'SP A'},
-              {'key': 'DAE 0 1 Power Supply B0', 'storage_processor': 'n/a'}, )
+              {'key': 'DAE 0 1 Power Supply B0', 'storage_processor': NONE_STRING}, )
     def test_get_power_supply_sp(self, param_dict):
         self.assertEqual(param_dict['storage_processor'],
                          self.client.get_power_supply_sp(param_dict['key']))
 
     @ddt.data({'key': 'DPE Power Supply A0', 'health': 'OK'},
-              {'key': 'DAE 0 1 Power Supply B0', 'health': 'n/a'}, )
+              {'key': 'DAE 0 1 Power Supply B0', 'health': NONE_STRING}, )
     def test_get_power_supply_health_status(self, param_dict):
         self.assertEqual(param_dict['health'],
                          self.client.get_power_supply_health_status(
@@ -993,7 +993,7 @@ class TestUnityClient(unittest.TestCase):
                          set(items))
 
     @ddt.data({'key': 'DPE Cooling Module A0', 'slot_number': '0'},
-              {'key': 'DPE Cooling Module B1', 'slot_number': 'n/a'}, )
+              {'key': 'DPE Cooling Module B1', 'slot_number': NONE_STRING}, )
     def test_get_fan_slot_number(self, param_dict):
         self.assertEqual(param_dict['slot_number'],
                          self.client.get_fan_slot_number(param_dict['key']))
@@ -1002,7 +1002,7 @@ class TestUnityClient(unittest.TestCase):
         {'key': 'DPE Cooling Module A0', 'parent_enclosure': 'DPE, DAE 0 1'},
         {'key': 'DPE Cooling Module A1', 'parent_enclosure': 'DPE'},
         {'key': 'DPE Cooling Module A2', 'parent_enclosure': 'DAE 0 1'},
-        {'key': 'DPE Cooling Module B1', 'parent_enclosure': 'n/a'}, )
+        {'key': 'DPE Cooling Module B1', 'parent_enclosure': NONE_STRING}, )
     def test_get_fan_parent_enclosure(self, param_dict):
         # import pdb; pdb.set_trace()
         self.assertEqual(param_dict['parent_enclosure'],
@@ -1010,7 +1010,7 @@ class TestUnityClient(unittest.TestCase):
                              param_dict['key']))
 
     @ddt.data({'key': 'DPE Cooling Module A0', 'health': 'OK'},
-              {'key': 'DPE Cooling Module B1', 'health': 'n/a'}, )
+              {'key': 'DPE Cooling Module B1', 'health': NONE_STRING}, )
     def test_get_fan_health_status(self, param_dict):
         self.assertEqual(param_dict['health'],
                          self.client.get_fan_health_status(param_dict['key']))
@@ -1022,32 +1022,32 @@ class TestUnityClient(unittest.TestCase):
         self.assertEqual({'SP A Battery 0', 'SP B Battery 0'}, set(items))
 
     @ddt.data({'key': 'SP A Battery 0', 'manufacturer': 'ACBEL POLYTECH INC.'},
-              {'key': 'SP B Battery 0', 'manufacturer': 'n/a'}, )
+              {'key': 'SP B Battery 0', 'manufacturer': NONE_STRING}, )
     def test_get_bbu_manufacturer(self, param_dict):
         self.assertEqual(param_dict['manufacturer'],
                          self.client.get_bbu_manufacturer(param_dict['key']))
 
     @ddt.data({'key': 'SP A Battery 0', 'model': 'LITHIUM-ION, UNIVERSAL BOB'},
-              {'key': 'SP B Battery 0', 'model': 'n/a'}, )
+              {'key': 'SP B Battery 0', 'model': NONE_STRING}, )
     def test_get_bbu_model(self, param_dict):
         self.assertEqual(param_dict['model'],
                          self.client.get_bbu_model(param_dict['key']))
 
     @ddt.data({'key': 'SP A Battery 0', 'firmware_version': '073.91'},
-              {'key': 'SP B Battery 0', 'firmware_version': 'n/a'}, )
+              {'key': 'SP B Battery 0', 'firmware_version': NONE_STRING}, )
     def test_get_bbu_firmware_version(self, param_dict):
         self.assertEqual(param_dict['firmware_version'],
                          self.client.get_bbu_firmware_version(
                              param_dict['key']))
 
     @ddt.data({'key': 'SP A Battery 0', 'parent_storage_processor': 'SP A'},
-              {'key': 'SP B Battery 0', 'parent_storage_processor': 'n/a'}, )
+              {'key': 'SP B Battery 0', 'parent_storage_processor': NONE_STRING}, )
     def test_get_bbu_parent_sp(self, param_dict):
         self.assertEqual(param_dict['parent_storage_processor'],
                          self.client.get_bbu_parent_sp(param_dict['key']))
 
     @ddt.data({'key': 'SP A Battery 0', 'health': 'OK'},
-              {'key': 'SP B Battery 0', 'health': 'n/a'}, )
+              {'key': 'SP B Battery 0', 'health': NONE_STRING}, )
     def test_get_bbu_health_status(self, param_dict):
         self.assertEqual(param_dict['health'],
                          self.client.get_bbu_health_status(param_dict['key']))
