@@ -2,7 +2,6 @@ import itertools
 from collections import OrderedDict
 
 from six.moves import configparser
-
 from snmpagent import cipher, enums, utils
 from snmpagent import exceptions as snmp_ex
 
@@ -119,9 +118,17 @@ class AgentConfigParser(object):
 
     def parse(self):
         res = OrderedDict()
+        agent_port_list = []
         for section in self._parser.sections():
             res[section] = AgentConfigEntry(
                 section, **dict(self._parser.items(section)))
+            agent_port = res[section].agent_port if res[
+                section].agent_port else 161
+            if agent_port in agent_port_list:
+                raise snmp_ex.PortConflictError(
+                    'SNMP Agent port conflict: {}'.format(agent_port))
+            else:
+                agent_port_list.append(agent_port)
         return res
 
     def save(self, conf_dict, encrypt=True):
