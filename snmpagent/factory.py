@@ -12,6 +12,7 @@ class ScalarInstanceFactory(object):
                 engine.parent.connect_backend_device()
 
             if engine.unity_client == None:
+                print('failed to connect to unity.')
                 # return name, self.getSyntax().clone('Failed to connect unity.')
                 return name, self.getSyntax().clone()
 
@@ -50,6 +51,7 @@ class TableColumnInstanceFactory(object):
                 engine.parent.connect_backend_device()
 
             if engine.unity_client == None:
+                print('failed to connect to unity.')
                 # TODO: need to consider how to handle this scenario
                 return
 

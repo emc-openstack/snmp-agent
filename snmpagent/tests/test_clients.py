@@ -752,6 +752,42 @@ class TestUnityClient(unittest.TestCase):
                          self.client.get_backend_port_health_status(
                              param_dict['key']))
 
+    @ddt.data({'key': 'spa_sas0', 'total_iops': 'n/a'})
+    def test_get_backend_port_total_iops(self, param_dict):
+        self.assertEqual(param_dict['total_iops'],
+                         self.client.get_backend_port_total_iops(
+                             param_dict['key']))
+
+    @ddt.data({'key': 'spa_sas0', 'read_iops': 'n/a'})
+    def test_get_backend_port_read_iops(self, param_dict):
+        self.assertEqual(param_dict['read_iops'],
+                         self.client.get_backend_port_read_iops(
+                             param_dict['key']))
+
+    @ddt.data({'key': 'spa_sas0', 'write_iops': 'n/a'})
+    def test_get_backend_port_write_iops(self, param_dict):
+        self.assertEqual(param_dict['write_iops'],
+                         self.client.get_backend_port_write_iops(
+                             param_dict['key']))
+
+    @ddt.data({'key': 'spa_sas0', 'total_byte_rate': 'n/a'})
+    def test_get_backend_port_total_byte_rate(self, param_dict):
+        self.assertEqual(param_dict['total_byte_rate'],
+                         self.client.get_backend_port_total_byte_rate(
+                             param_dict['key']))
+
+    @ddt.data({'key': 'spa_sas0', 'read_byte_rate': 'n/a'})
+    def test_get_backend_port_read_byte_rate(self, param_dict):
+        self.assertEqual(param_dict['read_byte_rate'],
+                         self.client.get_backend_port_read_byte_rate(
+                             param_dict['key']))
+
+    @ddt.data({'key': 'spa_sas0', 'write_byte_rate': 'n/a'})
+    def test_get_backend_port_write_byte_rate(self, param_dict):
+        self.assertEqual(param_dict['write_byte_rate'],
+                         self.client.get_backend_port_write_byte_rate(
+                             param_dict['key']))
+
     # hostTable
     def test_get_hosts(self):
         items = self.client.get_hosts()

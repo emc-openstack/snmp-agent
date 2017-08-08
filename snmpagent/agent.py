@@ -70,11 +70,14 @@ class SNMPEngine(object):
         client_name = '{ip}_{port}'.format(ip=self.array_config.mgmt_ip,
                                            port=self.array_config.agent_port)
         try:
+            import time
+            print('{} connecting to unity {}'.format(time.time(), self.array_config.mgmt_ip))
             return clients.UnityClient.get_unity_client(
                 client_name, self.array_config.mgmt_ip,
                 self.array_config.user, self.array_config.password)
         except:
             # TODO: log
+            print('{}: failed to connect to unity.'.format(time.time()))
             return None
 
     def create_managed_objects(self):
@@ -169,7 +172,7 @@ class SNMPAgent(object):
 if __name__ == '__main__':
     from pysnmp import debug
 
-    # debug.setLogger(debug.Debug('all'))
+    debug.setLogger(debug.Debug('io'))
     import os
 
     config_file = os.path.abspath('configs/agent.conf')

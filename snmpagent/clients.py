@@ -8,7 +8,7 @@ import storops
 NONE_STRING = 'n/a'
 
 
-def to_list(func):
+def check_list(func):
     @wraps(func)
     def _inner(*args, **kwargs):
         try:
@@ -124,14 +124,14 @@ class UnityClient(object):
     manager = CachedUnityClientManager()
 
     def __init__(self, host=None, username=None, password=None, port=443):
-        print("connecting to unity {} ...".format(host))
+        import time
+        print("{}: connecting to unity {} ...".format(time.time(), host))
         password = password.raw if hasattr(password, 'raw') else password
         self.unity_system = storops.UnitySystem(host=host, username=username,
                                                 password=password, port=port,
-                                                cache_interval=30)
+                                                retries=0, cache_interval=30)
         print('enable metric')
         self.unity_system.enable_perf_stats()
-        self.none = 'n/a'
 
     @classmethod
     def get_unity_client(cls, name, *args):
@@ -145,12 +145,15 @@ class UnityClient(object):
             return items[0]
 
     # system
+    @to_string
     def get_agent_version(self):
         return "1.0"
 
+    @to_string
     def get_mib_version(self):
         return "1.0"
 
+    @to_string
     def get_manufacturer(self):
         return "DellEMC"
 
@@ -270,7 +273,7 @@ class UnityClient(object):
         return self.unity_system.write_byte_rate
 
     # storageProcessorTable
-    @to_list
+    @check_list
     def get_sps(self):
         return [pool.name for pool in self.unity_system.get_sp()]
 
@@ -351,7 +354,7 @@ class UnityClient(object):
         return sp.block_cache_write_hit_ratio
 
     # poolTable
-    @to_list
+    @check_list
     def get_pools(self):
         return [pool.name for pool in self.unity_system.get_pool()]
 
@@ -407,7 +410,7 @@ class UnityClient(object):
         return float(pool.size_used) / float(pool.size_total)
 
     # volumeTable
-    @to_list
+    @check_list
     def get_luns(self):
         return [lun.id for lun in self.unity_system.get_lun()]
 
@@ -550,7 +553,7 @@ class UnityClient(object):
             return NONE_STRING
 
     # diskTable
-    @to_list
+    @check_list
     def get_disks(self):
         return [disk.name for disk in self.unity_system.get_disk()]
 
@@ -661,7 +664,7 @@ class UnityClient(object):
     FC_PORT_TYPE = 'fc_port_'
     ISCSI_PORT_TYPE = 'iscsi_port_'
 
-    @to_list
+    @check_list
     def get_frontend_ports(self):
         fc_ports = [self.FC_PORT_TYPE + port.id for port in
                     self.unity_system.get_fc_port()]
@@ -777,7 +780,7 @@ class UnityClient(object):
         return port.write_byte_rate
 
     # backendPortTable
-    @to_list
+    @check_list
     def get_backend_ports(self):
         return [port.id for port in self.unity_system.get_sas_port()]
 
@@ -819,8 +822,32 @@ class UnityClient(object):
         port = self._get_backend_port(id)
         return port.health.value.name
 
+    @to_string
+    def get_backend_port_total_iops(self, id):
+        return NONE_STRING
+
+    @to_string
+    def get_backend_port_read_iops(self, id):
+        return NONE_STRING
+
+    @to_string
+    def get_backend_port_write_iops(self, id):
+        return NONE_STRING
+
+    @to_string
+    def get_backend_port_total_byte_rate(self, id):
+        return NONE_STRING
+
+    @to_string
+    def get_backend_port_read_byte_rate(self, id):
+        return NONE_STRING
+
+    @to_string
+    def get_backend_port_write_byte_rate(self, id):
+        return NONE_STRING
+
     # hostTable
-    @to_list
+    @check_list
     def get_hosts(self):
         return [host.name for host in self.unity_system.get_host()]
 
@@ -868,7 +895,7 @@ class UnityClient(object):
     DAE_TYPE = 'dae_'
     DPE_TYPE = 'dpe_'
 
-    @to_list
+    @check_list
     def get_enclosures(self):
         daes = [self.DAE_TYPE + dae.name for dae in
                 self.unity_system.get_dae()]
@@ -946,7 +973,7 @@ class UnityClient(object):
         return enclosure.max_temperature
 
     # powerSupplyTable
-    @to_list
+    @check_list
     def get_power_supplies(self):
         return [power_supply.name for power_supply in
                 self.unity_system.get_power_supply()]
@@ -994,7 +1021,7 @@ class UnityClient(object):
         return power_supply.health.value.name
 
     # fanTable
-    @to_list
+    @check_list
     def get_fans(self):
         return [fan.name for fan in self.unity_system.get_fan()]
 
@@ -1026,7 +1053,7 @@ class UnityClient(object):
         return fan.health.value.name
 
     # BBUTable
-    @to_list
+    @check_list
     def get_bbus(self):
         return [bbu.name for bbu in self.unity_system.get_battery()]
 

@@ -1579,6 +1579,108 @@ class TestUnityClient(unittest.TestCase):
                          obj.get_idx(self.name, self.idx, unity_client))
         unity_client.get_backend_ports.assert_called_once()
 
+    @patches.unity_client
+    def test_backend_port_total_iops(self, unity_client):
+        unity_client.get_backend_port_total_iops.return_value = self.test_string
+        obj = unity_impl.BackendPortTotalThroughput.BackendPortTotalThroughput()
+        self.assertEqual(self.test_string,
+                         obj.read_get(self.name, self.idx, unity_client))
+        unity_client.get_backend_port_total_iops.assert_called_once_with(
+            self.idx)
+
+    @patches.unity_client
+    def test_backend_port_total_iops_column(self, unity_client):
+        unity_client.get_backend_ports.return_value = self.test_list
+        obj = unity_impl.BackendPortTotalThroughput.BackendPortTotalThroughputColumn()
+        self.assertEqual(self.test_list,
+                         obj.get_idx(self.name, self.idx, unity_client))
+        unity_client.get_backend_ports.assert_called_once()
+
+    @patches.unity_client
+    def test_backend_port_read_iops(self, unity_client):
+        unity_client.get_backend_port_read_iops.return_value = self.test_string
+        obj = unity_impl.BackendPortReadThroughput.BackendPortReadThroughput()
+        self.assertEqual(self.test_string,
+                         obj.read_get(self.name, self.idx, unity_client))
+        unity_client.get_backend_port_read_iops.assert_called_once_with(
+            self.idx)
+
+    @patches.unity_client
+    def test_backend_port_read_iops_column(self, unity_client):
+        unity_client.get_backend_ports.return_value = self.test_list
+        obj = unity_impl.BackendPortReadThroughput.BackendPortReadThroughputColumn()
+        self.assertEqual(self.test_list,
+                         obj.get_idx(self.name, self.idx, unity_client))
+        unity_client.get_backend_ports.assert_called_once()
+
+    @patches.unity_client
+    def test_backend_port_write_iops(self, unity_client):
+        unity_client.get_backend_port_write_iops.return_value = self.test_string
+        obj = unity_impl.BackendPortWriteThroughput.BackendPortWriteThroughput()
+        self.assertEqual(self.test_string,
+                         obj.read_get(self.name, self.idx, unity_client))
+        unity_client.get_backend_port_write_iops.assert_called_once_with(
+            self.idx)
+
+    @patches.unity_client
+    def test_backend_port_write_iops_column(self, unity_client):
+        unity_client.get_backend_ports.return_value = self.test_list
+        obj = unity_impl.BackendPortWriteThroughput.BackendPortWriteThroughputColumn()
+        self.assertEqual(self.test_list,
+                         obj.get_idx(self.name, self.idx, unity_client))
+        unity_client.get_backend_ports.assert_called_once()
+
+    @patches.unity_client
+    def test_backend_port_total_byte_rate(self, unity_client):
+        unity_client.get_backend_port_total_byte_rate.return_value = self.test_string
+        obj = unity_impl.BackendPortTotalBandwidth.BackendPortTotalBandwidth()
+        self.assertEqual(self.test_string,
+                         obj.read_get(self.name, self.idx, unity_client))
+        unity_client.get_backend_port_total_byte_rate.assert_called_once_with(
+            self.idx)
+
+    @patches.unity_client
+    def test_backend_port_total_byte_rate_column(self, unity_client):
+        unity_client.get_backend_ports.return_value = self.test_list
+        obj = unity_impl.BackendPortTotalBandwidth.BackendPortTotalBandwidthColumn()
+        self.assertEqual(self.test_list,
+                         obj.get_idx(self.name, self.idx, unity_client))
+        unity_client.get_backend_ports.assert_called_once()
+
+    @patches.unity_client
+    def test_backend_port_read_byte_rate(self, unity_client):
+        unity_client.get_backend_port_read_byte_rate.return_value = self.test_string
+        obj = unity_impl.BackendPortReadBandwidth.BackendPortReadBandwidth()
+        self.assertEqual(self.test_string,
+                         obj.read_get(self.name, self.idx, unity_client))
+        unity_client.get_backend_port_read_byte_rate.assert_called_once_with(
+            self.idx)
+
+    @patches.unity_client
+    def test_backend_port_read_byte_rate_column(self, unity_client):
+        unity_client.get_backend_ports.return_value = self.test_list
+        obj = unity_impl.BackendPortReadBandwidth.BackendPortReadBandwidthColumn()
+        self.assertEqual(self.test_list,
+                         obj.get_idx(self.name, self.idx, unity_client))
+        unity_client.get_backend_ports.assert_called_once()
+
+    @patches.unity_client
+    def test_backend_port_write_byte_rate(self, unity_client):
+        unity_client.get_backend_port_write_byte_rate.return_value = self.test_string
+        obj = unity_impl.BackendPortWriteBandwidth.BackendPortWriteBandwidth()
+        self.assertEqual(self.test_string,
+                         obj.read_get(self.name, self.idx, unity_client))
+        unity_client.get_backend_port_write_byte_rate.assert_called_once_with(
+            self.idx)
+
+    @patches.unity_client
+    def test_backend_port_write_byte_rate_column(self, unity_client):
+        unity_client.get_backend_ports.return_value = self.test_list
+        obj = unity_impl.BackendPortWriteBandwidth.BackendPortWriteBandwidthColumn()
+        self.assertEqual(self.test_list,
+                         obj.get_idx(self.name, self.idx, unity_client))
+        unity_client.get_backend_ports.assert_called_once()
+
     # hostTable
     @patches.unity_client
     def test_host_name(self, unity_client):
