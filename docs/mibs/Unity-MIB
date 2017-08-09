@@ -434,7 +434,7 @@ IMPORTS
 			poolDiskTypes               DisplayString,
 			poolRaidLevels              DisplayString,
 			poolFastCacheStatus         DisplayString,
-			poolNumberOfPhysicalDisk    DisplayString,
+			poolNumberOfPhysicalDisk    Integer32,
 			poolTotalCapacity           DisplayString,
 			poolRemainingCapacity       DisplayString,
 			poolUsedCapacity            DisplayString,
@@ -482,7 +482,7 @@ IMPORTS
 
 	-- 1.3.6.1.4.1.1139.103.1.19.27.1.5
 	poolNumberOfPhysicalDisk OBJECT-TYPE
-		SYNTAX DisplayString
+		SYNTAX Integer32
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
