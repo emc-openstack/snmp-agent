@@ -6,6 +6,7 @@ import six
 
 import storops
 
+LOG = logging.getLogger(__name__)
 NONE_STRING = 'n/a'
 
 
@@ -126,14 +127,14 @@ class UnityClient(object):
 
     def __init__(self, host=None, username=None, password=None, port=443):
         password = password.raw if hasattr(password, 'raw') else password
-        logging.debug(
+        LOG.debug(
             'Create UnitySystem: host: {}, username: {}, port: {}'.format(host,
                                                                           username,
                                                                           port))
         self.unity_system = storops.UnitySystem(host=host, username=username,
                                                 password=password, port=port,
                                                 retries=0, cache_interval=30)
-        logging.debug('Enable metric query')
+        LOG.debug('Enable metric query')
         self.unity_system.enable_perf_stats()
 
     @classmethod

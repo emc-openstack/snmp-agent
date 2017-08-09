@@ -1,5 +1,7 @@
 import logging
 
+LOG = logging.getLogger(__name__)
+
 
 class ScalarInstanceFactory(object):
     @staticmethod
@@ -12,14 +14,14 @@ class ScalarInstanceFactory(object):
             engine = acInfo[1]
 
             if engine.unity_client == None:
-                logging.info(
+                LOG.info(
                     'Reconnecting to unity: {}, agent port: {}'.format(
                         engine.parent.array_config.mgmt_ip,
                         engine.parent.port))
                 engine.parent.connect_backend_device()
 
             if engine.unity_client == None:
-                logging.info(
+                LOG.info(
                     'Failed to reconnect unity: {}, agent port: {}'.format(
                         engine.parent.array_config.mgmt_ip,
                         engine.parent.port))
@@ -57,14 +59,14 @@ class TableColumnInstanceFactory(object):
         def __read_getnext__(self, name, val, idx, acInfo, oName=None):
             engine = acInfo[1]
             if engine.unity_client == None:
-                logging.info(
+                LOG.info(
                     'Reconnecting to unity: {}, agent port: {}'.format(
                         engine.parent.array_config.mgmt_ip,
                         engine.parent.port))
                 engine.parent.connect_backend_device()
 
             if engine.unity_client == None:
-                logging.info(
+                LOG.info(
                     'Failed to reconnect unity: {}, agent port: {}'.format(
                         engine.parent.array_config.mgmt_ip,
                         engine.parent.port))

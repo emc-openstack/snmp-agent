@@ -1,4 +1,4 @@
-import logging
+import logging.handlers
 
 from pysnmp.carrier.asyncore import dispatch
 from pysnmp.carrier.asyncore.dgram import udp
@@ -7,9 +7,12 @@ from pysnmp.entity.rfc3413 import cmdrsp, context
 from pysnmp.smi import builder as snmp_builder
 from snmpagent import clients, enums, factory, mib_parser
 from snmpagent import config as snmp_config
+from snmpagent import log as snmp_log
 
 READ_SUB_TREE = (1, 3, 6, 1, 4, 1, 1139, 103)
 WRITE_SUB_TREE = READ_SUB_TREE
+
+LOG = logging.getLogger(__name__)
 
 
 class SNMPEngine(object):
@@ -72,13 +75,13 @@ class SNMPEngine(object):
         client_name = '{ip}_{port}'.format(ip=self.array_config.mgmt_ip,
                                            port=self.array_config.agent_port)
         try:
-            logging.info('Connecting to unity: {}, agent port: {}'.format(
+            LOG.info('Connecting to unity: {}, agent port: {}'.format(
                 self.array_config.mgmt_ip, self.port))
             return clients.UnityClient.get_unity_client(
                 client_name, self.array_config.mgmt_ip,
                 self.array_config.user, self.array_config.password)
         except:
-            logging.info(
+            LOG.info(
                 'Failed to reconnect unity: {}, agent port: {}'.format(
                     self.array_config.mgmt_ip, self.port))
             return None
@@ -154,35 +157,6 @@ class SNMPAgent(object):
         self.agent_config = snmp_config.AgentConfig(agent_conf_file).entries
         self.access_config = snmp_config.UserConfig(access_conf_file).entries
         self.transport_dispatcher = dispatch.AsyncoreDispatcher()
-        self.set_logger()
-
-    def set_logger(self):
-        log_level = self.agent_config.default_section.get('log_level',
-                                                          'info').lower()
-        log_file = self.agent_config.default_section.get('log_file', None)
-
-        log_levels = {'critical': logging.CRITICAL,
-                      'error': logging.ERROR,
-                      'warning': logging.WARNING,
-                      'info': logging.INFO,
-                      'debug': logging.DEBUG,
-                      'all': logging.DEBUG}
-
-        level = log_levels.get(log_level, logging.INFO)
-
-        logging.basicConfig(level=level,
-                            format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
-                            datefmt='[%Y-%m-%d %H:%M:%S]',
-                            filename=log_file,
-                            filemode='w')
-
-        if log_level == 'all':
-            self._set_pysnmp_logger(log_file, log_level)
-
-    def _set_pysnmp_logger(self, log_file, log_level):
-        from pysnmp import debug
-        printer = debug.Printer(handler=logging.FileHandler(log_file))
-        debug.setLogger(debug.Debug(log_level, printer=printer))
 
     def run(self):
         self.transport_dispatcher.registerRoutingCbFun(lambda td, t, d: td)
@@ -207,5 +181,6 @@ if __name__ == '__main__':
 
     config_file = os.path.abspath('configs/agent.conf')
     auth_config_file = os.path.abspath('configs/access.conf')
+    snmp_log.set_log_config(config_file)
     agent = SNMPAgent(config_file, auth_config_file)
     agent.run()
