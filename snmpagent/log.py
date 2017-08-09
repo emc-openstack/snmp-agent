@@ -23,7 +23,8 @@ def set_log_config(config_file):
 
     handler = logging.handlers.RotatingFileHandler(log_file,
                                                    maxBytes=log_file_maxbytes,
-                                                   backupCount=log_file_count)
+                                                   backupCount=log_file_count,
+                                                   encoding='utf-8')
 
     logging.basicConfig(level=level,
                         format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',

@@ -36,8 +36,8 @@ class ScalarInstanceFactory(object):
             try:
                 return name, self.getSyntax().clone(
                     self.impl_class().read_get(name, idx_name,
-                                               engine.unity_client)
-                )
+                                               engine.unity_client),
+                    encoding='utf-8')
             except:
                 # TODO: logging ...
                 return name, self.getSyntax().clone()
