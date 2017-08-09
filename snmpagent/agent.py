@@ -77,9 +77,12 @@ class SNMPEngine(object):
         try:
             LOG.info('Connecting to unity: {}, agent port: {}'.format(
                 self.array_config.mgmt_ip, self.port))
+            cache_interval = (int(self.array_config.cache_interval)
+                              if self.array_config.cache_interval else 30)
             return clients.UnityClient.get_unity_client(
                 client_name, self.array_config.mgmt_ip,
-                self.array_config.user, self.array_config.password)
+                self.array_config.user, self.array_config.password,
+                cache_interval=cache_interval)
         except:
             LOG.info(
                 'Failed to reconnect unity: {}, agent port: {}'.format(

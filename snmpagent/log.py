@@ -20,15 +20,15 @@ def set_log_config(config_file):
         os.makedirs(log_dir, exist_ok=True)
 
     level = log_levels.get(log_level, logging.INFO)
-
+    format = '%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s'
+    datefmt = '[%Y-%m-%d %H:%M:%S]'
     handler = logging.handlers.RotatingFileHandler(log_file,
                                                    maxBytes=log_file_maxbytes,
                                                    backupCount=log_file_count,
                                                    encoding='utf-8')
-
     logging.basicConfig(level=level,
-                        format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
-                        datefmt='[%Y-%m-%d %H:%M:%S]',
+                        format=format,
+                        datefmt=datefmt,
                         handlers=(handler,),
                         )
 

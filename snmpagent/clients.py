@@ -113,9 +113,9 @@ class CachedUnityClientManager(object):
     def __init__(self):
         self._cache = {}
 
-    def get_unity_client(self, name, *args):
+    def get_unity_client(self, name, *args, **kwargs):
         if name not in self._cache:
-            unity_client = UnityClient(*args)
+            unity_client = UnityClient(*args, **kwargs)
             self._cache[name] = unity_client
         else:
             unity_client = self._cache[name]
@@ -125,21 +125,25 @@ class CachedUnityClientManager(object):
 class UnityClient(object):
     manager = CachedUnityClientManager()
 
-    def __init__(self, host=None, username=None, password=None, port=443):
+    def __init__(self, host=None, username=None, password=None, port=443,
+                 cache_interval=None):
         password = password.raw if hasattr(password, 'raw') else password
+        if cache_interval is None:
+            cache_interval = 30
         LOG.debug(
             'Create UnitySystem: host: {}, username: {}, port: {}'.format(host,
                                                                           username,
                                                                           port))
         self.unity_system = storops.UnitySystem(host=host, username=username,
                                                 password=password, port=port,
-                                                retries=0, cache_interval=30)
+                                                retries=0,
+                                                cache_interval=cache_interval)
         LOG.debug('Enable metric query')
         self.unity_system.enable_perf_stats()
 
     @classmethod
-    def get_unity_client(cls, name, *args):
-        return cls.manager.get_unity_client(name, *args)
+    def get_unity_client(cls, name, *args, **kwargs):
+        return cls.manager.get_unity_client(name, *args, **kwargs)
 
     def _get_item(self, items, **filter):
         for k, v in filter.items():
