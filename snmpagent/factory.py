@@ -1,5 +1,8 @@
 import logging
 
+from pyasn1.type import univ
+from pysnmp.proto import rfc1902
+
 LOG = logging.getLogger(__name__)
 
 
@@ -76,9 +79,17 @@ class TableColumnInstanceFactory(object):
             if self.name == name:
                 row_list = self.impl_class().get_idx(name, idx,
                                                      engine.unity_client)
+                # Destory table rows, otherwise deleted items exist in table
                 self.unregisterSubtrees(*self._vars.keys())
                 for row in row_list:
                     row_instance_id = self.entry.getInstIdFromIndices(row)
+                    # Create table row and set default value
+                    # DisplayString: null, Integer32: 0
+                    # Only two types of data now: DisplayString, Integer32
+                    # If new data types added, need to consider how to set val
+                    if isinstance(val, univ.Null) and isinstance(self.syntax,
+                                                                 rfc1902.Integer32):
+                        val = 0
                     self.createTest(name + row_instance_id, val, idx, acInfo)
                     self.createCommit(name + row_instance_id, val, idx, acInfo)
             next_node = self.getNextNode(name, idx)
