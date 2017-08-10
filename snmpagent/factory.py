@@ -59,7 +59,7 @@ class ScalarInstanceFactory(object):
                     return name, syntax.clone(result)
 
             except Exception as exc:
-                LOG.error('{}: {}'.format(exc.__class__.__name__, exc))
+                LOG.warning('{}: {}'.format(exc.__class__.__name__, exc))
                 return name, error_message(self.getSyntax())
 
         newclass = type(name + "ScalarInstance", (base_class,),
@@ -110,7 +110,7 @@ class TableColumnInstanceFactory(object):
                 raise
 
             except Exception as exc:
-                LOG.error('{}: {}'.format(exc.__class__.__name__, exc))
+                LOG.warning('{}: {}'.format(exc.__class__.__name__, exc))
                 return name, error_message(self.getSyntax())
 
         newclass = type(name + "Instance", (base_class,),

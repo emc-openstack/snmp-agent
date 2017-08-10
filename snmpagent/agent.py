@@ -38,6 +38,7 @@ class SNMPEngine(object):
         self.engine.parent = self
         self.create_managed_objects()
         self.register_cmd_responders()
+        self.enable_observer()
 
     def setup_transport(self):
         transport_domain = udp.domainName + (self.engine_id,)
@@ -153,6 +154,29 @@ class SNMPEngine(object):
         cmdrsp.SetCommandResponder(self.engine, self.context)
         cmdrsp.NextCommandResponder(self.engine, self.context)
         cmdrsp.BulkCommandResponder(self.engine, self.context)
+
+    def enable_observer(self):
+        self.engine.observer.registerObserver(
+            self.request_observer,
+            'rfc3412.receiveMessage:request',
+            'rfc3412.returnResponsePdu'
+        )
+
+    def request_observer(self, engine, execpoint, variables, cb_ctx):
+        LOG.debug('Execution point: %s' % execpoint)
+        LOG.debug('* transportDomain: %s' % '.'.join(
+            [str(x) for x in variables['transportDomain']]))
+        LOG.debug('* transportAddress: %s (local %s)' % (
+            '@'.join([str(x) for x in variables['transportAddress']]),
+            '@'.join([str(x) for x in
+                      variables['transportAddress'].getLocalAddress()])))
+        LOG.debug('* securityModel: %s' % variables['securityModel'])
+        LOG.debug('* securityName: %s' % variables['securityName'])
+        LOG.debug('* securityLevel: %s' % variables['securityLevel'])
+        LOG.debug('* contextEngineId: %s' % variables[
+            'contextEngineId'].prettyPrint())
+        LOG.debug('* contextName: %s' % variables['contextName'].prettyPrint())
+        LOG.debug('* PDU: %s' % variables['pdu'].prettyPrint())
 
 
 class SNMPAgent(object):
