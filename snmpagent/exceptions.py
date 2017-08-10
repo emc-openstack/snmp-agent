@@ -6,6 +6,10 @@ class PortConflictError(SNMPAgentException):
     pass
 
 
+class ConnectionError(SNMPAgentException):
+    pass
+
+
 class UserConfigError(SNMPAgentException):
     pass
 
