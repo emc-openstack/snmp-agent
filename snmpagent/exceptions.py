@@ -2,11 +2,19 @@ class SNMPAgentException(Exception):
     pass
 
 
-class PortConflictError(SNMPAgentException):
+class UnityException(SNMPAgentException):
     pass
 
 
-class ConnectionError(SNMPAgentException):
+class UnityConnectionError(UnityException):
+    pass
+
+
+class UnityResponseError(UnityException):
+    pass
+
+
+class PortConflictError(SNMPAgentException):
     pass
 
 

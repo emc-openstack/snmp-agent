@@ -10,33 +10,24 @@ LOG = logging.getLogger(__name__)
 NONE_STRING = 'n/a'
 
 
-def check_list(func):
-    @wraps(func)
-    def _inner(*args, **kwargs):
-        try:
-            result = func(*args, **kwargs)
-            if isinstance(result, list):
-                rst = result
-            else:
-                rst = []
-        except:
-            rst = []
-        return rst
-
-    return _inner
-
-
 def to_string(func):
     @wraps(func)
     def _inner(*args, **kwargs):
         try:
             result = func(*args, **kwargs)
-            if result is not None:
+            if result != '':
                 rst = str(result)
             else:
+                # rst = snmp_ex.UnityResponseError('Result: {}'.format(result))
                 rst = NONE_STRING
-        except:
+
+        # except snmp_ex.UnityException:
+        #     raise
+
+        except Exception as e:
+            # raise snmp_ex.UnityResponseError('{}: {}'.format(e.__class__.__name__, e))
             rst = NONE_STRING
+
         return rst
 
     return _inner
@@ -52,14 +43,25 @@ def to_number(func=None, length=3):
             result = func(*args, **kwargs)
             if isinstance(result, six.integer_types):
                 rst = result
-            elif math.isnan(float(result)):
+            elif isinstance(result, str) and result.lower() == 'nan':
                 rst = NONE_STRING
             elif isinstance(result, float):
-                rst = round(result, length)
+                if math.isnan(result):
+                    rst = NONE_STRING
+                else:
+                    rst = round(result, length)
             else:
+                # raise snmp_ex.UnityResponseError('Result: {}'.format(result))
                 rst = 0
-        except:
+
+        # except snmp_ex.UnityException:
+        #     raise
+
+        except Exception as e:
+            # raise snmp_ex.UnityResponseError(
+            #     '{}: {}'.format(e.__class__.__name__, e))
             rst = 0
+
         return rst
 
     return _inner
@@ -281,7 +283,6 @@ class UnityClient(object):
         return self.unity_system.write_byte_rate
 
     # storageProcessorTable
-    @check_list
     def get_sps(self):
         return [pool.name for pool in self.unity_system.get_sp()]
 
@@ -362,7 +363,6 @@ class UnityClient(object):
         return sp.block_cache_write_hit_ratio
 
     # poolTable
-    @check_list
     def get_pools(self):
         return [pool.name for pool in self.unity_system.get_pool()]
 
@@ -418,7 +418,6 @@ class UnityClient(object):
         return float(pool.size_used) / float(pool.size_total)
 
     # volumeTable
-    @check_list
     def get_luns(self):
         return [lun.id for lun in self.unity_system.get_lun()]
 
@@ -561,7 +560,6 @@ class UnityClient(object):
             return NONE_STRING
 
     # diskTable
-    @check_list
     def get_disks(self):
         return [disk.name for disk in self.unity_system.get_disk()]
 
@@ -672,7 +670,6 @@ class UnityClient(object):
     FC_PORT_TYPE = 'fc_port_'
     ISCSI_PORT_TYPE = 'iscsi_port_'
 
-    @check_list
     def get_frontend_ports(self):
         fc_ports = [self.FC_PORT_TYPE + port.id for port in
                     self.unity_system.get_fc_port()]
@@ -788,7 +785,6 @@ class UnityClient(object):
         return port.write_byte_rate
 
     # backendPortTable
-    @check_list
     def get_backend_ports(self):
         return [port.id for port in self.unity_system.get_sas_port()]
 
@@ -855,7 +851,6 @@ class UnityClient(object):
         return NONE_STRING
 
     # hostTable
-    @check_list
     def get_hosts(self):
         return [host.name for host in self.unity_system.get_host()]
 
@@ -903,7 +898,6 @@ class UnityClient(object):
     DAE_TYPE = 'dae_'
     DPE_TYPE = 'dpe_'
 
-    @check_list
     def get_enclosures(self):
         daes = [self.DAE_TYPE + dae.name for dae in
                 self.unity_system.get_dae()]
@@ -981,7 +975,6 @@ class UnityClient(object):
         return enclosure.max_temperature
 
     # powerSupplyTable
-    @check_list
     def get_power_supplies(self):
         return [power_supply.name for power_supply in
                 self.unity_system.get_power_supply()]
@@ -1029,7 +1022,6 @@ class UnityClient(object):
         return power_supply.health.value.name
 
     # fanTable
-    @check_list
     def get_fans(self):
         return [fan.name for fan in self.unity_system.get_fan()]
 
@@ -1061,7 +1053,6 @@ class UnityClient(object):
         return fan.health.value.name
 
     # BBUTable
-    @check_list
     def get_bbus(self):
         return [bbu.name for bbu in self.unity_system.get_battery()]
 

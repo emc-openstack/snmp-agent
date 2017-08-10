@@ -5,6 +5,8 @@ import mock
 from snmpagent import clients
 from snmpagent.tests import mocks
 
+from snmpagent import exceptions as snmp_ex
+
 NONE_STRING = 'n/a'
 
 
@@ -993,7 +995,7 @@ class TestUnityClient(unittest.TestCase):
                          set(items))
 
     @ddt.data({'key': 'DPE Cooling Module A0', 'slot_number': '0'},
-              {'key': 'DPE Cooling Module B1', 'slot_number': NONE_STRING}, )
+              {'key': 'DPE Cooling Module B1', 'slot_number': 'None'}, )
     def test_get_fan_slot_number(self, param_dict):
         self.assertEqual(param_dict['slot_number'],
                          self.client.get_fan_slot_number(param_dict['key']))
@@ -1004,7 +1006,6 @@ class TestUnityClient(unittest.TestCase):
         {'key': 'DPE Cooling Module A2', 'parent_enclosure': 'DAE 0 1'},
         {'key': 'DPE Cooling Module B1', 'parent_enclosure': NONE_STRING}, )
     def test_get_fan_parent_enclosure(self, param_dict):
-        # import pdb; pdb.set_trace()
         self.assertEqual(param_dict['parent_enclosure'],
                          self.client.get_fan_parent_enclosure(
                              param_dict['key']))

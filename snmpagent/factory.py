@@ -27,7 +27,7 @@ def connection_check(snmp_engine):
         snmp_engine.parent.connect_backend_device()
 
     if snmp_engine.unity_client == None:
-        raise snmp_ex.ConnectionError(
+        raise snmp_ex.UnityConnectionError(
             'Connection failed: ip: {}, agent port: {}'.format(
                 snmp_engine.parent.array_config.mgmt_ip,
                 snmp_engine.parent.port))
