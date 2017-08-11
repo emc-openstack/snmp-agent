@@ -1,3 +1,4 @@
+import os
 import logging.handlers
 
 from pysnmp.carrier.asyncore import dispatch
@@ -93,8 +94,9 @@ class SNMPEngine(object):
     def create_managed_objects(self):
         builder = self.context.getMibInstrum().getMibBuilder()
         # Add Unity-MIB.py to mib source dir
+        mib_dir_path = os.path.join(os.path.dirname(__file__), 'mibs')
         builder.setMibSources(
-            snmp_builder.DirMibSource(os.path.abspath('./mibs/')),
+            snmp_builder.DirMibSource(mib_dir_path),
             *builder.getMibSources())
 
         mib_scalar, mib_table_column, mib_table_row, mib_scalar_instance = (
@@ -145,7 +147,6 @@ class SNMPEngine(object):
                     impl_class=getattr(mod, class_name))
                 instances.append(scalar_instance_clz(item.name, (0,),
                                                      item.syntax))
-
         builder.exportSymbols('Unity-MIB', *instances)
 
     def register_cmd_responders(self):
@@ -204,8 +205,6 @@ class SNMPAgent(object):
 
 
 if __name__ == '__main__':
-    import os
-
     config_file = os.path.abspath('configs/agent.conf')
     auth_config_file = os.path.abspath('configs/access.conf')
     snmp_log.set_log_config(config_file)
