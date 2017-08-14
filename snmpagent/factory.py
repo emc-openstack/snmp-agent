@@ -19,14 +19,14 @@ def error_message(syntax):
 
 
 def connection_check(snmp_engine):
-    if snmp_engine.unity_client == None:
+    if snmp_engine.unity_client is None:
         LOG.info(
             'Reconnecting to unity: ip: {}, agent port: {}'.format(
                 snmp_engine.parent.array_config.mgmt_ip,
                 snmp_engine.parent.port))
         snmp_engine.parent.connect_backend_device()
 
-    if snmp_engine.unity_client == None:
+    if snmp_engine.unity_client is None:
         raise snmp_ex.UnityConnectionError(
             'Connection failed: ip: {}, agent port: {}'.format(
                 snmp_engine.parent.array_config.mgmt_ip,
@@ -94,7 +94,7 @@ class TableColumnInstanceFactory(object):
                         # Create table row and set default value
                         # DisplayString: null, Integer32: 0
                         # Only two types of data now: DisplayString, Integer32
-                        # If new data types added, need to consider how to set val
+                        # If new data types added, need to consider how handle
                         if isinstance(val, univ.Null) and isinstance(
                                 self.syntax, rfc1902.Integer32):
                             val = 0

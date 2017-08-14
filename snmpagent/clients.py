@@ -25,7 +25,8 @@ def to_string(func):
         #     raise
 
         except Exception as e:
-            # raise snmp_ex.UnityResponseError('{}: {}'.format(e.__class__.__name__, e))
+            # raise snmp_ex.UnityResponseError('{}: {}'
+            # .format(e.__class__.__name__, e))
             rst = NONE_STRING
 
         return rst
@@ -132,10 +133,8 @@ class UnityClient(object):
         password = password.raw if hasattr(password, 'raw') else password
         if cache_interval is None:
             cache_interval = 30
-        LOG.debug(
-            'Create UnitySystem: host: {}, username: {}, port: {}'.format(host,
-                                                                          username,
-                                                                          port))
+        LOG.debug('Create UnitySystem: host: {}, username: {},\
+        port: {}'.format(host, username, port))
         self.unity_system = storops.UnitySystem(host=host, username=username,
                                                 password=password, port=port,
                                                 retries=0,

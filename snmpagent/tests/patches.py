@@ -51,6 +51,7 @@ user_v2_entry = mock.patch('snmpagent.config.UserV2ConfigEntry')
 
 unity_client = mock.patch('snmpagent.clients.UnityClient')
 
+
 @contextmanager
 def stdout():
     new_stdout, old_stdout = StringIO(), sys.stdout
