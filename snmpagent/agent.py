@@ -1,5 +1,6 @@
-import os
 import logging.handlers
+import os
+import threading
 
 from pysnmp.carrier.asyncore import dispatch
 from pysnmp.carrier.asyncore.dgram import udp
@@ -184,24 +185,29 @@ class SNMPAgent(object):
     def __init__(self, agent_conf_file, access_conf_file):
         self.agent_config = snmp_config.AgentConfig(agent_conf_file).entries
         self.access_config = snmp_config.UserConfig(access_conf_file).entries
-        self.transport_dispatcher = dispatch.AsyncoreDispatcher()
 
-    def run(self):
-        self.transport_dispatcher.registerRoutingCbFun(lambda td, t, d: td)
+    def run_engine(self, index, array_name):
+        transport_dispatcher = dispatch.AsyncoreDispatcher()
+        transport_dispatcher.registerRoutingCbFun(lambda td, t, d: td)
 
-        for index, array_name in enumerate(self.agent_config):
-            SNMPEngine(self.agent_config[array_name], self.access_config,
-                       engine_id=index,
-                       transport_dispatcher=self.transport_dispatcher)
+        SNMPEngine(self.agent_config[array_name], self.access_config,
+                   engine_id=index,
+                   transport_dispatcher=transport_dispatcher)
 
-        self.transport_dispatcher.jobStarted(1)
+        transport_dispatcher.jobStarted(1)
 
         # Run I/O dispatcher which would receive queries and send responses
         try:
-            self.transport_dispatcher.runDispatcher()
+            transport_dispatcher.runDispatcher()
         except:
-            self.transport_dispatcher.closeDispatcher()
+            transport_dispatcher.closeDispatcher()
             raise
+
+    def run(self):
+        for index, array_name in enumerate(self.agent_config):
+            t = threading.Thread(target=self.run_engine,
+                                 args=(index, array_name))
+            t.start()
 
 
 if __name__ == '__main__':
