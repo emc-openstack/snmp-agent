@@ -1,6 +1,5 @@
-import logging.handlers
+import logging
 import os
-import threading
 
 from pysnmp.carrier.asyncore import dispatch
 from pysnmp.carrier.asyncore.dgram import udp
@@ -9,7 +8,6 @@ from pysnmp.entity.rfc3413 import cmdrsp, context
 from pysnmp.smi import builder as snmp_builder
 from snmpagent import clients, enums, factory, mib_parser
 from snmpagent import config as snmp_config
-from snmpagent import log as snmp_log
 
 READ_SUB_TREE = (1, 3, 6, 1, 4, 1, 1139, 103)
 WRITE_SUB_TREE = READ_SUB_TREE
@@ -186,33 +184,27 @@ class SNMPAgent(object):
         self.agent_config = snmp_config.AgentConfig(agent_conf_file).entries
         self.access_config = snmp_config.UserConfig(access_conf_file).entries
 
-    def run_engine(self, index, array_name):
-        transport_dispatcher = dispatch.AsyncoreDispatcher()
-        transport_dispatcher.registerRoutingCbFun(lambda td, t, d: td)
+    def run(self):
+        self.transport_dispatcher = dispatch.AsyncoreDispatcher()
+        self.transport_dispatcher.registerRoutingCbFun(lambda td, t, d: td)
 
-        SNMPEngine(self.agent_config[array_name], self.access_config,
-                   engine_id=index,
-                   transport_dispatcher=transport_dispatcher)
+        for index, array_name in enumerate(self.agent_config):
+            SNMPEngine(self.agent_config[array_name], self.access_config,
+                       engine_id=index,
+                       transport_dispatcher=self.transport_dispatcher)
 
-        transport_dispatcher.jobStarted(1)
+        self.transport_dispatcher.jobStarted(1)
 
         # Run I/O dispatcher which would receive queries and send responses
         try:
-            transport_dispatcher.runDispatcher()
+            self.transport_dispatcher.runDispatcher()
         except:
-            transport_dispatcher.closeDispatcher()
+            self.transport_dispatcher.closeDispatcher()
             raise
-
-    def run(self):
-        for index, array_name in enumerate(self.agent_config):
-            t = threading.Thread(target=self.run_engine,
-                                 args=(index, array_name))
-            t.start()
 
 
 if __name__ == '__main__':
     config_file = os.path.abspath('configs/agent.conf')
     auth_config_file = os.path.abspath('configs/access.conf')
-    snmp_log.set_log_config(config_file)
     agent = SNMPAgent(config_file, auth_config_file)
     agent.run()

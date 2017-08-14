@@ -16,9 +16,10 @@ class LinuxDaemon(object):
         agent.SNMPAgent(agent_conf, access.CONF_FILE_PATH).run()
 
     @staticmethod
-    def start(pid_file, agent_conf):
+    def start(pid_file, agent_conf, files_preserve):
         with daemon.DaemonContext(
-                umask=0o002, pidfile=pidfile.TimeoutPIDLockFile(pid_file)):
+                umask=0o002, pidfile=pidfile.TimeoutPIDLockFile(pid_file),
+                files_preserve=files_preserve):
             LinuxDaemon._action(agent_conf)
 
 

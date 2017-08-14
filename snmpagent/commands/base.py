@@ -16,7 +16,7 @@ def _setup_logger(log_file_path=None, level=None, log_to_stdout=True):
             handler = logging.StreamHandler(stream=sys.stdout)
     else:
         handler = handlers.RotatingFileHandler(log_file_path,
-                                               maxBytes=100 * (10 ** 6),
+                                               maxBytes=100 * (2 ** 20),
                                                backupCount=5)
     if handler is not None:
         logging.getLogger('').addHandler(handler)

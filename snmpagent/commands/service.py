@@ -1,3 +1,4 @@
+import logging
 import multiprocessing
 import os
 
@@ -13,11 +14,17 @@ def get_pid_file():
     return os.path.join(run_path, 'agent.pid')
 
 
+def get_log_handlers():
+    return [handler.stream for handler in logging.getLogger('').handlers if
+            isinstance(handler, logging.FileHandler)]
+
+
 def _start(conf_file):
     p = multiprocessing.Process(target=agentd.agent_daemon.start,
                                 name=agentd.NAME,
                                 kwargs={'pid_file': get_pid_file(),
-                                        'agent_conf': conf_file})
+                                        'agent_conf': conf_file,
+                                        'files_preserve': get_log_handlers()})
     p.start()
 
 
