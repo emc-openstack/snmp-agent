@@ -38,8 +38,8 @@ class ConfigEntry(object):
 
 class AgentConfigEntry(ConfigEntry):
     def __init__(self, name, agent_ip, log_level, log_file, log_file_maxbytes,
-                 log_file_count, cache_interval, agent_port, model, mgmt_ip,
-                 user, password):
+                 log_file_count, cache_interval=None, agent_port=None,
+                 model=None, mgmt_ip=None, user=None, password=None):
         super(AgentConfigEntry, self).__init__(
             name=name, agent_ip=agent_ip, log_level=log_level,
             log_file=log_file, log_file_maxbytes=log_file_maxbytes,
@@ -133,7 +133,8 @@ class AgentConfigParser(object):
                     'SNMP Agent port conflict: {}'.format(agent_port))
             else:
                 agent_port_list.append(agent_port)
-        res.default_section = self._parser.defaults()
+        res.default_section = AgentConfigEntry(
+            'DEFAULT', **dict(self._parser.defaults()))
         return res
 
     def save(self, conf_dict, encrypt=True):

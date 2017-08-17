@@ -1,17 +1,9 @@
 import logging
 import multiprocessing
-import os
+import platform
 
-import psutil
 from snmpagent import agentd
 from snmpagent.commands import base
-
-
-def get_pid_file():
-    run_path = os.path.join(os.path.dirname(__file__), '..', 'run')
-    if not os.path.exists(run_path):
-        os.mkdir(run_path)
-    return os.path.join(run_path, 'agent.pid')
 
 
 def get_log_handlers():
@@ -20,21 +12,11 @@ def get_log_handlers():
 
 
 def _start(conf_file):
-    p = multiprocessing.Process(target=agentd.agent_daemon.start,
-                                name=agentd.NAME,
-                                kwargs={'pid_file': get_pid_file(),
-                                        'agent_conf': conf_file,
-                                        'files_preserve': get_log_handlers()})
-    p.start()
+    agentd.agent_daemon.start(conf_file)
 
 
 def _stop():
-    pid_file = get_pid_file()
-    if os.path.isfile(pid_file) and os.path.exists(pid_file):
-        with open(pid_file, 'r') as f:
-            pid = int(f.read().splitlines()[0])
-        process = psutil.Process(pid=pid)
-        process.terminate()
+    agentd.agent_daemon.stop()
 
 
 class Start(base.BaseCommand):
@@ -51,7 +33,7 @@ examples:
     snmpagent start --conf_file /tmp/agent.conf
     """
     name = 'start'
-    log_to_stdout = False
+    log_to_stdout = True
 
     def do(self):
         _start(self.args['--conf_file'])
@@ -68,7 +50,7 @@ examples:
     snmpagent stop
     """
     name = 'stop'
-    log_to_stdout = False
+    log_to_stdout = True
 
     def do(self):
         _stop()
@@ -88,7 +70,7 @@ examples:
     snmpagent restart --conf_file /tmp/agent.conf
     """
     name = 'restart'
-    log_to_stdout = False
+    log_to_stdout = True
 
     def do(self):
         _stop()

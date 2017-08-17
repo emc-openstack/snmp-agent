@@ -166,10 +166,10 @@ class TestAccess(unittest.TestCase):
         expected = '''SNMP Version 2 Community Access:
 user_1
     Version:    SNMPv2c
-    Community:  Public
+    Community:  public
 user_2
     Version:    SNMPv2c
-    Community:  Public
+    Community:  public
 
 SNMP Version 3 Users:
 user_3

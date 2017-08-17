@@ -139,7 +139,7 @@ class UnityClient(object):
                                                 password=password, port=port,
                                                 retries=0,
                                                 cache_interval=cache_interval)
-        LOG.debug('Enable metric query')
+        LOG.debug('Enabling metric query')
         self.unity_system.enable_perf_stats()
 
     @classmethod

@@ -1,5 +1,6 @@
 import logging
 import os
+import threading
 
 from pysnmp.carrier.asyncore import dispatch
 from pysnmp.carrier.asyncore.dgram import udp
@@ -8,6 +9,7 @@ from pysnmp.entity.rfc3413 import cmdrsp, context
 from pysnmp.smi import builder as snmp_builder
 from snmpagent import clients, enums, factory, mib_parser
 from snmpagent import config as snmp_config
+from snmpagent import utils
 
 READ_SUB_TREE = (1, 3, 6, 1, 4, 1, 1139, 103)
 WRITE_SUB_TREE = READ_SUB_TREE
@@ -76,7 +78,7 @@ class SNMPEngine(object):
         client_name = '{ip}_{port}'.format(ip=self.array_config.mgmt_ip,
                                            port=self.array_config.agent_port)
         try:
-            LOG.info('Connecting to unity: {}, agent port: {}'.format(
+            LOG.debug('Connecting to unity: {}, agent port: {}'.format(
                 self.array_config.mgmt_ip, self.port))
             cache_interval = (int(self.array_config.cache_interval)
                               if self.array_config.cache_interval else 30)
@@ -84,10 +86,11 @@ class SNMPEngine(object):
                 client_name, self.array_config.mgmt_ip,
                 self.array_config.user, self.array_config.password,
                 cache_interval=cache_interval)
-        except:
-            LOG.info(
-                'Failed to reconnect unity: {}, agent port: {}'.format(
-                    self.array_config.mgmt_ip, self.port))
+        except Exception as ex:
+            LOG.warning(
+                'Failed to reconnect unity: {}, agent port: {}, '
+                'reason: {}'.format(
+                    self.array_config.mgmt_ip, self.port, ex))
             return None
 
     def create_managed_objects(self):
@@ -181,26 +184,39 @@ class SNMPEngine(object):
 
 class SNMPAgent(object):
     def __init__(self, agent_conf_file, access_conf_file):
-        self.agent_config = snmp_config.AgentConfig(agent_conf_file).entries
-        self.access_config = snmp_config.UserConfig(access_conf_file).entries
+        self.agent_entries = snmp_config.AgentConfig(agent_conf_file).entries
+        self.access_entries = snmp_config.UserConfig(access_conf_file).entries
+        utils.setup_log(
+            log_file_path=self.agent_entries.default_section.log_file,
+            level=self.agent_entries.default_section.log_level,
+            max_bytes=self.agent_entries.default_section.log_file_maxbytes,
+            max_file_count=self.agent_entries.default_section.log_file_count)
+        self.transport_dispatcher = None
 
-    def run(self):
-        self.transport_dispatcher = dispatch.AsyncoreDispatcher()
-        self.transport_dispatcher.registerRoutingCbFun(lambda td, t, d: td)
-
-        for index, array_name in enumerate(self.agent_config):
-            SNMPEngine(self.agent_config[array_name], self.access_config,
-                       engine_id=index,
-                       transport_dispatcher=self.transport_dispatcher)
-
-        self.transport_dispatcher.jobStarted(1)
+    def run_instance(self, agent_config, access_config, engine_id):
+        transport_dispatcher = dispatch.AsyncoreDispatcher()
+        transport_dispatcher.registerRoutingCbFun(lambda td, t, d: td)
+        SNMPEngine(agent_config, access_config, engine_id,
+                   transport_dispatcher)
+        transport_dispatcher.jobStarted(1)
 
         # Run I/O dispatcher which would receive queries and send responses
         try:
-            self.transport_dispatcher.runDispatcher()
-        except:
-            self.transport_dispatcher.closeDispatcher()
+            transport_dispatcher.runDispatcher()
+        except Exception as ex:
+            LOG.error("Failed to run dispatcher, error: {}".format(ex))
+            transport_dispatcher.closeDispatcher()
             raise
+
+    def run(self):
+        """Starts the SNMP engine in multi-thread mode."""
+        for index, array_name in enumerate(self.agent_entries):
+            t = threading.Thread(target=self.run_instance,
+                                 args=(
+                                     self.agent_entries[array_name],
+                                     self.access_entries, index))
+            t.start()
+            LOG.info("Started engine for array config [{}]".format(array_name))
 
 
 if __name__ == '__main__':
