@@ -800,13 +800,13 @@ class TestUnityClient(unittest.TestCase):
         items = self.client.get_hosts()
         self.assertEqual(5, len(items))
         self.assertEqual(
-            {'ubuntu1604', '10.245.54.151', '10.245.54.152', '10.245.54.153',
-             '10.245.54.154'},
+            {'ubuntu1604', '10.245.54.151', '10.245.54.152',
+             '10.245.54.153', '10.245.54.154'},
             set(items))
 
     @ddt.data({'key': 'ubuntu1604',
-               'ip_list': '10.207.84.27, 2620:0:170:1d34:a236:9fff:fe66:\
-8960, 2620:0:170:1d36:a236:9fff:fe66:8960'},
+               'ip_list': '10.207.84.27, 2620:0:170:1d34:a236:9fff:fe66:'
+                          '8960, 2620:0:170:1d36:a236:9fff:fe66:8960'},
               {'key': '10.245.54.151', 'ip_list': NONE_STRING},
               {'key': '10.245.54.152', 'ip_list': NONE_STRING}, )
     def test_get_host_network_address(self, param_dict):
@@ -815,9 +815,10 @@ class TestUnityClient(unittest.TestCase):
                              param_dict['key']))
 
     @ddt.data({'key': 'ubuntu1604',
-               'initiators': 'iqn.1993-08.org.debian:01:b974ee37fea, 20:\
-00:00:90:FA:53:49:28:10:00:00:90:FA:53:49:28, 20:00:00:90:FA:53:49:29:\
-10:00:00:90:FA:53:49:29'},
+               'initiators': 'iqn.1993-08.org.debian:01:b974ee37fea, 20:'
+                             '00:00:90:FA:53:49:28:10:00:00:90:FA:53:49:2'
+                             '8, 20:00:00:90:FA:53:49:29:10:00:00:90:FA:5'
+                             '3:49:29'},
               {'key': '10.245.54.151', 'initiators': NONE_STRING},
               {'key': '10.245.54.152',
                'initiators': '20:00:00:90:FA:53:49, 20:00:00:90:FA:53:50'},

@@ -325,14 +325,14 @@ class MockUnitySystem(object):
                                     '2620:0:170:1d34:a236:9fff:fe66:8960',
                                     '2620:0:170:1d36:a236:9fff:fe66:8960'],
                            iscsi_host_initiators=[FakeObject(
-                               initiator_id='iqn.1993-08.org.debian:01:b97\
-                               4ee37fea')],
+                               initiator_id='iqn.1993-08.org.debian:01:b974'
+                                            'ee37fea')],
                            fc_host_initiators=[FakeObject(
-                               initiator_id='20:00:00:90:FA:53:49:28:10:00\
-                               :00:90:FA:53:49:28'),
+                               initiator_id='20:00:00:90:FA:53:49:28:10:00:'
+                                            '00:90:FA:53:49:28'),
                                FakeObject(
-                                   initiator_id='20:00:00:90:FA:53:49:29:1\
-                                   0:00:00:90:FA:53:49:29')],
+                                   initiator_id='20:00:00:90:FA:53:49:29:10'
+                                                ':00:00:90:FA:53:49:29')],
                            os_type='Linux',
                            host_luns=[FakeObject(
                                lun=FakeObject(name='storops_dummy_lun'))],
@@ -351,8 +351,8 @@ class MockUnitySystem(object):
                 FakeObject(name='10.245.54.153',
                            ip_list=[],
                            iscsi_host_initiators=[FakeObject(
-                               initiator_id='iqn.1993-08.org.debian:01:b97\
-                               4ee37fea')],
+                               initiator_id='iqn.1993-08.org.debian:01:b974'
+                                            'ee37fea')],
                            os_type='VMware ESXi 6.0.0',
                            host_luns=[],
                            ),

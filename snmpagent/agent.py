@@ -146,7 +146,7 @@ class SNMPEngine(object):
                     impl_class=getattr(mod, class_name))
                 instances.append(scalar_instance_clz(item.name, (0,),
                                                      item.syntax))
-        builder.exportSymbols('Unity-MIB', *instances)
+        builder.exportSymbols('Exported-Unity-MIB', *instances)
 
     def register_cmd_responders(self):
         """Registers command responders."""
