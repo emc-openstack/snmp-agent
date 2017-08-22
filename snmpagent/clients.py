@@ -24,7 +24,7 @@ def to_string(func):
         # except snmp_ex.UnityException:
         #     raise
 
-        except Exception as e:
+        except Exception:
             # raise snmp_ex.UnityResponseError('{}: {}'
             # .format(e.__class__.__name__, e))
             rst = NONE_STRING
@@ -58,7 +58,7 @@ def to_number(func=None, length=3):
         # except snmp_ex.UnityException:
         #     raise
 
-        except Exception as e:
+        except Exception:
             # raise snmp_ex.UnityResponseError(
             #     '{}: {}'.format(e.__class__.__name__, e))
             rst = 0

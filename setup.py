@@ -45,8 +45,8 @@ setup(
         'Topic :: Software Development :: Libraries'
     ],
 
-    install_requires=read('requirements.txt').splitlines(),
-    tests_require=read('test-requirements.txt').splitlines(),
+    install_requires=read('./requirements.txt').splitlines(),
+    tests_require=read('./test-requirements.txt').splitlines(),
     entry_points={
         'console_scripts': [
             '{name}={name}.cli:main'.format(name=NAME),

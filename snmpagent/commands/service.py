@@ -1,6 +1,4 @@
 import logging
-import multiprocessing
-import platform
 
 from snmpagent import agentd
 from snmpagent.commands import base

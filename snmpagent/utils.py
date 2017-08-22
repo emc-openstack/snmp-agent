@@ -1,8 +1,6 @@
 import logging
 from logging import handlers
 
-import sys
-
 
 def enum(enum_clz, value):
     if isinstance(value, enum_clz):

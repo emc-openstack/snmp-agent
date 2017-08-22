@@ -156,11 +156,3 @@ class TestCli(unittest.TestCase):
     def test_cli_decrypt(self, _, mocked_config):
         cli.main()
         mocked_config.save.assert_called_with(encrypt=False)
-
-    @patches.sys_argv(['snmpagent', 'start', '--conf_file', '/tmp/agent.conf'])
-    def test_cli_daemon(self, _):
-        cli.main()
-
-    @patches.sys_argv(['snmpagent', 'stop'])
-    def test_cli_stop_daemon(self, _):
-        cli.main()
