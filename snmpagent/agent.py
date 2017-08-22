@@ -60,11 +60,16 @@ class SNMPEngine(object):
 
         for name, obj in self.access_config.items():
             if obj.mode == enums.UserVersion.V3:
-                config.addV3User(self.engine, name,
-                                 auth_mapping[obj.auth_protocol],
-                                 obj.auth_key.raw,
-                                 priv_mapping[obj.priv_protocol],
-                                 obj.priv_key.raw)
+                if obj.priv_protocol is None:
+                    config.addV3User(self.engine, name,
+                                     auth_mapping[obj.auth_protocol],
+                                     obj.auth_key.raw)
+                else:
+                    config.addV3User(self.engine, name,
+                                     auth_mapping[obj.auth_protocol],
+                                     obj.auth_key.raw,
+                                     priv_mapping[obj.priv_protocol],
+                                     obj.priv_key.raw)
                 config.addVacmUser(self.engine, 3, name,
                                    obj.security_level.value, READ_SUB_TREE,
                                    WRITE_SUB_TREE)
