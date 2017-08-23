@@ -46,9 +46,9 @@ class TestCli(unittest.TestCase):
 
     @patches.sys_argv(
         ['snmpagent', 'add-user', '--name', 'user_1', '--auth', 'md5',
-         '--auth_key', 'key123', '--priv', 'des'],
+         '--auth_key', 'authkey123', '--priv', 'des'],
         ['snmpagent', 'add-user', '--name', 'user_1', '--auth', 'md5',
-         '--auth_key', 'key123', '--priv_key', 'key456'])
+         '--auth_key', 'authkey123', '--priv_key', 'privkey456'])
     def test_cli_add_user_priv_invalid(self, _):
         with self.assertRaises(SystemExit) as raised:
             cli.main()
@@ -58,39 +58,39 @@ class TestCli(unittest.TestCase):
 
     @patches.sys_argv(
         ['snmpagent', 'add-user', '--name', 'user_1', '--auth', 'md5',
-         '--auth_key', 'key123', '--priv', 'des', '--priv_key', 'key456'])
+         '--auth_key', 'authkey123', '--priv', 'des', '--priv_key', 'privkey456'])
     @patches.access
     def test_cli_add_user_auth_priv(self, _, mocked_access):
         cli.main()
         mocked_access.add_v3_user.assert_called_with(
-            'user_1', enums.SecurityLevel.AUTH_PRIV, 'md5', 'key123', 'des',
-            'key456')
+            'user_1', enums.SecurityLevel.AUTH_PRIV, 'md5', 'authkey123', 'des',
+            'privkey456')
 
     @patches.sys_argv(
         ['snmpagent', 'add-user', '--name', 'user_1', '--auth', 'md5',
-         '--auth_key', 'key123'])
+         '--auth_key', 'authkey123'])
     @patches.access
     def test_cli_add_user_auth_no_priv(self, _, mocked_access):
         cli.main()
         mocked_access.add_v3_user.assert_called_with(
             'user_1', enums.SecurityLevel.AUTH_NO_PRIV, 'md5',
-            'key123', None, None)
+            'authkey123', None, None)
 
     @patches.sys_argv(
         ['snmpagent', 'update-user', '--name', 'user_1', '--auth', 'md5',
-         '--priv', 'des', '--priv_key', 'key456'],
+         '--priv', 'des', '--priv_key', 'privkey456'],
         ['snmpagent', 'update-user', '--name', 'user_1', '--auth_key',
-         'key123', '--priv', 'des', '--priv_key', 'key456'],
+         'authkey123', '--priv', 'des', '--priv_key', 'privkey456'],
         ['snmpagent', 'update-user', '--name', 'user_1', '--auth', 'md5'],
         ['snmpagent', 'update-user', '--name', 'user_1', '--auth_key',
-         'key123'],
+         'authkey123'],
         ['snmpagent', 'update-user', '--name', 'user_1', '--auth', 'md5',
-         '--auth_key', 'key123', '--priv', 'des'],
+         '--auth_key', 'authkey123', '--priv', 'des'],
         ['snmpagent', 'update-user', '--name', 'user_1', '--auth', 'md5',
-         '--auth_key', 'key123', '--priv_key', 'key456'],
+         '--auth_key', 'authkey123', '--priv_key', 'privkey456'],
         ['snmpagent', 'update-user', '--name', 'user_1', '--priv', 'des'],
         ['snmpagent', 'update-user', '--name', 'user_1', '--priv_key',
-         'key456'])
+         'privkey456'])
     def test_cli_update_user_args_invalid(self, _):
         with self.assertRaises(SystemExit) as raised:
             cli.main()
@@ -101,22 +101,22 @@ class TestCli(unittest.TestCase):
 
     @patches.sys_argv(
         ['snmpagent', 'update-user', '--name', 'user_1', '--auth', 'md5',
-         '--auth_key', 'key123', '--priv', 'des', '--priv_key', 'key456'])
+         '--auth_key', 'authkey123', '--priv', 'des', '--priv_key', 'privkey456'])
     @patches.access
     def test_cli_update_user_auth_priv(self, _, mocked_access):
         cli.main()
         mocked_access.update_v3_user.assert_called_with(
-            'user_1', enums.SecurityLevel.AUTH_PRIV, 'md5', 'key123', 'des',
-            'key456')
+            'user_1', enums.SecurityLevel.AUTH_PRIV, 'md5', 'authkey123', 'des',
+            'privkey456')
 
     @patches.sys_argv(
         ['snmpagent', 'update-user', '--name', 'user_1', '--auth', 'md5',
-         '--auth_key', 'key123'])
+         '--auth_key', 'authkey123'])
     @patches.access
     def test_cli_update_user_auth_no_priv(self, _, mocked_access):
         cli.main()
         mocked_access.update_v3_user.assert_called_with(
-            'user_1', enums.SecurityLevel.AUTH_NO_PRIV, 'md5', 'key123', None,
+            'user_1', enums.SecurityLevel.AUTH_NO_PRIV, 'md5', 'authkey123', None,
             None)
 
     @patches.sys_argv(['snmpagent', 'delete-user', '--name', 'user_1'])

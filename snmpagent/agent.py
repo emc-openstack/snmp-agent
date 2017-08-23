@@ -89,12 +89,12 @@ class SNMPEngine(object):
                                        WRITE_SUB_TREE)
                 else:
                     security_level = enums.SecurityLevel.NO_AUTH_NO_PRIV.value
-                    config.addV1System(self.engine, name, obj.community.value)
+                    config.addV1System(self.engine, name, obj.community)
                     config.addVacmUser(self.engine, 2, name, security_level,
                                        READ_SUB_TREE, WRITE_SUB_TREE)
                     LOG.debug('Succeed to add v2 user: {} for engine: {}, '
                               'community: {}'.format(name, self.engine_id,
-                                                     obj.community.value))
+                                                     obj.community))
             except Exception as ex:
                 LOG.error(
                     'Failed to add user: {} for engine: {}, '
