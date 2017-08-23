@@ -49,4 +49,4 @@ def main():
 
     cmd_args = [cmd_name] + cmd_args
     cmd = cmd_class(cmd_args, args)
-    cmd.do()
+    return cmd.do()

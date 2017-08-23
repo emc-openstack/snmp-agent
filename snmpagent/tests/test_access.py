@@ -97,8 +97,13 @@ class TestAccess(unittest.TestCase):
         self.access.user_conf.entries = {}
         self.access.add_v2_user('user_1')
 
-        user_v2_entry.assert_called_with('user_1', enums.Community.PUBLIC)
+        user_v2_entry.assert_called_with('user_1', 'user_1')
         self.assertIn('user_1', self.access.user_conf.entries)
+
+    def test_add_v2_user_already_exists(self):
+        self.access.user_conf.entries = {'user-public': {}}
+        self.assertRaises(snmp_ex.UserExistingError,
+                          self.access.add_v2_user, 'user-public')
 
     def test_delete_v3_user(self):
         name = 'user_1'
@@ -109,7 +114,9 @@ class TestAccess(unittest.TestCase):
     def test_delete_v3_user_not_exist(self):
         name = 'not-existing'
         self.access.user_conf.entries = {}
-        self.access.delete_v3_user(name)
+        self.assertRaises(snmp_ex.UserNotExistsError,
+                          self.access.delete_v3_user,
+                          name)
         self.access.user_conf.save.assert_not_called()
 
     def test_delete_v2_user(self):
@@ -121,13 +128,17 @@ class TestAccess(unittest.TestCase):
     def test_delete_v2_user_not_exist(self):
         name = 'not-existing'
         self.access.user_conf.entries = {}
-        self.access.delete_v2_user(name)
+        self.assertRaises(snmp_ex.UserNotExistsError,
+                          self.access.delete_v2_user,
+                          name)
         self.access.user_conf.save.assert_not_called()
 
     def test_update_v3_user_not_exist(self):
         name = 'not-existing'
         self.access.user_conf.entries = {}
-        self.access.update_v3_user(name)
+        self.assertRaises(snmp_ex.UserNotExistsError,
+                          self.access.update_v3_user,
+                          name)
 
     def test_update_v3_user(self):
         name = 'user_1'
@@ -166,10 +177,10 @@ class TestAccess(unittest.TestCase):
         expected = '''SNMP Version 2 Community Access:
 user_1
     Version:    SNMPv2c
-    Community:  public
+    Community:  user_1
 user_2
     Version:    SNMPv2c
-    Community:  public
+    Community:  user_2
 
 SNMP Version 3 Users:
 user_3

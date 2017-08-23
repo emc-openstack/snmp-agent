@@ -1,5 +1,8 @@
+import sys
 import logging
 from logging import handlers
+
+from snmpagent import exceptions as snmp_ex
 
 
 def enum(enum_clz, value):
@@ -34,3 +37,14 @@ def setup_log(log_file_path=None, level=None,
         file_handler.setLevel(level)
         file_handler.setFormatter(fmt)
         root.addHandler(file_handler)
+
+
+def log_command_exception(cmd):
+    def wrap_exception(*args, **kwargs):
+        try:
+            cmd(*args, **kwargs)
+        except snmp_ex.SNMPAgentException as ex:
+            sys.stderr.writelines("Failed to execute '{}': {}\n".format(
+                args[0].name, ex))
+
+    return wrap_exception

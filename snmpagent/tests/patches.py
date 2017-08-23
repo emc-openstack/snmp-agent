@@ -44,12 +44,26 @@ def patch_config(config_type):
     return _dec
 
 
+class FakePopen(object):
+    def __call__(self, *args, **kwargs):
+        self.args = args
+        self.kwargs = kwargs
+        return self
+
+    def __init__(self):
+        self.pid = 1111
+
+
 agent_config = patch_config('AgentConfig')
 user_config = patch_config('UserConfig')
 user_v3_entry = mock.patch('snmpagent.config.UserV3ConfigEntry')
 user_v2_entry = mock.patch('snmpagent.config.UserV2ConfigEntry')
 
 unity_client = mock.patch('snmpagent.clients.UnityClient')
+
+subprocess = mock.patch('subprocess.Popen', new_callable=FakePopen)
+
+psutil_process = mock.patch('psutil.Process')
 
 
 @contextmanager

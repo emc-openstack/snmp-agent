@@ -26,5 +26,9 @@ class UserExistingError(SNMPAgentException):
     pass
 
 
+class UserNotExistsError(SNMPAgentException):
+    pass
+
+
 class NotSupportedPlatformError(SNMPAgentException):
     pass

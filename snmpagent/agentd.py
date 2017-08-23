@@ -76,7 +76,7 @@ class LinuxDaemon(BaseDaemon):
     @classmethod
     def start(cls, conf_file):
         if cls.exists():
-            os._exit(1)
+            return 1
         p = subprocess.Popen(
             [sys.executable, cls.prog_file_name, conf_file],
             close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -93,7 +93,7 @@ class LinuxDaemon(BaseDaemon):
 
         LOG.debug("{} is running with pid file: {}".format(
             SERVICE_NAME, cls.get_pid_file()))
-        os._exit(0)
+        return 0
 
 
 class WindowsDaemon(BaseDaemon):
@@ -106,7 +106,7 @@ class WindowsDaemon(BaseDaemon):
     @classmethod
     def start(cls, conf_file):
         if cls.exists():
-            os._exit(1)
+            return 1
         DETACHED_PROCESS = 0x00000008
 
         p = subprocess.Popen(
@@ -126,7 +126,7 @@ class WindowsDaemon(BaseDaemon):
 
         LOG.debug("{} is running with pid file: {}".format(
             SERVICE_NAME, WindowsDaemon.get_pid_file()))
-        os._exit(0)
+        return 0
 
 
 NAME = 'Dell EMC SNMP Agent Daemon'

@@ -1,7 +1,10 @@
+import logging
 import os
 
 from snmpagent import config, enums, utils
 from snmpagent import exceptions as snmp_ex
+
+LOG = logging.getLogger(__file__)
 
 
 def _validate_params(security_level, auth_protocol=None, auth_key=None,
@@ -44,7 +47,7 @@ class Access(object):
                     auth_key=None, priv_protocol=None, priv_key=None):
         if name in self.user_conf.entries:
             raise snmp_ex.UserExistingError(
-                'The user: {} already exists.'.format(name))
+                "The user: '{}' already exists.".format(name))
 
         level, auth_p, auth_k, priv_p, priv_k = _validate_params(
             security_level, auth_protocol, auth_key, priv_protocol, priv_key)
@@ -52,33 +55,39 @@ class Access(object):
         self.user_conf.entries[name] = config.UserV3ConfigEntry(
             name, None, level, auth_p, auth_k, priv_p, priv_k)
         self.user_conf.save()
+        LOG.info("Added user '{}' successfully.".format(name))
 
     def add_v2_user(self, name):
         if name in self.user_conf.entries:
             raise snmp_ex.UserExistingError(
-                'The user: {} already exists.'.format(name))
+                "The user: '{}' already exists.".format(name))
 
         self.user_conf.entries[name] = config.UserV2ConfigEntry(
-            name, enums.Community.PUBLIC)
+            name, name)
         self.user_conf.save()
+        LOG.info("Added user '{}' successfully.".format(name))
 
     def delete_v3_user(self, name):
         if name not in self.user_conf.entries:
-            return
+            raise snmp_ex.UserNotExistsError(
+                "User '{}' was already deleted.".format(name))
         del self.user_conf.entries[name]
         self.user_conf.save()
+        LOG.info("Deleted user '{}' successfully.".format(name))
 
     def delete_v2_user(self, name):
         if name not in self.user_conf.entries:
-            return
+            raise snmp_ex.UserNotExistsError(
+                "User '{}' was already deleted.".format(name))
         del self.user_conf.entries[name]
         self.user_conf.save()
+        LOG.info("Deleted user '{}' successfully.".format(name))
 
     def update_v3_user(self, name, security_level=None, auth_protocol=None,
                        auth_key=None, priv_protocol=None, priv_key=None):
         if name not in self.user_conf.entries:
-            # TODO log message if needed
-            return
+            raise snmp_ex.UserNotExistsError(
+                "Could not update nonexistent user '{}'.".format(name))
         old = self.user_conf.entries[name]
         security_level = (old.security_level if security_level is None
                           else security_level)

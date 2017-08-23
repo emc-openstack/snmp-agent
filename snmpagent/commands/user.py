@@ -1,6 +1,6 @@
 import docopt
 
-from snmpagent import access, enums
+from snmpagent import access, enums, utils
 from snmpagent.commands import base
 
 
@@ -30,6 +30,7 @@ examples:
     """
     name = 'add-user'
 
+    @utils.log_command_exception
     def do(self):
         name, auth, auth_key, priv, priv_key = get_args(self.args)
 
@@ -63,6 +64,7 @@ examples:
     """
     name = 'update-user'
 
+    @utils.log_command_exception
     def do(self):
         name, auth, auth_key, priv, priv_key = get_args(self.args)
 
@@ -94,6 +96,7 @@ examples:
     """
     name = 'delete-user'
 
+    @utils.log_command_exception
     def do(self):
         access.access.delete_v3_user(self.args['--name'])
 
@@ -110,5 +113,6 @@ examples:
     """
     name = 'list-users'
 
+    @utils.log_command_exception
     def do(self):
         access.access.list_users()

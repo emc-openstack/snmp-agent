@@ -1,5 +1,6 @@
 from snmpagent import access
 from snmpagent.commands import base
+from snmpagent import utils
 
 
 class CreateCommunity(base.BaseCommand):
@@ -17,6 +18,7 @@ examples:
     """
     name = 'create-community'
 
+    @utils.log_command_exception
     def do(self):
         # Only support public community
         access.access.add_v2_user(self.args['--name'])
@@ -37,5 +39,6 @@ examples:
     """
     name = 'delete-community'
 
+    @utils.log_command_exception
     def do(self):
         access.access.delete_v2_user(self.args['--name'])

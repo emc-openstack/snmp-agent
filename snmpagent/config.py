@@ -53,8 +53,8 @@ USER_V2_SHOW_HEAD = 'SNMP Version 2 Community Access:'
 USER_V2_SHOW = '''{name}
     Version:    {mode}
     Community:  {community}'''
-USER_V3_HEAD = '''# model security_name context security_level
-auth_protocol auth_key priv_protocol priv_key'''
+USER_V3_HEAD = '# model security_name context security_level ' \
+               'auth_protocol auth_key priv_protocol priv_key'
 USER_V3_SHOW_HEAD = 'SNMP Version 3 Users:'
 USER_V3_SHOW = '''{name}
     Version:            {mode}
@@ -75,7 +75,7 @@ class UserV2ConfigEntry(ConfigEntry):
     def __init__(self, name, community):
         super(UserV2ConfigEntry, self).__init__(
             name=name, mode=V2,
-            community=utils.enum(enums.Community, community))
+            community=name)
 
     def __str__(self):
         return ' '.join(dash_if_empty(item)
@@ -212,7 +212,11 @@ class UserConfig(FileConfig):
 
     @staticmethod
     def split_v2_v3(all_entries):
+        # must be sorted, since `groupby` works like Linux `uniq` command
+        all_entries = sorted(all_entries.values(),
+                             key=lambda v: v.mode)
         groups = dict((k, list(g)) for k, g in
-                      itertools.groupby(all_entries.values(),
+                      itertools.groupby(all_entries,
                                         lambda e: e.mode))
-        return groups[V2], groups[V3]
+        return (groups[V2] if V2 in groups else [],
+                groups[V3] if V3 in groups else [])

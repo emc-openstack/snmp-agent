@@ -1,4 +1,4 @@
-from snmpagent import config
+from snmpagent import config, utils
 from snmpagent.commands import base
 
 
@@ -17,6 +17,7 @@ examples:
     """
     name = 'encrypt'
 
+    @utils.log_command_exception
     def do(self):
         agent_config = config.AgentConfig(self.args['--conf_file'])
         agent_config.save()
@@ -37,6 +38,7 @@ examples:
     """
     name = 'decrypt'
 
+    @utils.log_command_exception
     def do(self):
         agent_config = config.AgentConfig(self.args['--conf_file'])
         agent_config.save(encrypt=False)

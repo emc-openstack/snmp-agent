@@ -12,6 +12,11 @@ class CaseInsensitiveEnum(enum.Enum):
     def __str__(self):
         return self.value
 
+    def __lt__(self, other):
+        # An equivalent for cmp(self.value, other.value)
+        # https://docs.python.org/3.0/whatsnew/3.0.html#ordering-comparisons
+        return (self.value > other.value) - (self.value < other.value)
+
 
 class UserVersion(CaseInsensitiveEnum):
     V2 = 'SNMPv2c'

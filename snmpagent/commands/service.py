@@ -1,6 +1,6 @@
 import logging
 
-from snmpagent import agentd
+from snmpagent import agentd, utils
 from snmpagent.commands import base
 
 
@@ -33,6 +33,7 @@ examples:
     name = 'start'
     log_to_stdout = True
 
+    @utils.log_command_exception
     def do(self):
         _start(self.args['--conf_file'])
 
@@ -50,6 +51,7 @@ examples:
     name = 'stop'
     log_to_stdout = True
 
+    @utils.log_command_exception
     def do(self):
         _stop()
 
@@ -70,6 +72,7 @@ examples:
     name = 'restart'
     log_to_stdout = True
 
+    @utils.log_command_exception
     def do(self):
         _stop()
         _start(self.args['--conf_file'])
