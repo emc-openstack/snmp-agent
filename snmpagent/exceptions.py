@@ -30,5 +30,9 @@ class UserNotExistsError(SNMPAgentException):
     pass
 
 
+class UserInvalidPasswordError(SNMPAgentException):
+    pass
+
+
 class NotSupportedPlatformError(SNMPAgentException):
     pass
