@@ -68,36 +68,37 @@ class SNMPEngine(object):
                                          obj.auth_key.raw)
                         LOG.debug(
                             'Succeed to add v3 user: {} for engine: {}, '
-                            'auth protocol: {}, priv protocol: {}'
-                                .format(name, self.engine_id,
-                                        obj.auth_protocol, None))
+                            'auth protocol: {}, '
+                            'priv protocol: {}'.format(name, self.engine_id,
+                                                       obj.auth_protocol,
+                                                       None))
                     else:
                         config.addV3User(self.engine, name,
                                          auth_mapping[obj.auth_protocol],
                                          obj.auth_key.raw,
                                          priv_mapping[obj.priv_protocol],
                                          obj.priv_key.raw)
-                        LOG.debug('Succeed to add v3 user: {} for engine: {}, '
-                                  'auth protocol: {}, priv protocol: {}'
-                                  .format(name, self.engine_id,
-                                          obj.auth_protocol,
-                                          obj.priv_protocol))
+                        LOG.debug(
+                            'Succeed to add v3 user: {} for engine: {}, '
+                            'auth protocol: {}, '
+                            'priv protocol: {}'.format(name, self.engine_id,
+                                                       obj.auth_protocol,
+                                                       obj.priv_protocol))
                     config.addVacmUser(self.engine, 3, name,
                                        obj.security_level.value, READ_SUB_TREE,
                                        WRITE_SUB_TREE)
                 else:
+                    security_level = enums.SecurityLevel.NO_AUTH_NO_PRIV.value
                     config.addV1System(self.engine, name, obj.community.value)
-                    config.addVacmUser(self.engine, 2, name,
-                                       enums.SecurityLevel.NO_AUTH_NO_PRIV.value,
+                    config.addVacmUser(self.engine, 2, name, security_level,
                                        READ_SUB_TREE, WRITE_SUB_TREE)
                     LOG.debug('Succeed to add v2 user: {} for engine: {}, '
-                              'community: {}'
-                              .format(name, self.engine_id,
-                                      obj.community.value))
+                              'community: {}'.format(name, self.engine_id,
+                                                     obj.community.value))
             except Exception as ex:
                 LOG.error(
-                    'Failed to add user: {} for engine: {}, reason: {}'
-                        .format(name, self.engine_id, ex))
+                    'Failed to add user: {} for engine: {}, '
+                    'reason: {}'.format(name, self.engine_id, ex))
                 LOG.error('User info: {}'
                           .format(', '.join('{}: {}'.format(k, v) for k, v in
                                             self.access_config[
@@ -195,20 +196,17 @@ class SNMPEngine(object):
         )
 
     def request_observer(self, engine, execpoint, variables, cb_ctx):
-        LOG.debug('Execution point: %s' % execpoint)
-        LOG.debug('* transportDomain: %s' % '.'.join(
-            [str(x) for x in variables['transportDomain']]))
-        LOG.debug('* transportAddress: %s (local %s)' % (
+        LOG.debug('Execution point: {}'.format(execpoint))
+        LOG.debug('* transportDomain: {}'.format('.'.join(
+            [str(x) for x in variables['transportDomain']])))
+        LOG.debug('* transportAddress: {} (local {})'.format(
             '@'.join([str(x) for x in variables['transportAddress']]),
             '@'.join([str(x) for x in
                       variables['transportAddress'].getLocalAddress()])))
-        LOG.debug('* securityModel: %s' % variables['securityModel'])
-        LOG.debug('* securityName: %s' % variables['securityName'])
-        LOG.debug('* securityLevel: %s' % variables['securityLevel'])
-        LOG.debug('* contextEngineId: %s' % variables[
-            'contextEngineId'])
-        LOG.debug('* contextName: %s' % variables['contextName'])
-        LOG.debug('* PDU: %s' % variables['pdu'])
+        LOG.debug('* securityModel: {}'.format(variables['securityModel']))
+        LOG.debug('* securityName: {}'.format(variables['securityName']))
+        LOG.debug('* securityLevel: {}'.format(variables['securityLevel']))
+        LOG.debug('* PDU: {}'.format(variables['pdu']))
 
 
 class SNMPAgent(object):

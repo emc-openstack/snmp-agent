@@ -53,12 +53,12 @@ examples:
 
         if not check_length(auth_key):
             raise snmp_ex.UserInvalidPasswordError(
-                'Auth key length is {}, should be 8 to 24 characters'
-                    .format(len(auth_key)))
+                'Auth key length is {}, should be 8 to 24 '
+                'characters'.format(len(auth_key)))
         if priv_key and not check_length(priv_key):
             raise snmp_ex.UserInvalidPasswordError(
-                'Priv key length is {}, should be 8 to 24 characters'
-                    .format(len(priv_key)))
+                'Priv key length is {}, should be 8 to 24 '
+                'characters'.format(len(priv_key)))
 
         access.access.add_v3_user(name, level, auth, auth_key, priv, priv_key)
 
@@ -102,12 +102,12 @@ examples:
 
         if not check_length(auth_key):
             raise snmp_ex.UserInvalidPasswordError(
-                'Auth key length is {}, should be 8 to 24 characters'
-                    .format(len(auth_key)))
+                'Auth key length is {}, should be 8 to 24 '
+                'characters'.format(len(auth_key)))
         if priv_key and not check_length(priv_key):
             raise snmp_ex.UserInvalidPasswordError(
-                'Priv key length is {}, should be 8 to 24 characters'
-                    .format(len(priv_key)))
+                'Priv key length is {}, should be 8 to 24 '
+                'characters'.format(len(priv_key)))
 
         access.access.update_v3_user(name, level, auth, auth_key, priv,
                                      priv_key)
