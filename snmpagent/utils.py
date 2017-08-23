@@ -18,7 +18,8 @@ def setup_log(log_file_path=None, level=None,
     else:
         level = logging.INFO
 
-    fmt_str = '%(asctime)-15s %(name)-12s %(levelname)-8s %(message)s'
+    fmt_str = '%(asctime)-15s %(name)-12s %(threadName)s ' \
+              '%(levelname)-8s %(message)s'
     fmt = logging.Formatter(fmt_str)
     # Set root logger to `level` or it would be warning which will
     # suppress logs lower than warning.

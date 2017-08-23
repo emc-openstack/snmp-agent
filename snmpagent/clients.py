@@ -133,8 +133,8 @@ class UnityClient(object):
         password = password.raw if hasattr(password, 'raw') else password
         if cache_interval is None:
             cache_interval = 30
-        LOG.debug('Create UnitySystem: host: {}, username: {},\
-        port: {}'.format(host, username, port))
+        LOG.debug('Create UnitySystem: host: {}, username: {}, port: {}'
+                  .format(host, username, port))
         self.unity_system = storops.UnitySystem(host=host, username=username,
                                                 password=password, port=port,
                                                 retries=0,

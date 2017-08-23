@@ -18,19 +18,27 @@ class PortConflictError(SNMPAgentException):
     pass
 
 
-class UserConfigError(SNMPAgentException):
+class UserException(SNMPAgentException):
     pass
 
 
-class UserExistingError(SNMPAgentException):
+class UserConfigError(UserException):
     pass
 
 
-class UserNotExistsError(SNMPAgentException):
+class UserExistingError(UserException):
     pass
 
 
-class UserInvalidPasswordError(SNMPAgentException):
+class UserNotExistsError(UserException):
+    pass
+
+
+class UserInvalidPasswordError(UserException):
+    pass
+
+
+class UserInvalidProtocolError(UserException):
     pass
 
 
