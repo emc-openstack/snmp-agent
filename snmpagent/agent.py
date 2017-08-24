@@ -152,7 +152,7 @@ class SNMPEngine(object):
             class_name = item.label[:1].upper() + item.label[1:]
 
             try:
-                mod = __import__("unity_impl." + class_name,
+                mod = __import__("snmpagent.unity_impl." + class_name,
                                  fromlist=[item.label])
             except ImportError:
                 continue

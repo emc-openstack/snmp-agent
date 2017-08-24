@@ -1,17 +1,15 @@
 import unittest
 
 import ddt
-import mock
 from snmpagent import clients
-from snmpagent.tests import mocks
+from snmpagent.tests import patches
 
 NONE_STRING = 'n/a'
 
 
 @ddt.ddt
 class TestUnityClient(unittest.TestCase):
-    @mock.patch(target='snmpagent.clients.storops.UnitySystem',
-                new=mocks.MockUnitySystem)
+    @patches.unity_system
     def setUp(self):
         self.client = clients.UnityClient()
 

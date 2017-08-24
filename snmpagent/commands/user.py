@@ -1,8 +1,7 @@
 import docopt
-
-from snmpagent import access, enums, utils
 from snmpagent import access, enums
 from snmpagent import exceptions as snmp_ex
+from snmpagent import utils
 from snmpagent.commands import base
 
 

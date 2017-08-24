@@ -4,6 +4,11 @@ import sys
 import tempfile
 from contextlib import contextmanager
 
+from snmpagent import clients
+
+from pysnmp.carrier.asyncore.dgram import udp
+from pysnmp.entity import engine
+
 try:
     from StringIO import StringIO
 except ImportError:
@@ -11,6 +16,9 @@ except ImportError:
 
 import ddt
 import mock
+from snmpagent.tests import mocks
+
+DEFAULT = mock.DEFAULT
 
 
 def sys_argv(*ddt_data):
@@ -56,13 +64,26 @@ class FakePopen(object):
 
 agent_config = patch_config('AgentConfig')
 user_config = patch_config('UserConfig')
+agent_config_entry = mock.patch('snmpagent.config.AgentConfigEntry')
 user_v3_entry = mock.patch('snmpagent.config.UserV3ConfigEntry')
 user_v2_entry = mock.patch('snmpagent.config.UserV2ConfigEntry')
 
 unity_client = mock.patch('snmpagent.clients.UnityClient')
+unity_system = mock.patch(target='snmpagent.clients.storops.UnitySystem',
+                          new=mocks.MockUnitySystem)
+
+mock_engine = mock.patch.multiple(engine.SnmpEngine,
+                                  registerTransportDispatcher=DEFAULT)
+mock_client = mock.patch.multiple(clients.UnityClient,
+                                  get_unity_client=DEFAULT)
+mock_udp = mock.patch.multiple(udp.UdpTransport, openServerMode=DEFAULT)
+
+add_transport = mock.patch('snmpagent.agent.config.addTransport')
+add_v1_system = mock.patch('snmpagent.agent.config.addV1System')
+add_v3_user = mock.patch('snmpagent.agent.config.addV3User')
+add_vacm_user = mock.patch('snmpagent.agent.config.addVacmUser')
 
 subprocess = mock.patch('subprocess.Popen', new_callable=FakePopen)
-
 psutil_process = mock.patch('psutil.Process')
 
 
