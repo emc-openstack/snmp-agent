@@ -1,5 +1,6 @@
 import logging
 import os
+import sys
 import threading
 
 from snmpagent import clients, enums, factory, mib_parser
@@ -218,6 +219,7 @@ class SNMPAgent(object):
             level=self.agent_entries.default_section.log_level,
             max_bytes=self.agent_entries.default_section.log_file_maxbytes,
             max_file_count=self.agent_entries.default_section.log_file_count)
+
         self.transport_dispatcher = None
 
     def run_instance(self, agent_config, access_config, engine_id):
@@ -237,6 +239,7 @@ class SNMPAgent(object):
 
     def run(self):
         """Starts the SNMP engine in multi-thread mode."""
+        setup_thread_excepthook()
         for index, array_name in enumerate(self.agent_entries):
             t = threading.Thread(target=self.run_instance,
                                  args=(
@@ -246,8 +249,34 @@ class SNMPAgent(object):
             LOG.info("Started engine for array config [{}]".format(array_name))
 
 
+def setup_thread_excepthook():
+    """
+    Workaround for `sys.excepthook` thread bug from:
+    http://bugs.python.org/issue1230540
+
+    Call once from the main thread before creating any threads.
+    """
+
+    init_original = threading.Thread.__init__
+
+    def init(self, *args, **kwargs):
+
+        init_original(self, *args, **kwargs)
+        run_original = self.run
+
+        def run_with_except_hook(*args2, **kwargs2):
+            try:
+                run_original(*args2, **kwargs2)
+            except Exception:
+                utils.log_trace(*sys.exc_info())
+
+        self.run = run_with_except_hook
+
+    threading.Thread.__init__ = init
+
+
 if __name__ == '__main__':
     config_file = os.path.abspath('configs/agent.conf')
-    auth_config_file = os.path.abspath('configs/access.conf')
+    auth_config_file = os.path.abspath('configs/access.db')
     agent = SNMPAgent(config_file, auth_config_file)
     agent.run()

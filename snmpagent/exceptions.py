@@ -26,6 +26,10 @@ class UserConfigError(UserException):
     pass
 
 
+class FileNotFound(UserException):
+    pass
+
+
 class UserExistingError(UserException):
     pass
 

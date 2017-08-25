@@ -1,6 +1,8 @@
 import logging
 import os
 
+import snmpagent
+
 from snmpagent import config, enums, utils
 from snmpagent import exceptions as snmp_ex
 
@@ -32,16 +34,33 @@ def _validate_params(security_level, auth_protocol=None, auth_key=None,
     return level, auth_p, auth_k, priv_p, priv_k
 
 
-def _get_conf_file_path():
-    return os.path.join(os.path.dirname(__file__), 'configs', 'access.conf')
+def get_access_data_path():
+    """Returns the access data location.
 
+       The data location is fixed:
+       on Windows, it's %USERPROFILE%\.snmpagent\access.db
+       on Linux, it's %HOME%/.snmpagent\access.db
 
-CONF_FILE_PATH = _get_conf_file_path()
+    """
+    data_folder = os.path.expanduser(
+        "~{}.{}".format(os.path.sep, snmpagent.SERVICE_NAME))
+    access_file = os.path.join(data_folder,
+                               'access.db')
+    # Make the directory
+    if not os.path.isdir(data_folder):
+        os.mkdir(data_folder)
+        LOG.info(
+            "Created '{}' for access data persistence.".format(data_folder))
+    if not os.path.exists(access_file):
+        with open(access_file, 'w'):
+            LOG.debug("Created file '{}' for storing access data".format(
+                access_file))
+    return access_file
 
 
 class Access(object):
     def __init__(self):
-        self.user_conf = config.UserConfig(CONF_FILE_PATH)
+        self.user_conf = config.UserConfig(get_access_data_path())
 
     def add_v3_user(self, name, security_level, auth_protocol=None,
                     auth_key=None, priv_protocol=None, priv_key=None):
@@ -109,6 +128,3 @@ class Access(object):
                         [e.show() for e in v2] +
                         ['\n' + config.USER_V3_SHOW_HEAD] +
                         [e.show() for e in v3]))
-
-
-access = Access()

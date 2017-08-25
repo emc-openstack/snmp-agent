@@ -1,5 +1,9 @@
+import logging
+
 from snmpagent import config, utils
 from snmpagent.commands import base
+
+LOG = logging.getLogger(__file__)
 
 
 class Encrypt(base.BaseCommand):
@@ -21,6 +25,8 @@ examples:
     def do(self):
         agent_config = config.AgentConfig(self.args['--conf_file'])
         agent_config.save()
+        LOG.info("Encrypted config file '{}' successfully.".format(
+            self.args['--conf_file']))
 
 
 class Decrypt(base.BaseCommand):
@@ -42,3 +48,5 @@ examples:
     def do(self):
         agent_config = config.AgentConfig(self.args['--conf_file'])
         agent_config.save(encrypt=False)
+        LOG.info("Decrypted config file '{}' successfully.".format(
+            self.args['--conf_file']))

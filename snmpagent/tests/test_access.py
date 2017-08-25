@@ -2,7 +2,11 @@ import collections
 import unittest
 
 import ddt
+import mock
+import os
+import tempfile
 
+import snmpagent
 from snmpagent import access, config, enums
 from snmpagent import exceptions as snmp_ex
 from snmpagent.tests import patches
@@ -11,6 +15,7 @@ from snmpagent.tests import patches
 @ddt.ddt
 class TestAccess(unittest.TestCase):
     @patches.user_config
+    @patches.patch_get_access_path()
     def setUp(self, _):
         self.access = access.Access()
 
@@ -202,3 +207,24 @@ user_4
             self.access.list_users()
         output = out.getvalue()
         self.assertEqual(output, expected)
+
+    def test_get_access_path(self):
+        with mock.patch('os.path.expanduser') as my_path:
+            my_path.return_value = os.path.join(
+                os.path.join(os.path.dirname(__file__),
+                             'test_data', 'configs'))
+            access_path = access.get_access_data_path()
+            self.assertTrue('access.db' in access_path)
+
+    def test_get_access_path_create_dir(self):
+        temp_path = os.path.join(tempfile.gettempdir(),
+                                 '.{}'.format(snmpagent.SERVICE_NAME))
+        if os.path.exists(os.path.join(temp_path, 'access.db')):
+            os.remove(os.path.join(temp_path, 'access.db'))
+        if os.path.isdir(temp_path):
+            os.removedirs(temp_path)
+
+        with mock.patch('os.path.expanduser') as my_path:
+            my_path.return_value = temp_path
+            access_path = access.get_access_data_path()
+            self.assertTrue(temp_path in access_path)

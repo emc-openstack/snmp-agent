@@ -63,7 +63,7 @@ class TestCli(unittest.TestCase):
     @patches.access
     def test_cli_add_user_auth_priv(self, _, mocked_access):
         cli.main()
-        mocked_access.add_v3_user.assert_called_with(
+        mocked_access().add_v3_user.assert_called_with(
             'user_1', enums.SecurityLevel.AUTH_PRIV, 'md5', 'authkey123',
             'des', 'privkey456')
 
@@ -73,7 +73,7 @@ class TestCli(unittest.TestCase):
     @patches.access
     def test_cli_add_user_auth_no_priv(self, _, mocked_access):
         cli.main()
-        mocked_access.add_v3_user.assert_called_with(
+        mocked_access().add_v3_user.assert_called_with(
             'user_1', enums.SecurityLevel.AUTH_NO_PRIV, 'md5',
             'authkey123', None, None)
 
@@ -107,7 +107,7 @@ class TestCli(unittest.TestCase):
     @patches.access
     def test_cli_update_user_auth_priv(self, _, mocked_access):
         cli.main()
-        mocked_access.update_v3_user.assert_called_with(
+        mocked_access().update_v3_user.assert_called_with(
             'user_1', enums.SecurityLevel.AUTH_PRIV, 'md5', 'authkey123',
             'des',
             'privkey456')
@@ -118,7 +118,7 @@ class TestCli(unittest.TestCase):
     @patches.access
     def test_cli_update_user_auth_no_priv(self, _, mocked_access):
         cli.main()
-        mocked_access.update_v3_user.assert_called_with(
+        mocked_access().update_v3_user.assert_called_with(
             'user_1', enums.SecurityLevel.AUTH_NO_PRIV, 'md5', 'authkey123',
             None,
             None)
@@ -127,25 +127,25 @@ class TestCli(unittest.TestCase):
     @patches.access
     def test_cli_delete_user(self, _, mocked_access):
         cli.main()
-        mocked_access.delete_v3_user.assert_called_with('user_1')
+        mocked_access().delete_v3_user.assert_called_with('user_1')
 
     @patches.sys_argv(['snmpagent', 'list-users'])
     @patches.access
     def test_cli_list_users(self, _, mocked_access):
         cli.main()
-        mocked_access.list_users.assert_called_with()
+        mocked_access().list_users.assert_called_with()
 
     @patches.sys_argv(['snmpagent', 'create-community', '--name', 'user_1'])
     @patches.access
     def test_cli_create_community(self, _, mocked_access):
         cli.main()
-        mocked_access.add_v2_user.assert_called_with('user_1')
+        mocked_access().add_v2_user.assert_called_with('user_1')
 
     @patches.sys_argv(['snmpagent', 'delete-community', '--name', 'user_1'])
     @patches.access
     def test_cli_delete_community(self, _, mocked_access):
         cli.main()
-        mocked_access.delete_v2_user.assert_called_with('user_1')
+        mocked_access().delete_v2_user.assert_called_with('user_1')
 
     @patches.sys_argv(
         ['snmpagent', 'encrypt', '--conf_file', '/tmp/agent.conf'])

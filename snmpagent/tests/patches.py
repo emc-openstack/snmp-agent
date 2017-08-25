@@ -35,7 +35,23 @@ def sys_argv(*ddt_data):
     return _dec
 
 
-access = mock.patch('snmpagent.access.access')
+access = mock.patch('snmpagent.access.Access')
+
+FAKE_ACCESS_FILE = os.path.join(os.path.dirname(__file__),
+                                'test_data', 'configs', 'access.db')
+
+
+def patch_get_access_path(new_path=FAKE_ACCESS_FILE):
+    def _inner(test_case):
+        def func(*args, **kwargs):
+            with mock.patch(
+                    'snmpagent.access.get_access_data_path',
+                    new=mock.Mock(return_value=new_path)):
+                test_case(*args, **kwargs)
+
+        return func
+
+    return _inner
 
 
 def patch_config(config_type):

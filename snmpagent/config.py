@@ -1,9 +1,13 @@
 import itertools
 from collections import OrderedDict
+import os
+import logging
 
 from six.moves import configparser
 from snmpagent import cipher, enums, utils
 from snmpagent import exceptions as snmp_ex
+
+LOG = logging.getLogger(__file__)
 
 V2, V3 = enums.UserVersion.V2, enums.UserVersion.V3
 
@@ -186,6 +190,14 @@ class FileConfig(object):
         self._conf_file = conf_file
         self._entries = None
         self._parser = None
+        if not self._file_exists(conf_file):
+            raise snmp_ex.FileNotFound(
+                "Config file '{}' not found.".format(conf_file))
+
+    def _file_exists(self, name):
+        if os.path.exists(name) and os.path.isfile(name):
+            return True
+        return False
 
     @property
     def parser(self):
@@ -201,6 +213,10 @@ class FileConfig(object):
 
     def save(self, encrypt=True):
         self.parser.save(self.entries, encrypt)
+
+    def raise_if_error(self):
+        """Try to validate the configuration before starts engine."""
+        self.parser.parse()
 
 
 class AgentConfig(FileConfig):

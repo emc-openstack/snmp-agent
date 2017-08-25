@@ -1,4 +1,5 @@
 import docopt
+
 from snmpagent import access, enums
 from snmpagent import exceptions as snmp_ex
 from snmpagent import utils
@@ -11,7 +12,7 @@ def get_args(args):
 
 
 def check_length(string):
-    if len(string) >= 8 and len(string) <= 24:
+    if 8 <= len(string) <= 24:
         return True
     return False
 
@@ -59,7 +60,8 @@ examples:
                 'Priv key length is {}, should be 8 to 24 '
                 'characters'.format(len(priv_key)))
 
-        access.access.add_v3_user(name, level, auth, auth_key, priv, priv_key)
+        access.Access().add_v3_user(
+            name, level, auth, auth_key, priv, priv_key)
 
 
 class UpdateUser(base.BaseCommand):
@@ -108,8 +110,8 @@ examples:
                 'Priv key length is {}, should be 8 to 24 '
                 'characters'.format(len(priv_key)))
 
-        access.access.update_v3_user(name, level, auth, auth_key, priv,
-                                     priv_key)
+        access.Access().update_v3_user(name, level, auth, auth_key, priv,
+                                       priv_key)
 
 
 class DeleteUser(base.BaseCommand):
@@ -129,7 +131,7 @@ examples:
 
     @utils.log_command_exception
     def do(self):
-        access.access.delete_v3_user(self.args['--name'])
+        access.Access().delete_v3_user(self.args['--name'])
 
 
 class ListUsers(base.BaseCommand):
@@ -146,4 +148,4 @@ examples:
 
     @utils.log_command_exception
     def do(self):
-        access.access.list_users()
+        access.Access().list_users()

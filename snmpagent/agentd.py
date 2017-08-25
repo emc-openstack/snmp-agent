@@ -8,6 +8,7 @@ import tempfile
 import psutil
 
 from snmpagent import access, agent
+from snmpagent import config as snmp_config
 from snmpagent import exceptions as snmp_ex
 
 SERVICE_NAME = 'snmpagent'
@@ -16,6 +17,12 @@ LOG = logging.getLogger(__name__)
 
 
 class BaseDaemon(object):
+    @classmethod
+    def validate_conf(cls, agent_conf_file):
+        access_conf_file = access.get_access_data_path()
+        snmp_config.AgentConfig(agent_conf_file).raise_if_error()
+        snmp_config.UserConfig(access_conf_file).raise_if_error()
+
     @classmethod
     def exists(cls):
         pid_file = cls.get_pid_file()
@@ -39,8 +46,32 @@ class BaseDaemon(object):
 
     @classmethod
     def get_pid_file(cls):
-        raise NotImplementedError(
-            "Daemon needs a get_pid_file implementation.")
+        return tempfile.gettempdir() + '\\snmp-agent.pid'
+
+    @classmethod
+    def _launch_process(cls, conf_file):
+        raise NotImplementedError()
+
+    @classmethod
+    def start(cls, conf_file):
+        if cls.exists():
+            return 1
+        cls.validate_conf(conf_file)
+        p = cls._launch_process(conf_file)
+        pid = p.pid
+
+        LOG.info(
+            "{} pid file path: {}.".format(SERVICE_NAME, cls.get_pid_file()))
+        LOG.info("Service {}(pid={}) started.".format(SERVICE_NAME, pid))
+
+        # Create process id file to signal that
+        # process has started successfully.
+        with open(cls.get_pid_file(), 'w') as f:
+            f.write(str(pid))
+
+        LOG.debug("{} is running with pid file: {}".format(
+            SERVICE_NAME, cls.get_pid_file()))
+        return 0
 
     @classmethod
     def stop(cls):
@@ -67,66 +98,21 @@ class LinuxDaemon(BaseDaemon):
     prog_file_name = __file__
 
     @classmethod
-    def get_pid_file(cls):
-        run_path = os.path.join(os.path.dirname(__file__), 'run')
-        if not os.path.exists(run_path):
-            os.mkdir(run_path)
-        return os.path.join(run_path, 'agent.pid')
-
-    @classmethod
-    def start(cls, conf_file):
-        if cls.exists():
-            return 1
-        p = subprocess.Popen(
+    def _launch_process(cls, conf_file):
+        return subprocess.Popen(
             [sys.executable, cls.prog_file_name, conf_file],
             close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        pid = p.pid
-
-        LOG.info(
-            "{} pid file path: {}.".format(SERVICE_NAME, cls.get_pid_file()))
-        LOG.info("Service {}(pid={}) started.".format(SERVICE_NAME, pid))
-
-        # Create process id file to signal that
-        # process has started successfully.
-        with open(cls.get_pid_file(), 'w') as f:
-            f.write(str(pid))
-
-        LOG.debug("{} is running with pid file: {}".format(
-            SERVICE_NAME, cls.get_pid_file()))
-        return 0
 
 
 class WindowsDaemon(BaseDaemon):
     prog_file_name = __file__
 
     @classmethod
-    def get_pid_file(cls):
-        return tempfile.gettempdir() + '\\snmp-agent.pid'
-
-    @classmethod
-    def start(cls, conf_file):
-        if cls.exists():
-            return 1
+    def _launch_process(cls, conf_file):
         DETACHED_PROCESS = 0x00000008
-
-        p = subprocess.Popen(
+        return subprocess.Popen(
             [sys.executable, WindowsDaemon.prog_file_name, conf_file],
             creationflags=DETACHED_PROCESS)
-        pid = p.pid
-
-        LOG.info(
-            "Pid file path for {}: {}.".format(
-                SERVICE_NAME, WindowsDaemon.get_pid_file()))
-        LOG.info("Service {}(pid={}) started.".format(SERVICE_NAME, pid))
-
-        # Create process id file to signal that
-        # process has started successfully.
-        with open(WindowsDaemon.get_pid_file(), 'w') as f:
-            f.write(str(pid))
-
-        LOG.debug("{} is running with pid file: {}".format(
-            SERVICE_NAME, WindowsDaemon.get_pid_file()))
-        return 0
 
 
 NAME = 'Dell EMC SNMP Agent Daemon'
@@ -148,7 +134,7 @@ def main(agent_conf=None):
     """
     if not agent_conf:
         agent_conf = os.path.abspath('configs/agent.conf')
-    snmp_agent = agent.SNMPAgent(agent_conf, access.CONF_FILE_PATH)
+    snmp_agent = agent.SNMPAgent(agent_conf, access.get_access_data_path())
 
     snmp_agent.run()
 

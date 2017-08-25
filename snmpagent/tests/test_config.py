@@ -48,7 +48,7 @@ class TestConfig(unittest.TestCase):
 
         self.test_agent_config(conf_file)
 
-    @patches.conf_data(utils.conf_full_path('access.conf'))
+    @patches.conf_data(utils.conf_full_path('access.db'))
     def test_user_config(self, conf_file):
         conf = config.UserConfig(conf_file)
         self.assertEqual(3, len(conf.entries))
@@ -78,7 +78,7 @@ class TestConfig(unittest.TestCase):
             else:
                 self.assertTrue(False)
 
-    @patches.conf_data(utils.conf_full_path('access.conf'))
+    @patches.conf_data(utils.conf_full_path('access.db'))
     def test_user_config_save_reload(self, conf_file):
 
         def _read_passwd(conf_file):

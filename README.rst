@@ -1,5 +1,7 @@
 SNMP Off-Array Agent
 ====================
+
+
 Introduction
 ------------
 SNMP Off-Array Agent is a python-based application running outside of storage system.
@@ -79,3 +81,11 @@ Command Line Interface
   
 *snmpagent decrypt --conf_file <file_path>*
   Create a new configuration file in the same directory of the encrypted configuration file, but the password login to the storage is decrypted if it is encrypted. It will reutrn a "Permission deny" message in case that the directory is not allowed to write.
+
+Configurations
+--------------
+
+
+
+Authentication data
+-------------------

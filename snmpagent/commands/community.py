@@ -21,7 +21,7 @@ examples:
     @utils.log_command_exception
     def do(self):
         # Only support public community
-        access.access.add_v2_user(self.args['--name'])
+        access.Access().add_v2_user(self.args['--name'])
 
 
 class DeleteCommunity(base.BaseCommand):
@@ -41,4 +41,4 @@ examples:
 
     @utils.log_command_exception
     def do(self):
-        access.access.delete_v2_user(self.args['--name'])
+        access.Access().delete_v2_user(self.args['--name'])

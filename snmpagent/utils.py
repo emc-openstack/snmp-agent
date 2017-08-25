@@ -2,6 +2,7 @@ import sys
 import logging
 from logging import handlers
 
+
 from snmpagent import exceptions as snmp_ex
 
 
@@ -11,8 +12,8 @@ def enum(enum_clz, value):
     return enum_clz.from_str(value) if value else None
 
 
-def setup_log(log_file_path=None, level=None,
-              log_to_stdout=True, max_bytes=None, max_file_count=5):
+def setup_log(log_file_path='snmpagent.log', level=None,
+              log_to_stdout=True, max_bytes=104857600, max_file_count=5):
     if level:
         level = getattr(logging, level.upper(), None)
     else:
@@ -49,3 +50,9 @@ def log_command_exception(cmd):
                 args[0].name, ex))
 
     return wrap_exception
+
+
+def log_trace(excType, excValue, traceback):
+    logging.error(
+        "Got an uncaught exception",
+        exc_info=(excType, excValue, traceback))
