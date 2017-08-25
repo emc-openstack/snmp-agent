@@ -92,3 +92,9 @@ ENV/
 # IDE
 .idea
 .sw[po]
+
+# Pid folder
+run/
+
+# Temp file
+~$MIB_tree.xlsx

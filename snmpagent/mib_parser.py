@@ -27,8 +27,7 @@ def get_mib_symbols(name):
     mib_parser = InMemoryMibParser()
     mibCompiler = MibCompiler(SmiV2Parser(), SymtableCodeGen(), mib_parser)
     # Add Unity-MIB mib file to source dir
-    mib_dir_path = os.path.join(os.path.dirname(__file__), '..', 'docs',
-                                'mibs')
+    mib_dir_path = os.path.join(os.path.dirname(__file__), 'mib_files')
     mibCompiler.addSources(FileReader(mib_dir_path))
     mibCompiler.addSearchers(StubSearcher(*baseMibs))
     mibCompiler.compile(name)

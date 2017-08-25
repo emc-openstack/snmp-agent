@@ -1,8 +1,8 @@
-class PowerSupplyName(object):
+class PowerSupplyId(object):
     def read_get(self, name, idx_name, unity_client):
-        return unity_client.get_power_supply_name(idx_name)
+        return idx_name
 
 
-class PowerSupplyNameColumn(object):
+class PowerSupplyIdColumn(object):
     def get_idx(self, name, idx, unity_client):
         return unity_client.get_power_supplies()

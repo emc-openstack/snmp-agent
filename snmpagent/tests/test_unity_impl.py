@@ -6,40 +6,40 @@ from snmpagent.unity_impl import AgentVersion, AveragePower, \
     BackendPortCurrentSpeed, BackendPortId, BackendPortName, \
     BackendPortParentIoModule, BackendPortParentStorageProcessor, \
     BackendPortPortNumber, BackendPortReadBandwidth, \
-    BackendPortReadThroughput, \
-    BackendPortStatus, BackendPortTotalBandwidth, BackendPortTotalThroughput, \
-    BackendPortType, BackendPortWriteBandwidth, BackendPortWriteThroughput, \
-    BbuFirmwareVersion, BbuHealthStatus, BbuManufacturer, BbuModel, BbuName, \
-    BbuParentStorageProcessor, CurrentPower, DiskCurrentPool, \
-    DiskFirmwareVersion, DiskModel, DiskName, DiskPhysicalLocation, \
-    DiskQueueLength, DiskRawCapacity, DiskReadBandwidth, DiskReadThroughput, \
-    DiskResponseTime, DiskSerialNumber, DiskStatus, DiskTotalBandwidth, \
-    DiskTotalThroughput, DiskType, DiskUtilization, DiskWriteBandwidth, \
-    DiskWriteThroughput, EnclosureAveragePower, EnclosureAverageTemperature, \
-    EnclosureCurrentPower, EnclosureCurrentTemperature, \
+    BackendPortReadThroughput, BackendPortStatus, BackendPortTotalBandwidth, \
+    BackendPortTotalThroughput, BackendPortType, BackendPortWriteBandwidth, \
+    BackendPortWriteThroughput, BbuFirmwareVersion, BbuHealthStatus, BbuId, \
+    BbuManufacturer, BbuModel, BbuName, BbuParentStorageProcessor, \
+    CurrentPower, DiskCurrentPool, DiskFirmwareVersion, DiskId, DiskModel, \
+    DiskName, DiskPhysicalLocation, DiskQueueLength, DiskRawCapacity, \
+    DiskReadBandwidth, DiskReadThroughput, DiskResponseTime, \
+    DiskSerialNumber, DiskStatus, DiskTotalBandwidth, DiskTotalThroughput, \
+    DiskType, DiskUtilization, DiskWriteBandwidth, DiskWriteThroughput, \
+    EnclosureAveragePower, EnclosureAverageTemperature, \
+    EnclosureCurrentPower, EnclosureCurrentTemperature, EnclosureId, \
     EnclosureHealthStatus, EnclosureMaxPower, EnclosureMaxTemperature, \
-    EnclosureModel, EnclosureName, \
-    EnclosurePartNumber, EnclosureSerialNumber, FanHealthStatus, FanName, \
-    FanParentEnclosure, FanSlotNumber, FreeCapacity, FrontendPortAddress, \
-    FrontendPortCurrentSpeed, FrontendPortId, FrontendPortName, \
-    FrontendPortReadBandwidth, FrontendPortReadThroughput, \
-    FrontendPortStatus, \
-    FrontendPortSupportedSpeed, FrontendPortTotalBandwidth, \
-    FrontendPortTotalThroughput, FrontendPortType, \
-    FrontendPortWriteBandwidth, \
-    FrontendPortWriteThroughput, HostAssignedStorageVolumes, HostInitiators, \
-    HostName, HostNetworkAddress, HostOperationSystemVersion, ManagementIP, \
-    Manufacturer, MibVersion, Model, NumberOfBackendPort, NumberOfEnclosure, \
-    NumberOfFan, NumberOfFrontendPort, NumberOfPhysicalDisk, \
-    NumberOfPowerSupply, NumberOfStorageProcessor, \
-    OperationEnvironmentVersion, \
-    PoolCapacityUtilization, PoolDiskTypes, PoolFastCacheStatus, PoolName, \
-    PoolNumberOfPhysicalDisk, PoolRaidLevels, PoolRemainingCapacity, \
-    PoolTotalCapacity, PoolUsedCapacity, PowerSupplyFirmwareVersion, \
-    PowerSupplyHealthStatus, PowerSupplyManufacturer, PowerSupplyModel, \
-    PowerSupplyName, PowerSupplyParentEnclosure, PowerSupplyStorageProcessor, \
-    ReadBandwidth, ReadThroughput, SerialNumber, \
-    StorageProcessorCacheDirtySize, StorageProcessorCpuUtilization, \
+    EnclosureModel, EnclosureName, EnclosurePartNumber, \
+    EnclosureSerialNumber, FanHealthStatus, FanId, FanName, \
+    FanParentEnclosure, FanSlotNumber, FreeCapacity, \
+    FrontendPortAddress, FrontendPortCurrentSpeed, FrontendPortId, \
+    FrontendPortName, FrontendPortReadBandwidth, FrontendPortReadThroughput, \
+    FrontendPortStatus, FrontendPortSupportedSpeed, \
+    FrontendPortTotalBandwidth, FrontendPortTotalThroughput, \
+    FrontendPortType, FrontendPortWriteBandwidth, \
+    FrontendPortWriteThroughput, HostAssignedStorageVolumes, HostId, \
+    HostInitiators, HostName, HostNetworkAddress, HostOperationSystemVersion, \
+    ManagementIP, Manufacturer, MibVersion, Model, NumberOfBackendPort, \
+    NumberOfEnclosure, NumberOfFan, NumberOfFrontendPort, \
+    NumberOfPhysicalDisk, NumberOfPowerSupply, NumberOfStorageProcessor, \
+    OperationEnvironmentVersion, PoolCapacityUtilization, PoolDiskTypes, \
+    PoolFastCacheStatus, PoolId, PoolName, PoolNumberOfPhysicalDisk, \
+    PoolRaidLevels, PoolRemainingCapacity, PoolTotalCapacity, \
+    PoolUsedCapacity, PowerSupplyFirmwareVersion, \
+    PowerSupplyHealthStatus, PowerSupplyId, PowerSupplyManufacturer, \
+    PowerSupplyModel, PowerSupplyName, PowerSupplyParentEnclosure, \
+    PowerSupplyStorageProcessor, ReadBandwidth, ReadThroughput, \
+    SerialNumber, StorageProcessorCacheDirtySize, \
+    StorageProcessorCpuUtilization, StorageProcessorId, \
     StorageProcessorName, StorageProcessorOperationalState, \
     StorageProcessorReadBandwidth, StorageProcessorReadCacheState, \
     StorageProcessorReadThroughput, StorageProcessorSerialNumber, \
@@ -53,10 +53,9 @@ from snmpagent.unity_impl import AgentVersion, AveragePower, \
     VolumeFastCacheWriteHitRate, VolumeHostInfo, VolumeId, VolumeName, \
     VolumeOperationalState, VolumeQueueLength, VolumeRaidLevels, \
     VolumeReadBandwidth, VolumeReadThroughput, VolumeResponseTime, \
-    VolumeSize, \
-    VolumeTotalBandwidth, VolumeTotalThroughput, VolumeUtilization, \
-    VolumeWriteBandwidth, VolumeWriteThroughput, WriteBandwidth, \
-    WriteThroughput
+    VolumeSize, VolumeTotalBandwidth, VolumeTotalThroughput, \
+    VolumeUtilization, VolumeWriteBandwidth, VolumeWriteThroughput, \
+    WriteBandwidth, WriteThroughput
 
 
 @ddt.ddt
@@ -276,10 +275,26 @@ class TestUnityClient(unittest.TestCase):
 
     # storageProcessorTable
     @patches.unity_client
-    def test_sp_name(self, unity_client):
-        obj = StorageProcessorName.StorageProcessorName()
+    def test_sp_id(self, unity_client):
+        obj = StorageProcessorId.StorageProcessorId()
         self.assertEqual(self.idx,
                          obj.read_get(self.name, self.idx, unity_client))
+
+    @patches.unity_client
+    def test_sp_id_column(self, unity_client):
+        unity_client.get_sps.return_value = self.test_list
+        obj = StorageProcessorId.StorageProcessorIdColumn()
+        self.assertEqual(self.test_list,
+                         obj.get_idx(self.name, self.idx, unity_client))
+        unity_client.get_sps.assert_called_once()
+
+    @patches.unity_client
+    def test_sp_name(self, unity_client):
+        unity_client.get_sp_name.return_value = self.test_string
+        obj = StorageProcessorName.StorageProcessorName()
+        self.assertEqual(self.test_string,
+                         obj.read_get(self.name, self.idx, unity_client))
+        unity_client.get_sp_name.assert_called_once_with(self.idx)
 
     @patches.unity_client
     def test_sp_name_column(self, unity_client):
@@ -511,10 +526,26 @@ class TestUnityClient(unittest.TestCase):
 
     # poolTable
     @patches.unity_client
-    def test_pool_name(self, unity_client):
-        obj = PoolName.PoolName()
+    def test_pool_id(self, unity_client):
+        obj = PoolId.PoolId()
         self.assertEqual(self.idx,
                          obj.read_get(self.name, self.idx, unity_client))
+
+    @patches.unity_client
+    def test_pool_id_column(self, unity_client):
+        unity_client.get_pools.return_value = self.test_list
+        obj = PoolId.PoolIdColumn()
+        self.assertEqual(self.test_list,
+                         obj.get_idx(self.name, self.idx, unity_client))
+        unity_client.get_pools.assert_called_once()
+
+    @patches.unity_client
+    def test_pool_name(self, unity_client):
+        unity_client.get_pool_name.return_value = self.test_string
+        obj = PoolName.PoolName()
+        self.assertEqual(self.test_string,
+                         obj.read_get(self.name, self.idx, unity_client))
+        unity_client.get_pool_name.assert_called_once_with(self.idx)
 
     @patches.unity_client
     def test_pool_name_column(self, unity_client):
@@ -1047,10 +1078,26 @@ class TestUnityClient(unittest.TestCase):
 
     # diskTable
     @patches.unity_client
-    def test_disk_name(self, unity_client):
-        obj = DiskName.DiskName()
+    def test_disk_id(self, unity_client):
+        obj = DiskId.DiskId()
         self.assertEqual(self.idx,
                          obj.read_get(self.name, self.idx, unity_client))
+
+    @patches.unity_client
+    def test_disk_id_column(self, unity_client):
+        unity_client.get_disks.return_value = self.test_list
+        obj = DiskId.DiskIdColumn()
+        self.assertEqual(self.test_list,
+                         obj.get_idx(self.name, self.idx, unity_client))
+        unity_client.get_disks.assert_called_once()
+
+    @patches.unity_client
+    def test_disk_name(self, unity_client):
+        unity_client.get_disk_name.return_value = self.test_string
+        obj = DiskName.DiskName()
+        self.assertEqual(self.test_string,
+                         obj.read_get(self.name, self.idx, unity_client))
+        unity_client.get_disk_name.assert_called_once_with(self.idx)
 
     @patches.unity_client
     def test_disk_name_column(self, unity_client):
@@ -1833,10 +1880,26 @@ class TestUnityClient(unittest.TestCase):
 
     # hostTable
     @patches.unity_client
-    def test_host_name(self, unity_client):
-        obj = HostName.HostName()
+    def test_host_id(self, unity_client):
+        obj = HostId.HostId()
         self.assertEqual(self.idx,
                          obj.read_get(self.name, self.idx, unity_client))
+
+    @patches.unity_client
+    def test_host_id_column(self, unity_client):
+        unity_client.get_hosts.return_value = self.test_list
+        obj = HostId.HostIdColumn()
+        self.assertEqual(self.test_list,
+                         obj.get_idx(self.name, self.idx, unity_client))
+        unity_client.get_hosts.assert_called_once()
+
+    @patches.unity_client
+    def test_host_name(self, unity_client):
+        unity_client.get_host_name.return_value = self.test_string
+        obj = HostName.HostName()
+        self.assertEqual(self.test_string,
+                         obj.read_get(self.name, self.idx, unity_client))
+        unity_client.get_host_name.assert_called_once_with(self.idx)
 
     @patches.unity_client
     def test_host_name_column(self, unity_client):
@@ -1916,6 +1979,22 @@ class TestUnityClient(unittest.TestCase):
         unity_client.get_hosts.assert_called_once()
 
     # enclosureTable
+    @patches.unity_client
+    def test_enclosure_id(self, unity_client):
+        unity_client.get_enclosure_id.return_value = self.test_string
+        obj = EnclosureId.EnclosureId()
+        self.assertEqual(self.test_string,
+                         obj.read_get(self.name, self.idx, unity_client))
+        unity_client.get_enclosure_id.assert_called_once_with(self.idx)
+
+    @patches.unity_client
+    def test_enclosure_id_column(self, unity_client):
+        unity_client.get_enclosures.return_value = self.test_list
+        obj = EnclosureId.EnclosureIdColumn()
+        self.assertEqual(self.test_list,
+                         obj.get_idx(self.name, self.idx, unity_client))
+        unity_client.get_enclosures.assert_called_once()
+
     @patches.unity_client
     def test_enclosure_name(self, unity_client):
         unity_client.get_enclosure_name.return_value = self.test_string
@@ -2112,10 +2191,26 @@ class TestUnityClient(unittest.TestCase):
 
     # powerSupplyTable
     @patches.unity_client
-    def test_power_supply_name(self, unity_client):
-        obj = PowerSupplyName.PowerSupplyName()
+    def test_power_supply_id(self, unity_client):
+        obj = PowerSupplyId.PowerSupplyId()
         self.assertEqual(self.idx,
                          obj.read_get(self.name, self.idx, unity_client))
+
+    @patches.unity_client
+    def test_power_supply_id_column(self, unity_client):
+        unity_client.get_power_supplies.return_value = self.test_list
+        obj = PowerSupplyId.PowerSupplyIdColumn()
+        self.assertEqual(self.test_list,
+                         obj.get_idx(self.name, self.idx, unity_client))
+        unity_client.get_power_supplies.assert_called_once()
+
+    @patches.unity_client
+    def test_power_supply_name(self, unity_client):
+        unity_client.get_power_supply_name.return_value = self.test_string
+        obj = PowerSupplyName.PowerSupplyName()
+        self.assertEqual(self.test_string,
+                         obj.read_get(self.name, self.idx, unity_client))
+        unity_client.get_power_supply_name.assert_called_once_with(self.idx)
 
     @patches.unity_client
     def test_power_supply_name_column(self, unity_client):
@@ -2239,10 +2334,26 @@ class TestUnityClient(unittest.TestCase):
 
     # fanTable
     @patches.unity_client
-    def test_fan_name(self, unity_client):
-        obj = FanName.FanName()
+    def test_fan_id(self, unity_client):
+        obj = FanId.FanId()
         self.assertEqual(self.idx,
                          obj.read_get(self.name, self.idx, unity_client))
+
+    @patches.unity_client
+    def test_fan_id_column(self, unity_client):
+        unity_client.get_fans.return_value = self.test_list
+        obj = FanId.FanIdColumn()
+        self.assertEqual(self.test_list,
+                         obj.get_idx(self.name, self.idx, unity_client))
+        unity_client.get_fans.assert_called_once()
+
+    @patches.unity_client
+    def test_fan_name(self, unity_client):
+        unity_client.get_fan_name.return_value = self.test_string
+        obj = FanName.FanName()
+        self.assertEqual(self.test_string,
+                         obj.read_get(self.name, self.idx, unity_client))
+        unity_client.get_fan_name.assert_called_once_with(self.idx)
 
     @patches.unity_client
     def test_fan_name_column(self, unity_client):
@@ -2302,10 +2413,26 @@ class TestUnityClient(unittest.TestCase):
 
     # BBUTable
     @patches.unity_client
-    def test_bbu_name(self, unity_client):
-        obj = BbuName.BbuName()
+    def test_bbu_id(self, unity_client):
+        obj = BbuId.BbuId()
         self.assertEqual(self.idx,
                          obj.read_get(self.name, self.idx, unity_client))
+
+    @patches.unity_client
+    def test_bbu_id_column(self, unity_client):
+        unity_client.get_bbus.return_value = self.test_list
+        obj = BbuId.BbuIdColumn()
+        self.assertEqual(self.test_list,
+                         obj.get_idx(self.name, self.idx, unity_client))
+        unity_client.get_bbus.assert_called_once()
+
+    @patches.unity_client
+    def test_bbu_name(self, unity_client):
+        unity_client.get_bbu_name.return_value = self.test_string
+        obj = BbuName.BbuName()
+        self.assertEqual(self.test_string,
+                         obj.read_get(self.name, self.idx, unity_client))
+        unity_client.get_bbu_name.assert_called_once_with(self.idx)
 
     @patches.unity_client
     def test_bbu_name_column(self, unity_client):

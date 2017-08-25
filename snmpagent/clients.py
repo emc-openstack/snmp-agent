@@ -283,137 +283,147 @@ class UnityClient(object):
 
     # storageProcessorTable
     def get_sps(self):
-        return [pool.name for pool in self.unity_system.get_sp()]
+        return [pool.id for pool in self.unity_system.get_sp()]
 
-    def _get_sp(self, name):
-        return self._get_item(self.unity_system.get_sp(), name=name)
+    def _get_sp(self, id):
+        return self._get_item(self.unity_system.get_sp(), id=id)
 
     @to_string
-    def get_sp_serial_number(self, name):
-        sp = self._get_sp(name)
+    def get_sp_name(self, id):
+        sp = self._get_sp(id)
+        return sp.name
+
+    @to_string
+    def get_sp_serial_number(self, id):
+        sp = self._get_sp(id)
         return sp.emc_serial_number
 
     @to_string
-    def get_sp_health_status(self, name):
-        sp = self._get_sp(name)
+    def get_sp_health_status(self, id):
+        sp = self._get_sp(id)
         return sp.health.value.name
 
     @to_string
     @to_number
-    def get_sp_utilization(self, name):
-        sp = self._get_sp(name)
+    def get_sp_utilization(self, id):
+        sp = self._get_sp(id)
         return sp.utilization
 
     @to_string
     @to_number
-    def get_sp_block_total_iops(self, name):
-        sp = self._get_sp(name)
+    def get_sp_block_total_iops(self, id):
+        sp = self._get_sp(id)
         return sp.block_total_iops
 
     @to_string
     @to_number
-    def get_sp_block_read_iops(self, name):
-        sp = self._get_sp(name)
+    def get_sp_block_read_iops(self, id):
+        sp = self._get_sp(id)
         return sp.block_read_iops
 
     @to_string
     @to_number
-    def get_sp_block_write_iops(self, name):
-        sp = self._get_sp(name)
+    def get_sp_block_write_iops(self, id):
+        sp = self._get_sp(id)
         return sp.block_write_iops
 
     @to_string
     @to_number
     @change_size_unit(to_unit='mb')
-    def get_sp_total_byte_rate(self, name):
-        sp = self._get_sp(name)
+    def get_sp_total_byte_rate(self, id):
+        sp = self._get_sp(id)
         return sp.total_byte_rate
 
     @to_string
     @to_number
     @change_size_unit(to_unit='mb')
-    def get_sp_read_byte_rate(self, name):
-        sp = self._get_sp(name)
+    def get_sp_read_byte_rate(self, id):
+        sp = self._get_sp(id)
         return sp.read_byte_rate
 
     @to_string
     @to_number
     @change_size_unit(to_unit='mb')
-    def get_sp_write_byte_rate(self, name):
-        sp = self._get_sp(name)
+    def get_sp_write_byte_rate(self, id):
+        sp = self._get_sp(id)
         return sp.write_byte_rate
 
     @to_string
     @to_number()
-    def get_sp_cache_dirty_size(self, name):
-        sp = self._get_sp(name)
+    def get_sp_cache_dirty_size(self, id):
+        sp = self._get_sp(id)
         return sp.block_cache_dirty_size
 
     @to_string
     @to_number()
-    def get_sp_block_cache_read_hit_ratio(self, name):
-        sp = self._get_sp(name)
+    def get_sp_block_cache_read_hit_ratio(self, id):
+        sp = self._get_sp(id)
         return sp.block_cache_read_hit_ratio
 
     @to_string
     @to_number()
-    def get_sp_block_cache_write_hit_ratio(self, name):
-        sp = self._get_sp(name)
+    def get_sp_block_cache_write_hit_ratio(self, id):
+        sp = self._get_sp(id)
         return sp.block_cache_write_hit_ratio
 
     # poolTable
     def get_pools(self):
-        return [pool.name for pool in self.unity_system.get_pool()]
+        return [pool.id for pool in self.unity_system.get_pool()]
 
-    def _get_pool(self, name):
-        return self._get_item(self.unity_system.get_pool(), name=name)
+    def _get_pool(self, id):
+        return self._get_item(self.unity_system.get_pool(), id=id)
 
     @to_string
-    def get_pool_disk_types(self, name):
-        pool = self._get_pool(name)
+    def get_pool_name(self, id):
+        pool = self._get_pool(id)
+        return pool.name
+
+    @to_string
+    def get_pool_disk_types(self, id):
+        pool = self._get_pool(id)
         return ', '.join(x.name for x in pool.tiers)
 
     @to_string
-    def get_pool_raid_levels(self, name):
-        pool = self._get_pool(name)
+    def get_pool_raid_levels(self, id):
+        pool = self._get_pool(id)
         return pool.raid_type.name
 
     @to_string
-    def get_pool_fast_cache_status(self, name):
-        pool = self._get_pool(name)
+    def get_pool_fast_cache_status(self, id):
+        pool = self._get_pool(id)
         return pool.is_fast_cache_enabled
 
     @to_string
     @to_number
-    def get_pool_number_of_disk(self, name):
-        pool = self._get_pool(name)
+    def get_pool_number_of_disk(self, id):
+        pool = self._get_pool(id)
         return sum(x.disk_count for x in pool.tiers)
 
     @to_string
     @to_number
     @change_size_unit
-    def get_pool_size_total(self, name):
-        pool = self._get_pool(name)
+    def get_pool_size_total(self, id):
+        pool = self._get_pool(id)
         return pool.size_total
 
     @to_string
     @to_number
     @change_size_unit
-    def get_pool_size_free(self, name):
-        pool = self._get_pool(name)
+    def get_pool_size_free(self, id):
+        pool = self._get_pool(id)
         return pool.size_free
 
     @to_string
     @to_number
     @change_size_unit
-    def get_pool_size_used(self, name):
-        pool = self._get_pool(name)
+    def get_pool_size_used(self, id):
+        pool = self._get_pool(id)
         return pool.size_used
 
     @to_string
     @to_number
-    def get_pool_size_ultilization(self, name):
-        pool = self._get_pool(name)
+    def get_pool_size_ultilization(self, id):
+        pool = self._get_pool(id)
         return float(pool.size_used) / float(pool.size_total)
 
     # volumeTable
@@ -560,109 +570,114 @@ class UnityClient(object):
 
     # diskTable
     def get_disks(self):
-        return [disk.name for disk in self.unity_system.get_disk()]
+        return [disk.id for disk in self.unity_system.get_disk()]
 
-    def _get_disk(self, name):
-        return self._get_item(self.unity_system.get_disk(), name=name)
+    def _get_disk(self, id):
+        return self._get_item(self.unity_system.get_disk(), id=id)
 
     @to_string
-    def get_disk_model(self, name):
-        disk = self._get_disk(name)
+    def get_disk_name(self, id):
+        disk = self._get_disk(id)
+        return disk.name
+
+    @to_string
+    def get_disk_model(self, id):
+        disk = self._get_disk(id)
         return disk.model
 
     @to_string
-    def get_disk_serial_number(self, name):
-        disk = self._get_disk(name)
+    def get_disk_serial_number(self, id):
+        disk = self._get_disk(id)
         return disk.emc_serial_number
 
     @to_string
-    def get_disk_version(self, name):
-        disk = self._get_disk(name)
+    def get_disk_version(self, id):
+        disk = self._get_disk(id)
         return disk.version
 
     @to_string
-    def get_disk_type(self, name):
-        disk = self._get_disk(name)
+    def get_disk_type(self, id):
+        disk = self._get_disk(id)
         return disk.disk_technology.name
 
     @to_string
-    def get_disk_slot_number(self, name):
-        disk = self._get_disk(name)
+    def get_disk_slot_number(self, id):
+        disk = self._get_disk(id)
         return disk.slot_number
 
     @to_string
-    def get_disk_health_status(self, name):
-        disk = self._get_disk(name)
+    def get_disk_health_status(self, id):
+        disk = self._get_disk(id)
         return disk.health.value.name
 
     @to_string
     @to_number
     @change_size_unit
-    def get_disk_raw_size(self, name):
-        disk = self._get_disk(name)
+    def get_disk_raw_size(self, id):
+        disk = self._get_disk(id)
         return disk.raw_size
 
     @to_string
-    def get_disk_current_pool(self, name):
-        disk = self._get_disk(name)
+    def get_disk_current_pool(self, id):
+        disk = self._get_disk(id)
         return disk.pool.name
 
     @to_string
     @to_number
     @change_time_unit
-    def get_disk_response_time(self, name):
-        disk = self._get_disk(name)
+    def get_disk_response_time(self, id):
+        disk = self._get_disk(id)
         return disk.response_time
 
     @to_string
     @to_number
-    def get_disk_queue_length(self, name):
-        disk = self._get_disk(name)
+    def get_disk_queue_length(self, id):
+        disk = self._get_disk(id)
         return disk.queue_length
 
     @to_string
     @to_number
-    def get_disk_total_iops(self, name):
-        disk = self._get_disk(name)
+    def get_disk_total_iops(self, id):
+        disk = self._get_disk(id)
         return disk.total_iops
 
     @to_string
     @to_number
-    def get_disk_read_iops(self, name):
-        disk = self._get_disk(name)
+    def get_disk_read_iops(self, id):
+        disk = self._get_disk(id)
         return disk.read_iops
 
     @to_string
     @to_number
-    def get_disk_write_iops(self, name):
-        disk = self._get_disk(name)
+    def get_disk_write_iops(self, id):
+        disk = self._get_disk(id)
         return disk.write_iops
 
     @to_string
     @to_number
     @change_size_unit(to_unit='mb')
-    def get_disk_total_byte_rate(self, name):
-        disk = self._get_disk(name)
+    def get_disk_total_byte_rate(self, id):
+        disk = self._get_disk(id)
         return disk.total_byte_rate
 
     @to_string
     @to_number
     @change_size_unit(to_unit='mb')
-    def get_disk_read_byte_rate(self, name):
-        disk = self._get_disk(name)
+    def get_disk_read_byte_rate(self, id):
+        disk = self._get_disk(id)
         return disk.read_byte_rate
 
     @to_string
     @to_number
     @change_size_unit(to_unit='mb')
-    def get_disk_write_byte_rate(self, name):
-        disk = self._get_disk(name)
+    def get_disk_write_byte_rate(self, id):
+        disk = self._get_disk(id)
         return disk.write_byte_rate
 
     @to_string
     @to_number
-    def get_disk_utilization(self, name):
-        disk = self._get_disk(name)
+    def get_disk_utilization(self, id):
+        disk = self._get_disk(id)
         return disk.utilization
 
     # frontendPortTable
@@ -851,22 +866,27 @@ class UnityClient(object):
 
     # hostTable
     def get_hosts(self):
-        return [host.name for host in self.unity_system.get_host()]
+        return [host.id for host in self.unity_system.get_host()]
 
-    def _get_host(self, name):
-        return self._get_item(self.unity_system.get_host(), name=name)
+    def _get_host(self, id):
+        return self._get_item(self.unity_system.get_host(), id=id)
 
     @to_string
-    def get_host_network_address(self, name):
-        host = self._get_host(name)
+    def get_host_name(self, id):
+        host = self._get_host(id)
+        return host.name
+
+    @to_string
+    def get_host_network_address(self, id):
+        host = self._get_host(id)
         if host.ip_list:
             return ', '.join(host.ip_list)
         else:
             return NONE_STRING
 
     @to_string
-    def get_host_initiators(self, name):
-        host = self._get_host(name)
+    def get_host_initiators(self, id):
+        host = self._get_host(id)
         initiators = []
         if hasattr(host,
                    'iscsi_host_initiators') and host.iscsi_host_initiators:
@@ -881,13 +901,13 @@ class UnityClient(object):
             return NONE_STRING
 
     @to_string
-    def get_host_os_type(self, name):
-        host = self._get_host(name)
+    def get_host_os_type(self, id):
+        host = self._get_host(id)
         return host.os_type
 
     @to_string
-    def get_host_assigned_volumes(self, name):
-        host = self._get_host(name)
+    def get_host_assigned_volumes(self, id):
+        host = self._get_host(id)
         if host.host_luns:
             return ', '.join(x.lun.name for x in host.host_luns)
         else:
@@ -898,107 +918,117 @@ class UnityClient(object):
     DPE_TYPE = 'dpe_'
 
     def get_enclosures(self):
-        daes = [self.DAE_TYPE + dae.name for dae in
+        daes = [self.DAE_TYPE + dae.id for dae in
                 self.unity_system.get_dae()]
-        dpes = [self.DPE_TYPE + dpe.name for dpe in
+        dpes = [self.DPE_TYPE + dpe.id for dpe in
                 self.unity_system.get_dpe()]
         return daes + dpes
 
-    def _get_enclosure(self, name):
-        if name.startswith(self.DAE_TYPE):
-            name = name.replace(self.DAE_TYPE, '', 1)
-            return self._get_item(self.unity_system.get_dae(), name=name)
-        if name.startswith(self.DPE_TYPE):
-            name = name.replace(self.DPE_TYPE, '', 1)
-            return self._get_item(self.unity_system.get_dpe(), name=name)
+    def _get_enclosure(self, id):
+        if id.startswith(self.DAE_TYPE):
+            id = id.replace(self.DAE_TYPE, '', 1)
+            return self._get_item(self.unity_system.get_dae(), id=id)
+        if id.startswith(self.DPE_TYPE):
+            id = id.replace(self.DPE_TYPE, '', 1)
+            return self._get_item(self.unity_system.get_dpe(), id=id)
 
     @to_string
-    def get_enclosure_name(self, name):
-        enclosure = self._get_enclosure(name)
+    def get_enclosure_id(self, id):
+        enclosure = self._get_enclosure(id)
+        return enclosure.id
+
+    @to_string
+    def get_enclosure_name(self, id):
+        enclosure = self._get_enclosure(id)
         return enclosure.name
 
     @to_string
-    def get_enclosure_model(self, name):
-        enclosure = self._get_enclosure(name)
+    def get_enclosure_model(self, id):
+        enclosure = self._get_enclosure(id)
         return enclosure.model
 
     @to_string
-    def get_enclosure_serial_number(self, name):
-        enclosure = self._get_enclosure(name)
+    def get_enclosure_serial_number(self, id):
+        enclosure = self._get_enclosure(id)
         return enclosure.emc_serial_number
 
     @to_string
-    def get_enclosure_part_number(self, name):
-        enclosure = self._get_enclosure(name)
+    def get_enclosure_part_number(self, id):
+        enclosure = self._get_enclosure(id)
         return enclosure.emc_part_number
 
     @to_string
-    def get_enclosure_health_status(self, name):
-        enclosure = self._get_enclosure(name)
+    def get_enclosure_health_status(self, id):
+        enclosure = self._get_enclosure(id)
         return enclosure.health.value.name
 
     @to_string
     @to_number
-    def get_enclosure_current_power(self, name):
-        enclosure = self._get_enclosure(name)
+    def get_enclosure_current_power(self, id):
+        enclosure = self._get_enclosure(id)
         return enclosure.current_power
 
     @to_string
     @to_number
-    def get_enclosure_avg_power(self, name):
-        enclosure = self._get_enclosure(name)
+    def get_enclosure_avg_power(self, id):
+        enclosure = self._get_enclosure(id)
         return enclosure.avg_power
 
     @to_string
     @to_number
-    def get_enclosure_max_power(self, name):
-        enclosure = self._get_enclosure(name)
+    def get_enclosure_max_power(self, id):
+        enclosure = self._get_enclosure(id)
         return enclosure.max_power
 
     @to_string
     @to_number
-    def get_enclosure_current_temperature(self, name):
-        enclosure = self._get_enclosure(name)
+    def get_enclosure_current_temperature(self, id):
+        enclosure = self._get_enclosure(id)
         return enclosure.current_temperature
 
     @to_string
     @to_number
-    def get_enclosure_avg_temperature(self, name):
-        enclosure = self._get_enclosure(name)
+    def get_enclosure_avg_temperature(self, id):
+        enclosure = self._get_enclosure(id)
         return enclosure.avg_temperature
 
     @to_string
     @to_number
-    def get_enclosure_max_temperature(self, name):
-        enclosure = self._get_enclosure(name)
+    def get_enclosure_max_temperature(self, id):
+        enclosure = self._get_enclosure(id)
         return enclosure.max_temperature
 
     # powerSupplyTable
     def get_power_supplies(self):
-        return [power_supply.name for power_supply in
+        return [power_supply.id for power_supply in
                 self.unity_system.get_power_supply()]
 
-    def _get_power_supply(self, name):
-        return self._get_item(self.unity_system.get_power_supply(), name=name)
+    def _get_power_supply(self, id):
+        return self._get_item(self.unity_system.get_power_supply(), id=id)
 
     @to_string
-    def get_power_supply_manufacturer(self, name):
-        power_supply = self._get_power_supply(name)
+    def get_power_supply_name(self, id):
+        power_supply = self._get_power_supply(id)
+        return power_supply.name
+
+    @to_string
+    def get_power_supply_manufacturer(self, id):
+        power_supply = self._get_power_supply(id)
         return power_supply.manufacturer
 
     @to_string
-    def get_power_supply_model(self, name):
-        power_supply = self._get_power_supply(name)
+    def get_power_supply_model(self, id):
+        power_supply = self._get_power_supply(id)
         return power_supply.model
 
     @to_string
-    def get_power_supply_firmware_version(self, name):
-        power_supply = self._get_power_supply(name)
+    def get_power_supply_firmware_version(self, id):
+        power_supply = self._get_power_supply(id)
         return power_supply.firmware_version
 
     @to_string
-    def get_power_supply_parent_enclosure(self, name):
-        power_supply = self._get_power_supply(name)
+    def get_power_supply_parent_enclosure(self, id):
+        power_supply = self._get_power_supply(id)
         parents = []
         if hasattr(power_supply, 'parent_dpe') and power_supply.parent_dpe:
             parents.append(power_supply.parent_dpe)
@@ -1011,30 +1041,35 @@ class UnityClient(object):
             return NONE_STRING
 
     @to_string
-    def get_power_supply_sp(self, name):
-        power_supply = self._get_power_supply(name)
+    def get_power_supply_sp(self, id):
+        power_supply = self._get_power_supply(id)
         return power_supply.storage_processor.name
 
     @to_string
-    def get_power_supply_health_status(self, name):
-        power_supply = self._get_power_supply(name)
+    def get_power_supply_health_status(self, id):
+        power_supply = self._get_power_supply(id)
         return power_supply.health.value.name
 
     # fanTable
     def get_fans(self):
-        return [fan.name for fan in self.unity_system.get_fan()]
+        return [fan.id for fan in self.unity_system.get_fan()]
 
-    def _get_fan(self, name):
-        return self._get_item(self.unity_system.get_fan(), name=name)
+    def _get_fan(self, id):
+        return self._get_item(self.unity_system.get_fan(), id=id)
 
     @to_string
-    def get_fan_slot_number(self, name):
-        fan = self._get_fan(name)
+    def get_fan_name(self, id):
+        fan = self._get_fan(id)
+        return fan.name
+
+    @to_string
+    def get_fan_slot_number(self, id):
+        fan = self._get_fan(id)
         return fan.slot_number
 
     @to_string
-    def get_fan_parent_enclosure(self, name):
-        fan = self._get_fan(name)
+    def get_fan_parent_enclosure(self, id):
+        fan = self._get_fan(id)
         parents = []
         if hasattr(fan, 'parent_dpe') and fan.parent_dpe:
             parents.append(fan.parent_dpe)
@@ -1047,38 +1082,43 @@ class UnityClient(object):
             return NONE_STRING
 
     @to_string
-    def get_fan_health_status(self, name):
-        fan = self._get_fan(name)
+    def get_fan_health_status(self, id):
+        fan = self._get_fan(id)
         return fan.health.value.name
 
     # BBUTable
     def get_bbus(self):
-        return [bbu.name for bbu in self.unity_system.get_battery()]
+        return [bbu.id for bbu in self.unity_system.get_battery()]
 
-    def _get_bbu(self, name):
-        return self._get_item(self.unity_system.get_battery(), name=name)
+    def _get_bbu(self, id):
+        return self._get_item(self.unity_system.get_battery(), id=id)
 
     @to_string
-    def get_bbu_manufacturer(self, name):
-        bbu = self._get_bbu(name)
+    def get_bbu_name(self, id):
+        bbu = self._get_bbu(id)
+        return bbu.name
+
+    @to_string
+    def get_bbu_manufacturer(self, id):
+        bbu = self._get_bbu(id)
         return bbu.manufacturer
 
     @to_string
-    def get_bbu_model(self, name):
-        bbu = self._get_bbu(name)
+    def get_bbu_model(self, id):
+        bbu = self._get_bbu(id)
         return bbu.model
 
     @to_string
-    def get_bbu_firmware_version(self, name):
-        bbu = self._get_bbu(name)
+    def get_bbu_firmware_version(self, id):
+        bbu = self._get_bbu(id)
         return bbu.firmware_version
 
     @to_string
-    def get_bbu_parent_sp(self, name):
-        bbu = self._get_bbu(name)
+    def get_bbu_parent_sp(self, id):
+        bbu = self._get_bbu(id)
         return bbu.parent_storage_processor.name
 
     @to_string
-    def get_bbu_health_status(self, name):
-        bbu = self._get_bbu(name)
+    def get_bbu_health_status(self, id):
+        bbu = self._get_bbu(id)
         return bbu.health.value.name

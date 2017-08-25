@@ -272,16 +272,17 @@ IMPORTS
 		STATUS mandatory
 		DESCRIPTION
 			"Description."
-		INDEX { storageProcessorName }
+		INDEX { storageProcessorId }
 		::= { storageProcessorTable 1 }
 
 	StorageProcessorEntry ::=
 		SEQUENCE {
+			storageProcessorId                      DisplayString,
 			storageProcessorName                    DisplayString,
 			storageProcessorSerialNumber            DisplayString,
 			storageProcessorOperationalState        DisplayString,
 			storageProcessorCpuUtilization          DisplayString,
-            storageProcessorTotalThroughput         DisplayString,
+			storageProcessorTotalThroughput         DisplayString,
 			storageProcessorReadThroughput          DisplayString,
 			storageProcessorWriteThroughput         DisplayString,
 			storageProcessorTotalBandwidth          DisplayString,
@@ -293,52 +294,52 @@ IMPORTS
 		 }
 
 	-- 1.3.6.1.4.1.1139.103.1.19.26.1.1
+	storageProcessorId OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"SP id."
+		::= { storageProcessorEntry 1 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.26.1.2
 	storageProcessorName OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"SP name."
-		::= { storageProcessorEntry 1 }
+		::= { storageProcessorEntry 2 }
 
-	-- 1.3.6.1.4.1.1139.103.1.19.26.1.2
+	-- 1.3.6.1.4.1.1139.103.1.19.26.1.3
 	storageProcessorSerialNumber OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"EMC serial number for the SP."
-		::= { storageProcessorEntry 2 }
+		::= { storageProcessorEntry 3 }
 
-	-- 1.3.6.1.4.1.1139.103.1.19.26.1.3
+	-- 1.3.6.1.4.1.1139.103.1.19.26.1.4
 	storageProcessorOperationalState OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"Health information for the SP."
-		::= { storageProcessorEntry 3 }
+		::= { storageProcessorEntry 4 }
 
-	-- 1.3.6.1.4.1.1139.103.1.19.26.1.4
+	-- 1.3.6.1.4.1.1139.103.1.19.26.1.5
 	storageProcessorCpuUtilization OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"Description."
-		::= { storageProcessorEntry 4 }
-
-	-- 1.3.6.1.4.1.1139.103.1.19.26.1.5
-	storageProcessorTotalThroughput OBJECT-TYPE
-		SYNTAX DisplayString
-		ACCESS read-only
-		STATUS mandatory
-		DESCRIPTION
-			"Unit: IO/s."
 		::= { storageProcessorEntry 5 }
 
 	-- 1.3.6.1.4.1.1139.103.1.19.26.1.6
-	storageProcessorReadThroughput OBJECT-TYPE
+	storageProcessorTotalThroughput OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
@@ -347,7 +348,7 @@ IMPORTS
 		::= { storageProcessorEntry 6 }
 
 	-- 1.3.6.1.4.1.1139.103.1.19.26.1.7
-	storageProcessorWriteThroughput OBJECT-TYPE
+	storageProcessorReadThroughput OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
@@ -356,16 +357,16 @@ IMPORTS
 		::= { storageProcessorEntry 7 }
 
 	-- 1.3.6.1.4.1.1139.103.1.19.26.1.8
-	storageProcessorTotalBandwidth OBJECT-TYPE
+	storageProcessorWriteThroughput OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
-			"Unit: MB/s."
+			"Unit: IO/s."
 		::= { storageProcessorEntry 8 }
 
 	-- 1.3.6.1.4.1.1139.103.1.19.26.1.9
-	storageProcessorReadBandwidth OBJECT-TYPE
+	storageProcessorTotalBandwidth OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
@@ -374,7 +375,7 @@ IMPORTS
 		::= { storageProcessorEntry 9 }
 
 	-- 1.3.6.1.4.1.1139.103.1.19.26.1.10
-	storageProcessorWriteBandwidth OBJECT-TYPE
+	storageProcessorReadBandwidth OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
@@ -383,31 +384,40 @@ IMPORTS
 		::= { storageProcessorEntry 10 }
 
 	-- 1.3.6.1.4.1.1139.103.1.19.26.1.11
+	storageProcessorWriteBandwidth OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: MB/s."
+		::= { storageProcessorEntry 11 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.26.1.12
 	storageProcessorCacheDirtySize OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"Unit: MB."
-		::= { storageProcessorEntry 11 }
+		::= { storageProcessorEntry 12 }
 
-	-- 1.3.6.1.4.1.1139.103.1.19.26.1.12
+	-- 1.3.6.1.4.1.1139.103.1.19.26.1.13
 	storageProcessorReadCacheState OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"Description."
-		::= { storageProcessorEntry 12 }
+		::= { storageProcessorEntry 13 }
 
-	-- 1.3.6.1.4.1.1139.103.1.19.26.1.13
+	-- 1.3.6.1.4.1.1139.103.1.19.26.1.14
 	storageProcessorWriteCacheState OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"Description."
-		::= { storageProcessorEntry 13 }
+		::= { storageProcessorEntry 14 }
 
 	-- 1.3.6.1.4.1.1139.103.1.19.27
 	poolTable OBJECT-TYPE
@@ -425,11 +435,12 @@ IMPORTS
 		STATUS mandatory
 		DESCRIPTION
 			"Description."
-		INDEX { poolName }
+		INDEX { poolId }
 		::= { poolTable 1 }
 
 	PoolEntry ::=
 		SEQUENCE {
+			poolId                      DisplayString,
 			poolName                    DisplayString,
 			poolDiskTypes               DisplayString,
 			poolRaidLevels              DisplayString,
@@ -442,33 +453,42 @@ IMPORTS
 		 }
 
 	-- 1.3.6.1.4.1.1139.103.1.19.27.1.1
+	poolId OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Pool id, unique in the storage system."
+		::= { poolEntry 1 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.27.1.2
 	poolName OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"Pool name, unique in the storage system."
-		::= { poolEntry 1 }
+		::= { poolEntry 2 }
 
-	-- 1.3.6.1.4.1.1139.103.1.19.27.1.2
+	-- 1.3.6.1.4.1.1139.103.1.19.27.1.3
 	poolDiskTypes OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"Description."
-		::= { poolEntry 2 }
+		::= { poolEntry 3 }
 
-	-- 1.3.6.1.4.1.1139.103.1.19.27.1.3
+	-- 1.3.6.1.4.1.1139.103.1.19.27.1.4
 	poolRaidLevels OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"RAID type with which the pool is configured. A value of Mixed indicates that the pool consists of multiple RAID types.."
-		::= { poolEntry 3 }
+		::= { poolEntry 4 }
 
-	-- 1.3.6.1.4.1.1139.103.1.19.27.1.4
+	-- 1.3.6.1.4.1.1139.103.1.19.27.1.5
 	poolFastCacheStatus OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
@@ -478,52 +498,52 @@ IMPORTS
              true - FAST Cache is enabled for the pool.
              false - FAST Cache is disabled for the pool.
              FAST Cache is created from Flash SAS drives and applied only to RAID groups created of SAS and NL-SAS hard drives. If the pool is populated by purely Flash drives the FAST Cache is not enabled.."
-		::= { poolEntry 4 }
+		::= { poolEntry 5 }
 
-	-- 1.3.6.1.4.1.1139.103.1.19.27.1.5
+	-- 1.3.6.1.4.1.1139.103.1.19.27.1.6
 	poolNumberOfPhysicalDisk OBJECT-TYPE
 		SYNTAX Integer32
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"Number of physical disk in the pool."
-		::= { poolEntry 5 }
+		::= { poolEntry 6 }
 
-	-- 1.3.6.1.4.1.1139.103.1.19.27.1.6
+	-- 1.3.6.1.4.1.1139.103.1.19.27.1.7
 	poolTotalCapacity OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"Total size of space (used space plus free space) in the pool. Unit: GB."
-		::= { poolEntry 6 }
+		::= { poolEntry 7 }
 
-	-- 1.3.6.1.4.1.1139.103.1.19.27.1.7
+	-- 1.3.6.1.4.1.1139.103.1.19.27.1.8
 	poolRemainingCapacity OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"Size of free space available in the pool. Unit: GB."
-		::= { poolEntry 7 }
+		::= { poolEntry 8 }
 
-	-- 1.3.6.1.4.1.1139.103.1.19.27.1.8
+	-- 1.3.6.1.4.1.1139.103.1.19.27.1.9
 	poolUsedCapacity OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"Size of space used by the storage resources allocated in the pool. Unit: GB."
-		::= { poolEntry 8 }
+		::= { poolEntry 9 }
 
-	-- 1.3.6.1.4.1.1139.103.1.19.27.1.9
+	-- 1.3.6.1.4.1.1139.103.1.19.27.1.10
 	poolCapacityUtilization OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"Description."
-		::= { poolEntry 9 }
+		::= { poolEntry 10 }
 
 	-- 1.3.6.1.4.1.1139.103.1.19.28
 	volumeTable OBJECT-TYPE
@@ -797,11 +817,12 @@ IMPORTS
 		STATUS mandatory
 		DESCRIPTION
 			"Description."
-		INDEX { diskName }
+		INDEX { diskId }
 		::= { diskTable 1 }
 
 	DiskEntry ::=
 		SEQUENCE {
+			diskId                  DisplayString,
 			diskName                DisplayString,
 			diskModel               DisplayString,
 			diskSerialNumber        DisplayString,
@@ -823,115 +844,115 @@ IMPORTS
 		 }
 
 	-- 1.3.6.1.4.1.1139.103.1.19.29.1.1
+	diskId OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Drive id."
+		::= { diskEntry 1 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.29.1.2
 	diskName OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"Drive name. Modifiable for virtual drives only."
-		::= { diskEntry 1 }
+		::= { diskEntry 2 }
 
-	-- 1.3.6.1.4.1.1139.103.1.19.29.1.2
+	-- 1.3.6.1.4.1.1139.103.1.19.29.1.3
 	diskModel OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"Manufacturer model number."
-		::= { diskEntry 2 }
+		::= { diskEntry 3 }
 
-	-- 1.3.6.1.4.1.1139.103.1.19.29.1.3
+	-- 1.3.6.1.4.1.1139.103.1.19.29.1.4
 	diskSerialNumber OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"EMC serial number."
-		::= { diskEntry 3 }
+		::= { diskEntry 4 }
 
-	-- 1.3.6.1.4.1.1139.103.1.19.29.1.4
+	-- 1.3.6.1.4.1.1139.103.1.19.29.1.5
 	diskFirmwareVersion OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"Manufacturer version number."
-		::= { diskEntry 4 }
+		::= { diskEntry 5 }
 
-	-- 1.3.6.1.4.1.1139.103.1.19.29.1.5
+	-- 1.3.6.1.4.1.1139.103.1.19.29.1.6
 	diskType OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"Drive type."
-		::= { diskEntry 5 }
+		::= { diskEntry 6 }
 
-	-- 1.3.6.1.4.1.1139.103.1.19.29.1.6
+	-- 1.3.6.1.4.1.1139.103.1.19.29.1.7
 	diskPhysicalLocation OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"Slot where the drive is located in the parent enclosure."
-		::= { diskEntry 6 }
+		::= { diskEntry 7 }
 
-	-- 1.3.6.1.4.1.1139.103.1.19.29.1.7
+	-- 1.3.6.1.4.1.1139.103.1.19.29.1.8
 	diskStatus OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"Health information of the drive instance."
-		::= { diskEntry 7 }
+		::= { diskEntry 8 }
 
-	-- 1.3.6.1.4.1.1139.103.1.19.29.1.8
+	-- 1.3.6.1.4.1.1139.103.1.19.29.1.9
 	diskRawCapacity OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"Raw (unformatted) capacity."
-		::= { diskEntry 8 }
+		::= { diskEntry 9 }
 
-	-- 1.3.6.1.4.1.1139.103.1.19.29.1.9
+	-- 1.3.6.1.4.1.1139.103.1.19.29.1.10
 	diskCurrentPool OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"Description."
-		::= { diskEntry 9 }
+		::= { diskEntry 10 }
 
-	-- 1.3.6.1.4.1.1139.103.1.19.29.1.10
+	-- 1.3.6.1.4.1.1139.103.1.19.29.1.11
 	diskResponseTime OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"Unit: ms."
-		::= { diskEntry 10 }
+		::= { diskEntry 11 }
 
-	-- 1.3.6.1.4.1.1139.103.1.19.29.1.11
+	-- 1.3.6.1.4.1.1139.103.1.19.29.1.12
 	diskQueueLength OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"Description."
-		::= { diskEntry 11 }
-
-	-- 1.3.6.1.4.1.1139.103.1.19.29.1.12
-	diskTotalThroughput OBJECT-TYPE
-		SYNTAX DisplayString
-		ACCESS read-only
-		STATUS mandatory
-		DESCRIPTION
-			"Unit: IO/s."
 		::= { diskEntry 12 }
 
 	-- 1.3.6.1.4.1.1139.103.1.19.29.1.13
-	diskReadThroughput OBJECT-TYPE
+	diskTotalThroughput OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
@@ -940,7 +961,7 @@ IMPORTS
 		::= { diskEntry 13 }
 
 	-- 1.3.6.1.4.1.1139.103.1.19.29.1.14
-	diskWriteThroughput OBJECT-TYPE
+	diskReadThroughput OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
@@ -949,16 +970,16 @@ IMPORTS
 		::= { diskEntry 14 }
 
 	-- 1.3.6.1.4.1.1139.103.1.19.29.1.15
-	diskTotalBandwidth OBJECT-TYPE
+	diskWriteThroughput OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
-			"Unit: MB/s."
+			"Unit: IO/s."
 		::= { diskEntry 15 }
 
 	-- 1.3.6.1.4.1.1139.103.1.19.29.1.16
-	diskReadBandwidth OBJECT-TYPE
+	diskTotalBandwidth OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
@@ -967,7 +988,7 @@ IMPORTS
 		::= { diskEntry 16 }
 
 	-- 1.3.6.1.4.1.1139.103.1.19.29.1.17
-	diskWriteBandwidth OBJECT-TYPE
+	diskReadBandwidth OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
@@ -976,13 +997,22 @@ IMPORTS
 		::= { diskEntry 17 }
 
 	-- 1.3.6.1.4.1.1139.103.1.19.29.1.18
+	diskWriteBandwidth OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: MB/s."
+		::= { diskEntry 18 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.29.1.19
 	diskUtilization OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"Description."
-		::= { diskEntry 18 }
+		::= { diskEntry 19 }
 
 	-- 1.3.6.1.4.1.1139.103.1.19.30
 	frontendPortTable OBJECT-TYPE
@@ -1316,11 +1346,12 @@ IMPORTS
 		STATUS mandatory
 		DESCRIPTION
 			"Description."
-		INDEX { hostName }
+		INDEX { hostId }
 		::= { hostTable 1 }
 
 	HostEntry ::=
 		SEQUENCE {
+			hostId                      DisplayString,
 			hostName                    DisplayString,
 			hostNetworkAddress          DisplayString,
 			hostInitiators              DisplayString,
@@ -1329,6 +1360,15 @@ IMPORTS
 		 }
 
 	-- 1.3.6.1.4.1.1139.103.1.19.32.1.1
+	hostId OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Host id."
+		::= { hostEntry 1 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.32.1.2
 	hostName OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
@@ -1337,19 +1377,10 @@ IMPORTS
 			"Host name:
              For an automatically-managed ESX server through vCenter, this is the display name in the vCenter GUI.
              For a manually-created host, this is the host name entered by the user."
-		::= { hostEntry 1 }
-
-	-- 1.3.6.1.4.1.1139.103.1.19.32.1.2
-	hostNetworkAddress OBJECT-TYPE
-		SYNTAX DisplayString
-		ACCESS read-only
-		STATUS mandatory
-		DESCRIPTION
-			"Description."
 		::= { hostEntry 2 }
 
 	-- 1.3.6.1.4.1.1139.103.1.19.32.1.3
-	hostInitiators OBJECT-TYPE
+	hostNetworkAddress OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
@@ -1358,22 +1389,31 @@ IMPORTS
 		::= { hostEntry 3 }
 
 	-- 1.3.6.1.4.1.1139.103.1.19.32.1.4
+	hostInitiators OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { hostEntry 4 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.32.1.5
 	hostOperationSystemVersion OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"Operating system running on the host."
-		::= { hostEntry 4 }
+		::= { hostEntry 5 }
 
-	-- 1.3.6.1.4.1.1139.103.1.19.32.1.5
+	-- 1.3.6.1.4.1.1139.103.1.19.32.1.6
 	hostAssignedStorageVolumes OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"Description."
-		::= { hostEntry 5 }
+		::= { hostEntry 6 }
 
 	-- 1.3.6.1.4.1.1139.103.1.19.33
 	enclosureTable OBJECT-TYPE
@@ -1391,13 +1431,14 @@ IMPORTS
 		STATUS mandatory
 		DESCRIPTION
 			"Description."
-		INDEX { enclosureName }
+		INDEX { enclosureId }
 		::= { enclosureTable 1 }
 
 	EnclosureEntry ::=
 		SEQUENCE {
+			enclosureId                     DisplayString,
 			enclosureName                   DisplayString,
-		    enclosureModel                  DisplayString,
+			enclosureModel                  DisplayString,
 			enclosureSerialNumber           DisplayString,
 			enclosurePartNumber             DisplayString,
 			enclosureHealthStatus           DisplayString,
@@ -1410,7 +1451,7 @@ IMPORTS
 		 }
 
 	-- 1.3.6.1.4.1.1139.103.1.19.33.1.1
-	enclosureName OBJECT-TYPE
+	enclosureId OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
@@ -1419,7 +1460,7 @@ IMPORTS
 		::= { enclosureEntry 1 }
 
 	-- 1.3.6.1.4.1.1139.103.1.19.33.1.2
-	enclosureModel OBJECT-TYPE
+	enclosureName OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
@@ -1428,7 +1469,7 @@ IMPORTS
 		::= { enclosureEntry 2 }
 
 	-- 1.3.6.1.4.1.1139.103.1.19.33.1.3
-	enclosureSerialNumber OBJECT-TYPE
+	enclosureModel OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
@@ -1437,7 +1478,7 @@ IMPORTS
 		::= { enclosureEntry 3 }
 
 	-- 1.3.6.1.4.1.1139.103.1.19.33.1.4
-	enclosurePartNumber OBJECT-TYPE
+	enclosureSerialNumber OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
@@ -1446,7 +1487,7 @@ IMPORTS
 		::= { enclosureEntry 4 }
 
 	-- 1.3.6.1.4.1.1139.103.1.19.33.1.5
-	enclosureHealthStatus OBJECT-TYPE
+	enclosurePartNumber OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
@@ -1455,7 +1496,7 @@ IMPORTS
 		::= { enclosureEntry 5 }
 
 	-- 1.3.6.1.4.1.1139.103.1.19.33.1.6
-	enclosureCurrentPower OBJECT-TYPE
+	enclosureHealthStatus OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
@@ -1464,7 +1505,7 @@ IMPORTS
 		::= { enclosureEntry 6 }
 
 	-- 1.3.6.1.4.1.1139.103.1.19.33.1.7
-	enclosureAveragePower OBJECT-TYPE
+	enclosureCurrentPower OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
@@ -1473,7 +1514,7 @@ IMPORTS
 		::= { enclosureEntry 7 }
 
 	-- 1.3.6.1.4.1.1139.103.1.19.33.1.8
-	enclosureMaxPower OBJECT-TYPE
+	enclosureAveragePower OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
@@ -1482,7 +1523,7 @@ IMPORTS
 		::= { enclosureEntry 8 }
 
 	-- 1.3.6.1.4.1.1139.103.1.19.33.1.9
-	enclosureCurrentTemperature OBJECT-TYPE
+	enclosureMaxPower OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
@@ -1491,7 +1532,7 @@ IMPORTS
 		::= { enclosureEntry 9 }
 
 	-- 1.3.6.1.4.1.1139.103.1.19.33.1.10
-	enclosureAverageTemperature OBJECT-TYPE
+	enclosureCurrentTemperature OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
@@ -1500,13 +1541,22 @@ IMPORTS
 		::= { enclosureEntry 10 }
 
 	-- 1.3.6.1.4.1.1139.103.1.19.33.1.11
-	enclosureMaxTemperature OBJECT-TYPE
+	enclosureAverageTemperature OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"Description."
 		::= { enclosureEntry 11 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.33.1.12
+	enclosureMaxTemperature OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { enclosureEntry 12 }
 
 	-- 1.3.6.1.4.1.1139.103.1.19.34
 	powerSupplyTable OBJECT-TYPE
@@ -1524,11 +1574,12 @@ IMPORTS
 		STATUS mandatory
 		DESCRIPTION
 			"Description."
-		INDEX { powerSupplyName }
+		INDEX { powerSupplyId }
 		::= { powerSupplyTable 1 }
 
 	PowerSupplyEntry ::=
 		SEQUENCE {
+			powerSupplyId               DisplayString,
 			powerSupplyName             DisplayString,
 			powerSupplyManufacturer     DisplayString,
 			powerSupplyModel            DisplayString,
@@ -1539,67 +1590,76 @@ IMPORTS
 		 }
 
 	-- 1.3.6.1.4.1.1139.103.1.19.34.1.1
+	powerSupplyId OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Power supply id."
+		::= { powerSupplyEntry 1 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.34.1.2
 	powerSupplyName OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"Power supply name."
-		::= { powerSupplyEntry 1 }
+		::= { powerSupplyEntry 2 }
 
-	-- 1.3.6.1.4.1.1139.103.1.19.34.1.2
+	-- 1.3.6.1.4.1.1139.103.1.19.34.1.3
 	powerSupplyManufacturer OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"Manufacturer of the power supply."
-		::= { powerSupplyEntry 2 }
+		::= { powerSupplyEntry 3 }
 
-	-- 1.3.6.1.4.1.1139.103.1.19.34.1.3
+	-- 1.3.6.1.4.1.1139.103.1.19.34.1.4
 	powerSupplyModel OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"Manufacturer's model number for the power supply."
-		::= { powerSupplyEntry 3 }
+		::= { powerSupplyEntry 4 }
 
-	-- 1.3.6.1.4.1.1139.103.1.19.34.1.4
+	-- 1.3.6.1.4.1.1139.103.1.19.34.1.5
 	powerSupplyFirmwareVersion OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"Firmware version number for the power supply."
-		::= { powerSupplyEntry 4 }
+		::= { powerSupplyEntry 5 }
 
-	-- 1.3.6.1.4.1.1139.103.1.19.34.1.5
+	-- 1.3.6.1.4.1.1139.103.1.19.34.1.6
 	powerSupplyParentEnclosure OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"Parent Enclosures (DAE or DPE) of the power supply."
-		::= { powerSupplyEntry 5 }
+		::= { powerSupplyEntry 6 }
 
-	-- 1.3.6.1.4.1.1139.103.1.19.34.1.6
+	-- 1.3.6.1.4.1.1139.103.1.19.34.1.7
 	powerSupplyStorageProcessor OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"Storage Processor that the power supply is associated to."
-		::= { powerSupplyEntry 6 }
+		::= { powerSupplyEntry 7 }
 
-	-- 1.3.6.1.4.1.1139.103.1.19.34.1.7
+	-- 1.3.6.1.4.1.1139.103.1.19.34.1.8
 	powerSupplyHealthStatus OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"Health information for the power supply."
-		::= { powerSupplyEntry 7 }
+		::= { powerSupplyEntry 8 }
 
 	-- 1.3.6.1.4.1.1139.103.1.19.35
 	fanTable OBJECT-TYPE
@@ -1617,11 +1677,12 @@ IMPORTS
 		STATUS mandatory
 		DESCRIPTION
 			"Description."
-		INDEX { fanName }
+		INDEX { fanId }
 		::= { fanTable 1 }
 
 	FanEntry ::=
 		SEQUENCE {
+			fanId               DisplayString,
 			fanName             DisplayString,
 			fanSlotNumber       DisplayString,
 			fanParentEnclosure  DisplayString,
@@ -1629,40 +1690,49 @@ IMPORTS
 		 }
 
 	-- 1.3.6.1.4.1.1139.103.1.19.35.1.1
+	fanId OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Fan id."
+		::= { fanEntry 1 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.35.1.2
 	fanName OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"Fan name."
-		::= { fanEntry 1 }
+		::= { fanEntry 2 }
 
-	-- 1.3.6.1.4.1.1139.103.1.19.35.1.2
+	-- 1.3.6.1.4.1.1139.103.1.19.35.1.3
 	fanSlotNumber OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"Slot where the fan is located in the parent enclosure."
-		::= { fanEntry 2 }
+		::= { fanEntry 3 }
 
-	-- 1.3.6.1.4.1.1139.103.1.19.35.1.3
+	-- 1.3.6.1.4.1.1139.103.1.19.35.1.4
 	fanParentEnclosure OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"Parent Enclosures (DAE or DPE) of the power supply."
-		::= { fanEntry 3 }
+		::= { fanEntry 4 }
 
-	-- 1.3.6.1.4.1.1139.103.1.19.35.1.4
+	-- 1.3.6.1.4.1.1139.103.1.19.35.1.5
 	fanHealthStatus OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"Health information for the fan."
-		::= { fanEntry 4 }
+		::= { fanEntry 5 }
 
 	-- 1.3.6.1.4.1.1139.103.1.19.36
 	bbuTable OBJECT-TYPE
@@ -1680,11 +1750,12 @@ IMPORTS
 		STATUS mandatory
 		DESCRIPTION
 			"Description."
-		INDEX { bbuName }
+		INDEX { bbuId }
 		::= { bbuTable 1 }
 
 	BBUEntry ::=
 		SEQUENCE {
+			bbuId                       DisplayString,
 			bbuName                     DisplayString,
 			bbuManufacturer             DisplayString,
 			bbuModel                    DisplayString,
@@ -1694,56 +1765,65 @@ IMPORTS
 		 }
 
 	-- 1.3.6.1.4.1.1139.103.1.19.36.1.1
+	bbuId OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Battery id."
+		::= { bbuEntry 1 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.36.1.2
 	bbuName OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"Battery name."
-		::= { bbuEntry 1 }
+		::= { bbuEntry 2 }
 
-	-- 1.3.6.1.4.1.1139.103.1.19.36.1.2
+	-- 1.3.6.1.4.1.1139.103.1.19.36.1.3
 	bbuManufacturer OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"Manufacturer of the battery."
-		::= { bbuEntry 2 }
+		::= { bbuEntry 3 }
 
-    -- 1.3.6.1.4.1.1139.103.1.19.36.1.3
+    -- 1.3.6.1.4.1.1139.103.1.19.36.1.4
 	bbuModel OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"Manufacturer's model number for the battery."
-		::= { bbuEntry 3 }
+		::= { bbuEntry 4 }
 
-	-- 1.3.6.1.4.1.1139.103.1.19.36.1.4
+	-- 1.3.6.1.4.1.1139.103.1.19.36.1.5
 	bbuFirmwareVersion OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"Firmware version number for the battery."
-		::= { bbuEntry 4 }
+		::= { bbuEntry 5 }
 
-	-- 1.3.6.1.4.1.1139.103.1.19.36.1.5
+	-- 1.3.6.1.4.1.1139.103.1.19.36.1.6
 	bbuParentStorageProcessor OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"Parent Storage Processor of the battery."
-		::= { bbuEntry 5 }
+		::= { bbuEntry 6 }
 
-	-- 1.3.6.1.4.1.1139.103.1.19.36.1.6
+	-- 1.3.6.1.4.1.1139.103.1.19.36.1.7
 	bbuHealthStatus OBJECT-TYPE
 		SYNTAX DisplayString
 		ACCESS read-only
 		STATUS mandatory
 		DESCRIPTION
 			"Health information for the battery."
-		::= { bbuEntry 6 }
+		::= { bbuEntry 7 }
 END

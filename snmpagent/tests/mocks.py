@@ -35,7 +35,8 @@ class MockUnitySystem(object):
                            size_free=3298534883328)]
 
     def get_sp(self):
-        return [FakeObject(name='SP A',
+        return [FakeObject(id='spa',
+                           name='SP A',
                            emc_serial_number='CF2HF144300003',
                            health=FakeObject(value=FakeObject(name='OK')),
                            utilization=2.628533087310241,
@@ -49,7 +50,7 @@ class MockUnitySystem(object):
                            block_cache_read_hit_ratio=100.5333333333333,
                            block_cache_write_hit_ratio=81.9672131147541
                            ),
-                FakeObject(name='SP B',
+                FakeObject(id='spb',
                            block_total_iops=0,
                            block_read_iops=0,
                            block_write_iops=0,
@@ -60,7 +61,8 @@ class MockUnitySystem(object):
                            block_cache_read_hit_ratio=0,
                            block_cache_write_hit_ratio=0
                            ),
-                FakeObject(name='SP C',
+                FakeObject(id='spc',
+                           name='SP C',
                            health=FakeObject(value=FakeObject()),
                            utilization='na',
                            block_total_iops='na',
@@ -76,7 +78,8 @@ class MockUnitySystem(object):
                 ]
 
     def get_pool(self):
-        return [FakeObject(name='Beijing',
+        return [FakeObject(id='pool_1',
+                           name='Beijing',
                            tiers=[FakeObject(name='Extreme Performance',
                                              disk_count=10),
                                   FakeObject(name='Performance',
@@ -89,12 +92,13 @@ class MockUnitySystem(object):
                            size_free=1000000000000,
                            size_used=2000000000000,
                            ),
-                FakeObject(name='Shanghai',
+                FakeObject(id='pool_2',
                            size_total=0,
                            size_free=0,
                            size_used=0,
                            ),
-                FakeObject(name='Shenzhen',
+                FakeObject(id='pool_3',
+                           name='Shenzhen',
                            tiers=[FakeObject(name='Extreme Performance',
                                              disk_count=10),
                                   FakeObject(name='Performance',
@@ -187,7 +191,8 @@ class MockUnitySystem(object):
                 ]
 
     def get_disk(self):
-        return [FakeObject(name='DPE Drive 0',
+        return [FakeObject(id='dpe_drive_0',
+                           name='DPE Drive 0',
                            model='HU415606 EMC600',
                            emc_serial_number='0XG507BJ',
                            version='K7P0',
@@ -206,8 +211,9 @@ class MockUnitySystem(object):
                            write_byte_rate=206711.46666666667,
                            utilization=22.450302271134017,
                            ),
-                FakeObject(name='DPE Drive 1'),
-                FakeObject(name='DAE 0 1 Drive 0',
+                FakeObject(id='dpe_drive_1'),
+                FakeObject(id='dae_drive_0',
+                           name='DAE 0 1 Drive 0',
                            model='ST2000NK EMC2000',
                            emc_serial_number='Z4H027TW',
                            version='MN16',
@@ -226,7 +232,8 @@ class MockUnitySystem(object):
                            write_byte_rate=0,
                            utilization=0,
                            ),
-                FakeObject(name='DAE 0 1 Drive 1',
+                FakeObject(id='dae_drive_1',
+                           name='DAE 0 1 Drive 1',
                            model='ST2000NK EMC2000',
                            emc_serial_number='Z4H027TW',
                            version='MN16',
@@ -320,7 +327,8 @@ class MockUnitySystem(object):
                 FakeObject(id='spb_sas0')]
 
     def get_host(self):
-        return [FakeObject(name='ubuntu1604',
+        return [FakeObject(id='host_1',
+                           name='ubuntu1604',
                            ip_list=['10.207.84.27',
                                     '2620:0:170:1d34:a236:9fff:fe66:8960',
                                     '2620:0:170:1d36:a236:9fff:fe66:8960'],
@@ -337,8 +345,9 @@ class MockUnitySystem(object):
                            host_luns=[FakeObject(
                                lun=FakeObject(name='storops_dummy_lun'))],
                            ),
-                FakeObject(name='10.245.54.151'),
-                FakeObject(name='10.245.54.152',
+                FakeObject(id='host_2'),
+                FakeObject(id='host_3',
+                           name='10.245.54.152',
                            ip_list=[],
                            iscsi_host_initiators=[],
                            fc_host_initiators=[FakeObject(
@@ -348,7 +357,8 @@ class MockUnitySystem(object):
                            os_type='VMware ESXi 6.0.0',
                            host_luns=[],
                            ),
-                FakeObject(name='10.245.54.153',
+                FakeObject(id='host_4',
+                           name='10.245.54.153',
                            ip_list=[],
                            iscsi_host_initiators=[FakeObject(
                                initiator_id='iqn.1993-08.org.debian:01:b974'
@@ -356,7 +366,8 @@ class MockUnitySystem(object):
                            os_type='VMware ESXi 6.0.0',
                            host_luns=[],
                            ),
-                FakeObject(name='10.245.54.154',
+                FakeObject(id='host_5',
+                           name='10.245.54.154',
                            ip_list=[],
                            iscsi_host_initiators=[],
                            fc_host_initiators=[],
@@ -366,7 +377,8 @@ class MockUnitySystem(object):
                 ]
 
     def get_dae(self):
-        return [FakeObject(name='DAE 0 1',
+        return [FakeObject(id='dae_1',
+                           name='DAE 0 1',
                            model='ANCHO LF 12G SAS DAE',
                            emc_serial_number='CF22W145100058',
                            emc_part_number='100-900-000-04',
@@ -378,10 +390,12 @@ class MockUnitySystem(object):
                            avg_temperature=25,
                            max_temperature=30,
                            ),
-                FakeObject(name='DAE 0 2')]
+                FakeObject(id='dae_2',
+                           name='DAE 0 2')]
 
     def get_dpe(self):
-        return [FakeObject(name='DPE 1',
+        return [FakeObject(id='dpe_1',
+                           name='DPE 1',
                            model='OBERON 25 DRIVE CHASSIS',
                            emc_serial_number='CF2CV145000001',
                            emc_part_number='100-542-901-05',
@@ -393,7 +407,8 @@ class MockUnitySystem(object):
                            current_temperature=0,
                            avg_temperature=0,
                            max_temperature=0, ),
-                FakeObject(name='DPE 2',
+                FakeObject(id='dpe_2',
+                           name='DPE 2',
                            current_power='nan',
                            avg_power='nan',
                            max_power='nan',
@@ -402,7 +417,8 @@ class MockUnitySystem(object):
                            max_temperature='nan', )]
 
     def get_power_supply(self):
-        return [FakeObject(name='DPE Power Supply A0',
+        return [FakeObject(id='power_a',
+                           name='DPE Power Supply A0',
                            manufacturer='FLEXTRONICS POWER INC.',
                            model='12V P/S WITH 12VSTBY AND FAN',
                            firmware_version='0501',
@@ -412,34 +428,38 @@ class MockUnitySystem(object):
                            health=FakeObject(
                                value=FakeObject(name='OK')),
                            ),
-                FakeObject(name='DAE 0 1 Power Supply B0')]
+                FakeObject(id='power_b')]
 
     def get_fan(self):
-        return [FakeObject(name='DPE Cooling Module A0',
+        return [FakeObject(id='fan_a0',
+                           name='DPE Cooling Module A0',
                            slot_number=0,
                            parent_dpe=FakeObject(name='DPE'),
                            parent_dae=FakeObject(name='DAE 0 1'),
                            health=FakeObject(value=FakeObject(name='OK')),
                            ),
-                FakeObject(name='DPE Cooling Module A1',
+                FakeObject(id='fan_a1',
                            slot_number=0,
                            parent_dpe=FakeObject(name='DPE'),
                            health=FakeObject(value=FakeObject(name='OK')),
                            ),
-                FakeObject(name='DPE Cooling Module A2',
+                FakeObject(id='fan_a2',
+                           name='DPE Cooling Module A2',
                            slot_number=0,
                            parent_dae=FakeObject(name='DAE 0 1'),
                            health=FakeObject(value=FakeObject(name='OK')),
                            ),
-                FakeObject(name='DPE Cooling Module B1',
+                FakeObject(id='fan_b1',
+                           name='DPE Cooling Module B1',
                            slot_number=None,
                            )]
 
     def get_battery(self):
-        return [FakeObject(name='SP A Battery 0',
+        return [FakeObject(id='battery_spa',
+                           name='SP A Battery 0',
                            manufacturer='ACBEL POLYTECH INC.',
                            model='LITHIUM-ION, UNIVERSAL BOB',
                            firmware_version='073.91',
                            parent_storage_processor=FakeObject(name='SP A'),
                            health=FakeObject(value=FakeObject(name='OK')), ),
-                FakeObject(name='SP B Battery 0')]
+                FakeObject(id='battery_spb')]

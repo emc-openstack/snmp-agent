@@ -1,8 +1,8 @@
-class HostName(object):
+class HostId(object):
     def read_get(self, name, idx_name, unity_client):
-        return unity_client.get_host_name(idx_name)
+        return idx_name
 
 
-class HostNameColumn(object):
+class HostIdColumn(object):
     def get_idx(self, name, idx, unity_client):
         return unity_client.get_hosts()
