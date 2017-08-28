@@ -7,11 +7,12 @@ from snmpagent import exceptions as snmp_ex
 
 LOG = logging.getLogger(__name__)
 NONE_STRING = 'n/a'
+ERROR_NUMBER = -999
 
 
 def error_message(syntax):
     if isinstance(syntax, rfc1902.Integer32):
-        msg = -999
+        msg = ERROR_NUMBER
     if isinstance(syntax, rfc1902.OctetString):
         msg = NONE_STRING
 
