@@ -7,11 +7,11 @@ import tempfile
 
 import psutil
 
-from snmpagent import access, agent
-from snmpagent import config as snmp_config
-from snmpagent import exceptions as snmp_ex
+from snmpagent_unity import access, agent
+from snmpagent_unity import config as snmp_config
+from snmpagent_unity import exceptions as snmp_ex
 
-SERVICE_NAME = 'snmpagent'
+SERVICE_NAME = 'snmpagent-unity'
 
 LOG = logging.getLogger(__name__)
 
@@ -33,20 +33,24 @@ class BaseDaemon(object):
             try:
                 process = psutil.Process(pid=pid)
                 params = process.cmdline()
-                if SERVICE_NAME in params[1]:
-                    LOG.info(
+                if 'agentd.py' in params[1]:
+                    LOG.debug(
                         "The {} process(pid={}) is already "
                         "running.".format(SERVICE_NAME, pid))
-                    return True
+                    return process
             except psutil.NoSuchProcess:
                 LOG.debug(
                     "The {} process(pid={}) is not"
                     " running.".format(SERVICE_NAME, pid))
-        return False
+            else:
+                LOG.debug(
+                    "The process(pid={}) doesn't look like a {} service. "
+                    "Not stopping it.".format(pid, SERVICE_NAME))
+        return None
 
     @classmethod
     def get_pid_file(cls):
-        return tempfile.gettempdir() + '\\snmp-agent.pid'
+        return os.path.join(tempfile.gettempdir(), 'snmpagent-unity.pid')
 
     @classmethod
     def _launch_process(cls, conf_file):
@@ -75,23 +79,23 @@ class BaseDaemon(object):
 
     @classmethod
     def stop(cls):
-        pid_file = cls.get_pid_file()
-        if os.path.exists(pid_file) and os.path.isfile(pid_file):
-            with open(pid_file, 'r') as f:
-                pid = int(f.read().splitlines()[0])
-
+        process = cls.exists()
+        if process:
             try:
-                process = psutil.Process(pid=pid)
                 process.terminate()
                 LOG.info("Service {}(pid={}) stopped "
-                         "successfully.".format(SERVICE_NAME, pid))
-
+                         "successfully.".format(SERVICE_NAME, process.pid))
+                ret = 0
+                os.remove(cls.get_pid_file())
             except Exception as ex:
                 LOG.error(
                     "Unable to kill {}(pid={}) : {}".format(
-                        SERVICE_NAME, pid, ex))
+                        SERVICE_NAME, process.pid, ex))
+                ret = 1
         else:
-            LOG.debug("PID file %s does not exist, not started yet?")
+            LOG.info("Agent service does not exist, not started yet?")
+            ret = 1
+        return ret
 
 
 class LinuxDaemon(BaseDaemon):

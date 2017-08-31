@@ -1,10 +1,10 @@
 import logging
 import os
 
-import snmpagent
+import snmpagent_unity
 
-from snmpagent import config, enums, utils
-from snmpagent import exceptions as snmp_ex
+from snmpagent_unity import config, enums, utils
+from snmpagent_unity import exceptions as snmp_ex
 
 LOG = logging.getLogger(__file__)
 
@@ -43,7 +43,7 @@ def get_access_data_path():
 
     """
     data_folder = os.path.expanduser(
-        "~{}.{}".format(os.path.sep, snmpagent.SERVICE_NAME))
+        "~{}.{}".format(os.path.sep, snmpagent_unity.SERVICE_NAME))
     access_file = os.path.join(data_folder,
                                'access.db')
     # Make the directory

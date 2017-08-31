@@ -3,7 +3,7 @@ import logging
 from pyasn1.type import univ
 from pysnmp.proto import rfc1902
 from pysnmp.smi import error as pysnmp_ex
-from snmpagent import exceptions as snmp_ex
+from snmpagent_unity import exceptions as snmp_ex
 
 LOG = logging.getLogger(__name__)
 NONE_STRING = 'n/a'

@@ -3,9 +3,9 @@ import os
 import sys
 import threading
 
-from snmpagent import clients, enums, factory, mib_parser
-from snmpagent import config as snmp_config
-from snmpagent import utils
+from snmpagent_unity import clients, enums, factory, mib_parser
+from snmpagent_unity import config as snmp_config
+from snmpagent_unity import utils
 
 from pysnmp.carrier.asyncore import dispatch
 from pysnmp.carrier.asyncore.dgram import udp
@@ -153,7 +153,7 @@ class SNMPEngine(object):
             class_name = item.label[:1].upper() + item.label[1:]
 
             try:
-                mod = __import__("snmpagent.unity_impl." + class_name,
+                mod = __import__("snmpagent_unity.unity_impl." + class_name,
                                  fromlist=[item.label])
             except ImportError:
                 continue

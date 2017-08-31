@@ -4,7 +4,7 @@ import sys
 import tempfile
 from contextlib import contextmanager
 
-from snmpagent import clients
+from snmpagent_unity import clients
 
 from pysnmp.carrier.asyncore.dgram import udp
 from pysnmp.entity import engine
@@ -16,7 +16,7 @@ except ImportError:
 
 import ddt
 import mock
-from snmpagent.tests import mocks
+from snmpagent_unity.tests import mocks
 
 DEFAULT = mock.DEFAULT
 
@@ -35,7 +35,7 @@ def sys_argv(*ddt_data):
     return _dec
 
 
-access = mock.patch('snmpagent.access.Access')
+access = mock.patch('snmpagent_unity.access.Access')
 
 FAKE_ACCESS_FILE = os.path.join(os.path.dirname(__file__),
                                 'test_data', 'configs', 'access.db')
@@ -45,7 +45,7 @@ def patch_get_access_path(new_path=FAKE_ACCESS_FILE):
     def _inner(test_case):
         def func(*args, **kwargs):
             with mock.patch(
-                    'snmpagent.access.get_access_data_path',
+                    'snmpagent_unity.access.get_access_data_path',
                     new=mock.Mock(return_value=new_path)):
                 test_case(*args, **kwargs)
 
@@ -57,7 +57,8 @@ def patch_get_access_path(new_path=FAKE_ACCESS_FILE):
 def patch_config(config_type):
     def _dec(func):
         def _inner(test_clz, *args):
-            with mock.patch('snmpagent.config.' + config_type) as tmp_patch:
+            with mock.patch('snmpagent_unity.config.{}'.format(config_type)) \
+                    as tmp_patch:
                 mocked = mock.Mock()
                 tmp_patch.return_value = mocked
                 args = args + (mocked,)
@@ -66,6 +67,17 @@ def patch_config(config_type):
         return _inner
 
     return _dec
+
+
+def patch_get_pid_file(func):
+    def _inner(*args, **kwargs):
+        with mock.patch('snmpagent_unity.agentd.BaseDaemon.get_pid_file') \
+                as fake:
+            fake.return_value = os.path.join(tempfile.gettempdir(),
+                                             "fake_snmpagent.pid")
+            return func(*args, **kwargs)
+
+    return _inner
 
 
 class FakePopen(object):
@@ -80,12 +92,12 @@ class FakePopen(object):
 
 agent_config = patch_config('AgentConfig')
 user_config = patch_config('UserConfig')
-agent_config_entry = mock.patch('snmpagent.config.AgentConfigEntry')
-user_v3_entry = mock.patch('snmpagent.config.UserV3ConfigEntry')
-user_v2_entry = mock.patch('snmpagent.config.UserV2ConfigEntry')
+agent_config_entry = mock.patch('snmpagent_unity.config.AgentConfigEntry')
+user_v3_entry = mock.patch('snmpagent_unity.config.UserV3ConfigEntry')
+user_v2_entry = mock.patch('snmpagent_unity.config.UserV2ConfigEntry')
 
-unity_client = mock.patch('snmpagent.clients.UnityClient')
-unity_system = mock.patch(target='snmpagent.clients.storops.UnitySystem',
+unity_client = mock.patch('snmpagent_unity.clients.UnityClient')
+unity_system = mock.patch(target='snmpagent_unity.clients.storops.UnitySystem',
                           new=mocks.MockUnitySystem)
 
 mock_engine = mock.patch.multiple(engine.SnmpEngine,
@@ -94,10 +106,10 @@ mock_client = mock.patch.multiple(clients.UnityClient,
                                   get_unity_client=DEFAULT)
 mock_udp = mock.patch.multiple(udp.UdpTransport, openServerMode=DEFAULT)
 
-add_transport = mock.patch('snmpagent.agent.config.addTransport')
-add_v1_system = mock.patch('snmpagent.agent.config.addV1System')
-add_v3_user = mock.patch('snmpagent.agent.config.addV3User')
-add_vacm_user = mock.patch('snmpagent.agent.config.addVacmUser')
+add_transport = mock.patch('snmpagent_unity.agent.config.addTransport')
+add_v1_system = mock.patch('snmpagent_unity.agent.config.addV1System')
+add_v3_user = mock.patch('snmpagent_unity.agent.config.addV3User')
+add_vacm_user = mock.patch('snmpagent_unity.agent.config.addVacmUser')
 
 subprocess = mock.patch('subprocess.Popen', new_callable=FakePopen)
 psutil_process = mock.patch('psutil.Process')

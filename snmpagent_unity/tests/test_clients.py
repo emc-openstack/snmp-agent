@@ -1,8 +1,8 @@
 import unittest
 
 import ddt
-from snmpagent import clients
-from snmpagent.tests import patches
+from snmpagent_unity import clients
+from snmpagent_unity.tests import patches
 
 NONE_STRING = 'n/a'
 

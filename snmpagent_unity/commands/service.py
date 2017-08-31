@@ -1,7 +1,7 @@
 import logging
 
-from snmpagent import agentd, utils
-from snmpagent.commands import base
+from snmpagent_unity import agentd, utils
+from snmpagent_unity.commands import base
 
 
 def get_log_handlers():
@@ -22,13 +22,13 @@ class Start(base.BaseCommand):
 Dell-EMC SNMP agent: starts the SNMP agent.
 
 usage:
-    snmpagent start --conf_file <conf_file>
+    snmpagent-unity start --conf_file <conf_file>
 
 options:
     --conf_file <conf_file>     the agent configuration file path
 
 examples:
-    snmpagent start --conf_file /tmp/agent.conf
+    snmpagent-unity start --conf_file /tmp/agent.conf
     """
     name = 'start'
     log_to_stdout = True
@@ -43,10 +43,10 @@ class Stop(base.BaseCommand):
 Dell-EMC SNMP agent: stops the SNMP agent.
 
 usage:
-    snmpagent stop
+    snmpagent-unity stop
 
 examples:
-    snmpagent stop
+    snmpagent-unity stop
     """
     name = 'stop'
     log_to_stdout = True
@@ -61,13 +61,13 @@ class Restart(base.BaseCommand):
 Dell-EMC SNMP agent: restarts the SNMP agent.
 
 usage:
-    snmpagent restart --conf_file <conf_file>
+    snmpagent-unity restart --conf_file <conf_file>
 
 options:
     --conf_file <conf_file>     the agent configuration file path
 
 examples:
-    snmpagent restart --conf_file /tmp/agent.conf
+    snmpagent-unity restart --conf_file /tmp/agent.conf
     """
     name = 'restart'
     log_to_stdout = True

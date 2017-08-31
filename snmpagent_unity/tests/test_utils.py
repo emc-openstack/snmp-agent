@@ -1,7 +1,7 @@
 import unittest
 
 import tempfile
-from snmpagent import utils
+from snmpagent_unity import utils
 
 
 class TestUtils(unittest.TestCase):

@@ -1,9 +1,9 @@
 import docopt
 
-from snmpagent import access, enums
-from snmpagent import exceptions as snmp_ex
-from snmpagent import utils
-from snmpagent.commands import base
+from snmpagent_unity import access, enums
+from snmpagent_unity import exceptions as snmp_ex
+from snmpagent_unity import utils
+from snmpagent_unity.commands import base
 
 
 def get_args(args):
@@ -22,7 +22,7 @@ class AddUser(base.BaseCommand):
 Dell-EMC SNMP agent: adds a v3 user.
 
 usage:
-    snmpagent add-user --name <name> --auth <auth_protocol> --auth_key \
+    snmpagent-unity add-user --name <name> --auth <auth_protocol> --auth_key \
 <auth_key> [--priv <priv_protocol>] [--priv_key <priv_key>]
 
 options:
@@ -35,7 +35,7 @@ options:
 (length: 8 to 24 characters)
 
 examples:
-    snmpagent add-user --name user_1 --auth md5 --auth_key authkey123 \
+    snmpagent-unity add-user --name user_1 --auth md5 --auth_key authkey123 \
 --priv des --priv_key privkey123
     """
     name = 'add-user'
@@ -69,7 +69,7 @@ class UpdateUser(base.BaseCommand):
 Dell-EMC SNMP agent: updates the info of a v3 user.
 
 usage:
-    snmpagent update-user --name <name> [--auth <auth_protocol>] \
+    snmpagent-unity update-user --name <name> [--auth <auth_protocol>] \
 [--auth_key <auth_key>] [--priv <priv_protocol>] [--priv_key <priv_key>]
 
 options:
@@ -82,8 +82,8 @@ options:
 (length: 8 to 24 characters)
 
 examples:
-    snmpagent update-user --name user_1 --auth md5 --auth_key authkey123 \
---priv des --priv_key privkey123
+    snmpagent-unity update-user --name user_1 --auth md5 --auth_key \
+authkey123 --priv des --priv_key privkey123
     """
     name = 'update-user'
 
@@ -119,13 +119,13 @@ class DeleteUser(base.BaseCommand):
 Dell-EMC SNMP agent: deletes a v3 user.
 
 usage:
-    snmpagent delete-user --name <name>
+    snmpagent-unity delete-user --name <name>
 
 options:
     --name <name>               the user name
 
 examples:
-    snmpagent delete-user --name user_1
+    snmpagent-unity delete-user --name user_1
     """
     name = 'delete-user'
 
@@ -139,10 +139,10 @@ class ListUsers(base.BaseCommand):
 Dell-EMC SNMP agent: lists all the users, including the v2 community access.
 
 usage:
-    snmpagent list-users
+    snmpagent-unity list-users
 
 examples:
-    snmpagent list-users
+    snmpagent-unity list-users
     """
     name = 'list-users'
 

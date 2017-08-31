@@ -6,7 +6,7 @@ import unittest
 
 import ddt
 
-from snmpagent import cipher
+from snmpagent_unity import cipher
 
 
 @ddt.ddt

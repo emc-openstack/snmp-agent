@@ -1,9 +1,9 @@
 """
-Dell-EMC SNMP agent.
+Dell EMC Unity SNMP Off-Array Agent.
 
 usage:
-    snmpagent [-hV --log_file <log_file> --log_level <log_level>] <command> \
-[<args>...]
+    snmpagent-unity [-hV --log_file <log_file> --log_level <log_level>] \
+<command> [<args>...]
 
 options:
     -h --help               shows the help, could be used for commands.
@@ -25,19 +25,19 @@ supported commands:
     restart                 restarts the snmp agent daemon
 
 examples:
-    snmpagent --help
-    snmpagent add-user --help
+    snmpagent-unity --help
+    snmpagent-unity add-user --help
 """
 
 import docopt
 
-import snmpagent
-from snmpagent import commands
+import snmpagent_unity
+from snmpagent_unity import commands
 
 
 def main():
     """Main cli entry point for distributing cli commands."""
-    args = docopt.docopt(__doc__, version=snmpagent.__version__,
+    args = docopt.docopt(__doc__, version=snmpagent_unity.__version__,
                          options_first=True, help=True)
     cmd_name = args.pop('<command>')
     cmd_args = args.pop('<args>')

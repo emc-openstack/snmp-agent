@@ -1,8 +1,8 @@
 import collections
 import unittest
 
-from snmpagent import agent, enums
-from snmpagent.tests import patches
+from snmpagent_unity import agent, enums
+from snmpagent_unity.tests import patches
 
 SERVICE_ID_MD5 = (1, 3, 6, 1, 6, 3, 10, 1, 1, 2)
 SERVICE_ID_SHA = (1, 3, 6, 1, 6, 3, 10, 1, 1, 3)

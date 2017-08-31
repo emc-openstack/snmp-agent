@@ -1,8 +1,8 @@
 import unittest
 
 import ddt
-from snmpagent.tests import patches
-from snmpagent.unity_impl import AgentVersion, AveragePower, \
+from snmpagent_unity.tests import patches
+from snmpagent_unity.unity_impl import AgentVersion, AveragePower, \
     BackendPortCurrentSpeed, BackendPortId, BackendPortName, \
     BackendPortParentIoModule, BackendPortParentStorageProcessor, \
     BackendPortPortNumber, BackendPortReadBandwidth, \

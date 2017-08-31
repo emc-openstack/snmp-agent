@@ -2,7 +2,7 @@
 import unittest
 
 import mock
-from snmpagent import factory
+from snmpagent_unity import factory
 
 from pysnmp.proto import rfc1902
 
@@ -38,7 +38,7 @@ class TestScalarInstanceFactory(unittest.TestCase):
         self.inst_oid = (3, 97, 98, 99)
         self.unity_client = 'FakeUnityClient'
 
-    @mock.patch('snmpagent.agent.engine.SnmpEngine')
+    @mock.patch('snmpagent_unity.agent.engine.SnmpEngine')
     def test_build_string_scalar_instance_class(self, snmp_engine):
         class_name = 'FakeAgentVersion'
         base_class = FakeStringMibScalarInstance
@@ -76,7 +76,7 @@ class TestScalarInstanceFactory(unittest.TestCase):
         self.assertEqual(result[1]._value, AGENT_VERSION)
         self.assertEqual(snmp_engine.unity_client, self.unity_client)
 
-    @mock.patch('snmpagent.agent.engine.SnmpEngine')
+    @mock.patch('snmpagent_unity.agent.engine.SnmpEngine')
     def test_build_integer_scalar_instance_class(self, snmp_engine):
         class_name = 'FakeNumberOfDisk'
         base_class = FakeIntegerMibScalarInstance
@@ -114,7 +114,7 @@ class TestScalarInstanceFactory(unittest.TestCase):
         self.assertEqual(result[1]._value, NUMBER_OF_DISK)
         self.assertEqual(snmp_engine.unity_client, self.unity_client)
 
-    @mock.patch('snmpagent.agent.engine.SnmpEngine')
+    @mock.patch('snmpagent_unity.agent.engine.SnmpEngine')
     def test_failed_to_build_string_scalar_instance_class(self, snmp_engine):
         class_name = 'FakeAgentVersion'
         base_class = FakeStringMibScalarInstance
@@ -152,7 +152,7 @@ class TestScalarInstanceFactory(unittest.TestCase):
         self.assertEqual(result[1]._value, NONE_STRING)
         self.assertEqual(snmp_engine.unity_client, None)
 
-    @mock.patch('snmpagent.agent.engine.SnmpEngine')
+    @mock.patch('snmpagent_unity.agent.engine.SnmpEngine')
     def test_failed_to_build_integer_scalar_instance_class(self, snmp_engine):
         class_name = 'FakeNumberOfDisk'
         base_class = FakeIntegerMibScalarInstance
@@ -190,7 +190,7 @@ class TestScalarInstanceFactory(unittest.TestCase):
         self.assertEqual(result[1]._value, ERROR_NUMBER)
         self.assertEqual(snmp_engine.unity_client, None)
 
-    @mock.patch('snmpagent.agent.engine.SnmpEngine')
+    @mock.patch('snmpagent_unity.agent.engine.SnmpEngine')
     def test_failed_to_reconnect_unity(self, snmp_engine):
         class_name = 'FakeAgentVersion'
         base_class = FakeStringMibScalarInstance
@@ -252,7 +252,7 @@ class TestScalarInstanceFactory(unittest.TestCase):
 #         # self.inst_oid = (3, 97, 98, 99)
 #         # self.unity_client = 'FakeUnityClient'
 #
-#     @mock.patch('snmpagent.agent.engine.SnmpEngine')
+#     @mock.patch('snmpagent_unity.agent.engine.SnmpEngine')
 #     def test_build_column_instance_class(self, snmp_engine):
 #         class_name = 'FakeDiskName'
 #         base_class = FakeMibTableColumn

@@ -1,6 +1,6 @@
-from snmpagent import access
-from snmpagent.commands import base
-from snmpagent import utils
+from snmpagent_unity import access
+from snmpagent_unity.commands import base
+from snmpagent_unity import utils
 
 
 class CreateCommunity(base.BaseCommand):
@@ -8,13 +8,13 @@ class CreateCommunity(base.BaseCommand):
 Dell-EMC SNMP agent: creates a v2 community public access.
 
 usage:
-    snmpagent create-community --name <name>
+    snmpagent-unity create-community --name <name>
 
 options:
     --name <name>               the user name
 
 examples:
-    snmpagent create-community --name user_1
+    snmpagent-unity create-community --name user_1
     """
     name = 'create-community'
 
@@ -29,13 +29,13 @@ class DeleteCommunity(base.BaseCommand):
 Dell-EMC SNMP agent: deletes a v2 community access.
 
 usage:
-    snmpagent delete-community --name <name>
+    snmpagent-unity delete-community --name <name>
 
 options:
     --name <name>               the user name
 
 examples:
-    snmpagent delete-community --name user_1
+    snmpagent-unity delete-community --name user_1
     """
     name = 'delete-community'
 

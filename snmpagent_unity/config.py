@@ -4,8 +4,8 @@ import os
 import logging
 
 from six.moves import configparser
-from snmpagent import cipher, enums, utils
-from snmpagent import exceptions as snmp_ex
+from snmpagent_unity import cipher, enums, utils
+from snmpagent_unity import exceptions as snmp_ex
 
 LOG = logging.getLogger(__file__)
 

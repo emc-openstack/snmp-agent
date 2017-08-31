@@ -1,5 +1,5 @@
 import docopt
-from snmpagent import utils
+from snmpagent_unity import utils
 
 
 class BaseCommand(object):

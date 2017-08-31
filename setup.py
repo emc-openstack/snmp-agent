@@ -9,26 +9,25 @@ def read(filename):
         return f.read()
 
 
-NAME = 'snmpagent'
+COMMAND_NAME = 'snmpagent-unity'
 
 
 setup(
-    name=NAME,
-    version=__import__(NAME).__version__,
+    name=COMMAND_NAME,
+    version=__import__('snmpagent_unity').__version__,
     description=(
-        'Dell-EMC SNMP agent.'
+        'Dell EMC Unity SNMP Off-Array Agent.'
     ),
     long_description=read('README.rst'),
-    author='Ryan Liang',
-    author_email='ryan.liang@dell.com',
-    maintainer='Ryan Liang',
-    maintainer_email='ryan.liang@dell.com',
+    author='Yong Huang',
+    author_email='yong.huang@dell.com',
+    maintainer='Yong Huang',
+    maintainer_email='yong.huang@dell.com',
     license='Apache Software License',
-    packages=find_packages(exclude=('snmpagent.tests',)),
-    package_dir={NAME: NAME},
-    package_data={NAME: ['configs/*.conf']},
+    package_data={'snmpagent_unity': ['mib_files/*']},
+    packages=find_packages(exclude=('snmpagent_unity.tests',)),
     platforms=["all"],
-    url='http://github.com/emc-openstack/{}'.format(NAME),
+    url='http://github.com/emc-openstack/{}'.format(COMMAND_NAME),
     classifiers=[
         'Development Status :: 4 - Beta',
         'Operating System :: OS Independent',
@@ -49,7 +48,7 @@ setup(
     tests_require=read('./test-requirements.txt').splitlines(),
     entry_points={
         'console_scripts': [
-            '{name}={name}.cli:main'.format(name=NAME),
+            '{}=snmpagent_unity.cli:main'.format('snmpagent-unity'),
         ],
     },
     scripts=[],

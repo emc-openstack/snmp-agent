@@ -1,4 +1,4 @@
-from snmpagent.commands import user, community, crypto, service
+from snmpagent_unity.commands import user, community, crypto, service
 
 CMD = [user.AddUser, user.UpdateUser, user.DeleteUser, user.ListUsers,
        community.CreateCommunity, community.DeleteCommunity,

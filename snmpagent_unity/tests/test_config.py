@@ -4,8 +4,8 @@ from __future__ import unicode_literals
 
 import unittest
 
-from snmpagent import config, cipher
-from snmpagent.tests import patches, utils
+from snmpagent_unity import config, cipher
+from snmpagent_unity.tests import patches, utils
 
 
 class TestConfig(unittest.TestCase):

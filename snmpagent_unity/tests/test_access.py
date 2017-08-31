@@ -6,10 +6,10 @@ import mock
 import os
 import tempfile
 
-import snmpagent
-from snmpagent import access, config, enums
-from snmpagent import exceptions as snmp_ex
-from snmpagent.tests import patches
+import snmpagent_unity
+from snmpagent_unity import access, config, enums
+from snmpagent_unity import exceptions as snmp_ex
+from snmpagent_unity.tests import patches
 
 
 @ddt.ddt
@@ -218,7 +218,7 @@ user_4
 
     def test_get_access_path_create_dir(self):
         temp_path = os.path.join(tempfile.gettempdir(),
-                                 '.{}'.format(snmpagent.SERVICE_NAME))
+                                 '.{}'.format(snmpagent_unity.SERVICE_NAME))
         if os.path.exists(os.path.join(temp_path, 'access.db')):
             os.remove(os.path.join(temp_path, 'access.db'))
         if os.path.isdir(temp_path):

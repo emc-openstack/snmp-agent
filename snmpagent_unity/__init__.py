@@ -3,4 +3,4 @@
 """
 __version__ = '0.1.0'
 
-SERVICE_NAME = 'snmpagent'
+SERVICE_NAME = 'snmpagent-unity'

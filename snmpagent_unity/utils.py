@@ -3,7 +3,7 @@ import logging
 from logging import handlers
 
 
-from snmpagent import exceptions as snmp_ex
+from snmpagent_unity import exceptions as snmp_ex
 
 
 def enum(enum_clz, value):
@@ -12,7 +12,7 @@ def enum(enum_clz, value):
     return enum_clz.from_str(value) if value else None
 
 
-def setup_log(log_file_path='snmpagent.log', level=None,
+def setup_log(log_file_path='snmpagent-unity.log', level=None,
               log_to_stdout=True, max_bytes=104857600, max_file_count=5):
     if level:
         level = getattr(logging, level.upper(), None)
