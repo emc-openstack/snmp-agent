@@ -2,7 +2,10 @@ import collections
 import unittest
 
 from snmpagent_unity import agent, enums
+from snmpagent_unity import exceptions as snmp_ex
 from snmpagent_unity.tests import patches
+
+from pysnmp.smi import error as smi_ex
 
 SERVICE_ID_MD5 = (1, 3, 6, 1, 6, 3, 10, 1, 1, 2)
 SERVICE_ID_SHA = (1, 3, 6, 1, 6, 3, 10, 1, 1, 3)
@@ -157,11 +160,22 @@ class TestEngine(unittest.TestCase):
     @patches.mock_client
     @patches.mock_udp
     @patches.add_transport
+    def test_create_engine_without_user(self, *args, **kwargs):
+        array_config = self.agent_config_entry
+        access_config = collections.OrderedDict()
+
+        self.assertRaises(snmp_ex.NoUserExistsError, agent.SNMPEngine,
+                          array_config, access_config)
+
+    @patches.mock_engine
+    @patches.mock_client
+    @patches.mock_udp
+    @patches.add_transport
     @patches.add_vacm_user
     @patches.add_v3_user
     @patches.add_v1_system
-    def test_create_engine_with_invalid_user(self, add_v1_system,
-                                             *args, **kwargs):
+    def test_create_engine_with_invalid_community(self, add_v1_system,
+                                                  *args, **kwargs):
         array_config = self.agent_config_entry
 
         user_v2 = self.user_v2_entry
@@ -171,7 +185,7 @@ class TestEngine(unittest.TestCase):
         access_config[user_v2.name] = user_v2
         access_config[user_v3.name] = user_v3
 
-        add_v1_system.side_effect = Exception('err')
+        add_v1_system.side_effect = smi_ex.WrongValueError
 
         snmp_engine = agent.SNMPEngine(array_config, access_config)
 
@@ -193,7 +207,8 @@ class TestEngine(unittest.TestCase):
     @patches.add_vacm_user
     @patches.add_v3_user
     @patches.add_v1_system
-    def test_create_engine_failed_to_connect_unity(self, *args, **kwargs):
+    def test_create_engine_with_invalid_user(self, add_v1_system, add_v3_user,
+                                             *args, **kwargs):
         array_config = self.agent_config_entry
 
         user_v2 = self.user_v2_entry
@@ -203,14 +218,14 @@ class TestEngine(unittest.TestCase):
         access_config[user_v2.name] = user_v2
         access_config[user_v3.name] = user_v3
 
-        kwargs['get_unity_client'].side_effect = Exception('err')
+        add_v3_user.side_effect = smi_ex.WrongValueError
 
         snmp_engine = agent.SNMPEngine(array_config, access_config)
 
         self.assertEqual(snmp_engine.ip, array_config.agent_ip)
         self.assertEqual(snmp_engine.port, int(array_config.agent_port))
         self.assertEqual(snmp_engine.engine.parent, snmp_engine)
-        self.assertEqual(snmp_engine.engine.unity_client, None)
+        self.assertNotEqual(snmp_engine.engine.unity_client, None)
         self.assertEqual(len(snmp_engine.engine.msgAndPduDsp.
                              mibInstrumController.mibBuilder.
                              mibSymbols['Unity-MIB']), 187)

@@ -46,5 +46,9 @@ class UserInvalidProtocolError(UserException):
     pass
 
 
+class NoUserExistsError(UserException):
+    pass
+
+
 class NotSupportedPlatformError(SNMPAgentException):
     pass

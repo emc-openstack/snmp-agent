@@ -64,16 +64,6 @@ class MockUnitySystem(object):
                 FakeObject(id='spc',
                            name='SP C',
                            health=FakeObject(value=FakeObject()),
-                           utilization='na',
-                           block_total_iops='na',
-                           block_read_iops='na',
-                           block_write_iops='na',
-                           total_byte_rate='na',
-                           read_byte_rate='na',
-                           write_byte_rate='na',
-                           block_cache_dirty_size='na',
-                           block_cache_read_hit_ratio='na',
-                           block_cache_write_hit_ratio='na'
                            )
                 ]
 
@@ -101,14 +91,10 @@ class MockUnitySystem(object):
                            name='Shenzhen',
                            tiers=[FakeObject(name='Extreme Performance',
                                              disk_count=10),
-                                  FakeObject(name='Performance',
-                                             disk_count='na'),
+                                  FakeObject(name='Performance'),
                                   ],
                            raid_type=FakeObject(name='RAID5'),
                            is_fast_cache_enabled=False,
-                           size_total='na',
-                           size_free='na',
-                           size_used='na',
                            )]
 
     def get_lun(self):

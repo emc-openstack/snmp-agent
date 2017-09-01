@@ -3,11 +3,30 @@ import math
 from functools import wraps, partial
 
 import six
+import snmpagent_unity
 
 import storops
 
+try:
+    import urllib3
+
+    urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+except:
+    pass
+
 LOG = logging.getLogger(__name__)
+
+# error string/number
 NONE_STRING = 'n/a'
+ERROR_NUMBER = -999
+
+# frontend port types
+FC_PORT_TYPE = 'fc_port_'
+ISCSI_PORT_TYPE = 'iscsi_port_'
+
+# enclosure types
+DAE_TYPE = 'dae_'
+DPE_TYPE = 'dpe_'
 
 
 def to_string(func):
@@ -16,17 +35,17 @@ def to_string(func):
         try:
             result = func(*args, **kwargs)
             if result != '':
-                rst = str(result)
+                if result == ERROR_NUMBER:
+                    rst = NONE_STRING
+                elif isinstance(result, (int, float, bool, type(None))):
+                    rst = str(result)
+                else:
+                    rst = result
             else:
-                # rst = snmp_ex.UnityResponseError('Result: {}'.format(result))
                 rst = NONE_STRING
 
-        # except snmp_ex.UnityException:
-        #     raise
-
-        except Exception:
-            # raise snmp_ex.UnityResponseError('{}: {}'
-            # .format(e.__class__.__name__, e))
+        except AttributeError as exc:
+            LOG.debug(exc)
             rst = NONE_STRING
 
         return rst
@@ -45,22 +64,17 @@ def to_number(func=None, length=3):
             if isinstance(result, six.integer_types):
                 rst = result
             elif isinstance(result, str) and result.lower() == 'nan':
-                rst = NONE_STRING
+                rst = ERROR_NUMBER
             elif isinstance(result, float):
                 if math.isnan(result):
-                    rst = NONE_STRING
+                    rst = ERROR_NUMBER
                 else:
                     rst = round(result, length)
             else:
-                # raise snmp_ex.UnityResponseError('Result: {}'.format(result))
                 rst = 0
 
-        # except snmp_ex.UnityException:
-        #     raise
-
-        except Exception:
-            # raise snmp_ex.UnityResponseError(
-            #     '{}: {}'.format(e.__class__.__name__, e))
+        except (AttributeError, ZeroDivisionError) as exc:
+            LOG.debug(exc)
             rst = 0
 
         return rst
@@ -156,7 +170,7 @@ class UnityClient(object):
     # system
     @to_string
     def get_agent_version(self):
-        return "1.0"
+        return snmpagent_unity.__version__
 
     @to_string
     def get_mib_version(self):
@@ -381,7 +395,10 @@ class UnityClient(object):
     @to_string
     def get_pool_disk_types(self, id):
         pool = self._get_pool(id)
-        return ', '.join(x.name for x in pool.tiers)
+        if hasattr(pool, 'tiers') and pool.tiers:
+            return ', '.join(x.name for x in pool.tiers)
+        else:
+            return NONE_STRING
 
     @to_string
     def get_pool_raid_levels(self, id):
@@ -397,7 +414,10 @@ class UnityClient(object):
     @to_number
     def get_pool_number_of_disk(self, id):
         pool = self._get_pool(id)
-        return sum(x.disk_count for x in pool.tiers)
+        if hasattr(pool, 'tiers') and pool.tiers:
+            return sum(x.disk_count for x in pool.tiers)
+        else:
+            return 0
 
     @to_string
     @to_number
@@ -424,7 +444,10 @@ class UnityClient(object):
     @to_number
     def get_pool_size_ultilization(self, id):
         pool = self._get_pool(id)
-        return float(pool.size_used) / float(pool.size_total)
+        try:
+            return float(pool.size_used) / float(pool.size_total)
+        except ZeroDivisionError:
+            return 0
 
     # volumeTable
     def get_luns(self):
@@ -562,9 +585,8 @@ class UnityClient(object):
     @to_string
     def get_lun_host_access(self, id):
         lun = self._get_lun(id)
-        host_list = [x.host.name for x in lun.host_access]
-        if host_list:
-            return ', '.join(host_list)
+        if hasattr(lun, 'host_access') and lun.host_access:
+            return ', '.join(x.host.name for x in lun.host_access)
         else:
             return NONE_STRING
 
@@ -681,25 +703,22 @@ class UnityClient(object):
         return disk.utilization
 
     # frontendPortTable
-    FC_PORT_TYPE = 'fc_port_'
-    ISCSI_PORT_TYPE = 'iscsi_port_'
-
     def get_frontend_ports(self):
-        fc_ports = [self.FC_PORT_TYPE + port.id for port in
+        fc_ports = [FC_PORT_TYPE + port.id for port in
                     self.unity_system.get_fc_port()]
-        iscsi_ports = [self.ISCSI_PORT_TYPE + port.id for port in
+        iscsi_ports = [ISCSI_PORT_TYPE + port.id for port in
                        self.unity_system.get_iscsi_node()]
         return fc_ports + iscsi_ports
 
     def _get_frontend_port(self, id):
-        if id.startswith(self.FC_PORT_TYPE):
-            id = id.replace(self.FC_PORT_TYPE, '', 1)
+        if id.startswith(FC_PORT_TYPE):
+            id = id.replace(FC_PORT_TYPE, '', 1)
             return self._get_item(self.unity_system.get_fc_port(),
-                                  id=id), self.FC_PORT_TYPE
-        if id.startswith(self.ISCSI_PORT_TYPE):
-            id = id.replace(self.ISCSI_PORT_TYPE, '', 1)
+                                  id=id), FC_PORT_TYPE
+        if id.startswith(ISCSI_PORT_TYPE):
+            id = id.replace(ISCSI_PORT_TYPE, '', 1)
             return self._get_item(self.unity_system.get_iscsi_node(),
-                                  id=id), self.ISCSI_PORT_TYPE
+                                  id=id), ISCSI_PORT_TYPE
 
     @to_string
     def get_frontend_port_id(self, id):
@@ -714,9 +733,9 @@ class UnityClient(object):
     @to_string
     def get_frontend_port_address(self, id):
         port, type = self._get_frontend_port(id)
-        if type == self.FC_PORT_TYPE:
+        if type == FC_PORT_TYPE:
             return NONE_STRING
-        if type == self.ISCSI_PORT_TYPE:
+        if type == ISCSI_PORT_TYPE:
             ip_list = [portal.ip_address for portal in
                        self.unity_system.get_iscsi_portal() if
                        portal.iscsi_node.id == port.id]
@@ -729,34 +748,41 @@ class UnityClient(object):
     @to_string
     def get_frontend_port_type(self, id):
         port, type = self._get_frontend_port(id)
-        if type == self.FC_PORT_TYPE:
+        if type == FC_PORT_TYPE:
             return port.connector_type.name
-        if type == self.ISCSI_PORT_TYPE:
+        if type == ISCSI_PORT_TYPE:
             return port.ethernet_port.connector_type.name
 
     @to_string
     def get_frontend_port_current_speed(self, id):
         port, type = self._get_frontend_port(id)
-        if type == self.FC_PORT_TYPE:
+        if type == FC_PORT_TYPE:
             return port.current_speed.name
-        if type == self.ISCSI_PORT_TYPE:
+        if type == ISCSI_PORT_TYPE:
             return port.ethernet_port.speed.name
 
     @to_string
     def get_frontend_port_supported_speed(self, id):
         port, type = self._get_frontend_port(id)
-        if type == self.FC_PORT_TYPE:
-            return ', '.join(x.name for x in port.available_speeds)
-        if type == self.ISCSI_PORT_TYPE:
-            return ', '.join(
-                x.name for x in port.ethernet_port.supported_speeds)
+        if type == FC_PORT_TYPE:
+            if hasattr(port, 'available_speeds') and port.available_speeds:
+                return ', '.join(x.name for x in port.available_speeds)
+            else:
+                return NONE_STRING
+        if type == ISCSI_PORT_TYPE:
+            if hasattr(port.ethernet_port, 'supported_speeds') and \
+                    port.ethernet_port.supported_speeds:
+                return ', '.join(
+                    x.name for x in port.ethernet_port.supported_speeds)
+            else:
+                return NONE_STRING
 
     @to_string
     def get_frontend_port_health_status(self, id):
         port, type = self._get_frontend_port(id)
-        if type == self.FC_PORT_TYPE:
+        if type == FC_PORT_TYPE:
             return port.health.value.name
-        if type == self.ISCSI_PORT_TYPE:
+        if type == ISCSI_PORT_TYPE:
             return port.ethernet_port.health.value.name
 
     @to_string
@@ -879,7 +905,7 @@ class UnityClient(object):
     @to_string
     def get_host_network_address(self, id):
         host = self._get_host(id)
-        if host.ip_list:
+        if hasattr(host, 'ip_list') and host.ip_list:
             return ', '.join(host.ip_list)
         else:
             return NONE_STRING
@@ -908,28 +934,25 @@ class UnityClient(object):
     @to_string
     def get_host_assigned_volumes(self, id):
         host = self._get_host(id)
-        if host.host_luns:
+        if hasattr(host, 'host_luns') and host.host_luns:
             return ', '.join(x.lun.name for x in host.host_luns)
         else:
             return NONE_STRING
 
     # enclosureTable
-    DAE_TYPE = 'dae_'
-    DPE_TYPE = 'dpe_'
-
     def get_enclosures(self):
-        daes = [self.DAE_TYPE + dae.id for dae in
+        daes = [DAE_TYPE + dae.id for dae in
                 self.unity_system.get_dae()]
-        dpes = [self.DPE_TYPE + dpe.id for dpe in
+        dpes = [DPE_TYPE + dpe.id for dpe in
                 self.unity_system.get_dpe()]
         return daes + dpes
 
     def _get_enclosure(self, id):
-        if id.startswith(self.DAE_TYPE):
-            id = id.replace(self.DAE_TYPE, '', 1)
+        if id.startswith(DAE_TYPE):
+            id = id.replace(DAE_TYPE, '', 1)
             return self._get_item(self.unity_system.get_dae(), id=id)
-        if id.startswith(self.DPE_TYPE):
-            id = id.replace(self.DPE_TYPE, '', 1)
+        if id.startswith(DPE_TYPE):
+            id = id.replace(DPE_TYPE, '', 1)
             return self._get_item(self.unity_system.get_dpe(), id=id)
 
     @to_string

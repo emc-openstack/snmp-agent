@@ -1,6 +1,7 @@
 import unittest
 
 import ddt
+import snmpagent_unity
 from snmpagent_unity import clients
 from snmpagent_unity.tests import patches
 
@@ -15,7 +16,8 @@ class TestUnityClient(unittest.TestCase):
 
     # system
     def test_get_agent_version(self):
-        self.assertEqual('1.0', self.client.get_agent_version())
+        self.assertEqual(snmpagent_unity.__version__,
+                         self.client.get_agent_version())
 
     def test_get_mib_version(self):
         self.assertEqual('1.0', self.client.get_mib_version())

@@ -5,6 +5,7 @@ import threading
 
 from snmpagent_unity import clients, enums, factory, mib_parser
 from snmpagent_unity import config as snmp_config
+from snmpagent_unity import exceptions as snmp_ex
 from snmpagent_unity import utils
 
 from pysnmp.carrier.asyncore import dispatch
@@ -12,6 +13,7 @@ from pysnmp.carrier.asyncore.dgram import udp
 from pysnmp.entity import engine, config
 from pysnmp.entity.rfc3413 import cmdrsp, context
 from pysnmp.smi import builder as snmp_builder
+from pysnmp.smi import error as smi_ex
 
 READ_SUB_TREE = (1, 3, 6, 1, 4, 1, 1139, 103)
 WRITE_SUB_TREE = READ_SUB_TREE
@@ -60,14 +62,18 @@ class SNMPEngine(object):
                         enums.PrivProtocol.AES: config.usmAesCfb128Protocol,
                         None: config.usmNoPrivProtocol}
 
+        if len(self.access_config.items()) == 0:
+            raise snmp_ex.NoUserExistsError(
+                'No v2 community or v3 user exists')
+
         for name, obj in self.access_config.items():
-            try:
-                if obj.mode == enums.UserVersion.V3:
+            if obj.mode == enums.UserVersion.V3:
+                try:
                     if obj.priv_protocol is None:
                         config.addV3User(self.engine, name,
                                          auth_mapping[obj.auth_protocol],
                                          obj.auth_key.raw)
-                        LOG.debug(
+                        LOG.info(
                             'Succeed to add v3 user: {} for engine: {}, '
                             'auth protocol: {}, '
                             'priv protocol: {}'.format(name, self.engine_id,
@@ -79,7 +85,7 @@ class SNMPEngine(object):
                                          obj.auth_key.raw,
                                          priv_mapping[obj.priv_protocol],
                                          obj.priv_key.raw)
-                        LOG.debug(
+                        LOG.info(
                             'Succeed to add v3 user: {} for engine: {}, '
                             'auth protocol: {}, '
                             'priv protocol: {}'.format(name, self.engine_id,
@@ -88,41 +94,38 @@ class SNMPEngine(object):
                     config.addVacmUser(self.engine, 3, name,
                                        obj.security_level.value, READ_SUB_TREE,
                                        WRITE_SUB_TREE)
-                else:
-                    security_level = enums.SecurityLevel.NO_AUTH_NO_PRIV.value
+                except smi_ex.WrongValueError:
+                    LOG.exception(
+                        'Failed to add v3 user: {} for engine: {}, '
+                        'auth protocol: {}, '
+                        'priv protocol: {}'.format(name, self.engine_id,
+                                                   obj.auth_protocol,
+                                                   None))
+            else:
+                security_level = enums.SecurityLevel.NO_AUTH_NO_PRIV.value
+                try:
                     config.addV1System(self.engine, name, obj.community)
                     config.addVacmUser(self.engine, 2, name, security_level,
                                        READ_SUB_TREE, WRITE_SUB_TREE)
-                    LOG.debug('Succeed to add v2 user: {} for engine: {}, '
-                              'community: {}'.format(name, self.engine_id,
-                                                     obj.community))
-            except Exception as ex:
-                LOG.error(
-                    'Failed to add user: {} for engine: {}, '
-                    'reason: {}'.format(name, self.engine_id, ex))
-                LOG.error('User info: {}'
-                          .format(', '.join('{}: {}'.format(k, v) for k, v in
-                                            self.access_config[
-                                                name].options.items())))
+                    LOG.info('Succeed to add v2 user: {} for engine: {}, '
+                             'community: {}'.format(name, self.engine_id,
+                                                    obj.community))
+                except smi_ex.WrongValueError:
+                    LOG.exception('Failed to add v2 user: {} for engine: {}, '
+                                  'community: {}'.format(name, self.engine_id,
+                                                         obj.community))
 
     def connect_backend_device(self):
         client_name = '{ip}_{port}'.format(ip=self.array_config.mgmt_ip,
                                            port=self.array_config.agent_port)
-        try:
-            LOG.debug('Connecting to unity: {}, agent port: {}'.format(
-                self.array_config.mgmt_ip, self.port))
-            cache_interval = (int(self.array_config.cache_interval)
-                              if self.array_config.cache_interval else 30)
-            return clients.UnityClient.get_unity_client(
-                client_name, self.array_config.mgmt_ip,
-                self.array_config.user, self.array_config.password,
-                cache_interval=cache_interval)
-        except Exception as ex:
-            LOG.warning(
-                'Failed to reconnect unity: {}, agent port: {}, '
-                'reason: {}'.format(
-                    self.array_config.mgmt_ip, self.port, ex))
-            return None
+        LOG.debug('Connecting to unity: {}, agent port: {}'.format(
+            self.array_config.mgmt_ip, self.port))
+        cache_interval = (int(self.array_config.cache_interval)
+                          if self.array_config.cache_interval else 30)
+        return clients.UnityClient.get_unity_client(
+            client_name, self.array_config.mgmt_ip,
+            self.array_config.user, self.array_config.password,
+            cache_interval=cache_interval)
 
     def create_managed_objects(self):
         builder = self.context.getMibInstrum().getMibBuilder()
@@ -276,7 +279,7 @@ def setup_thread_excepthook():
 
 
 if __name__ == '__main__':
-    config_file = os.path.abspath('configs/agent.conf')
-    auth_config_file = os.path.abspath('configs/access.db')
+    config_file = os.path.abspath(r'C:\tmp\snmpagent\conf\agent.txt')
+    auth_config_file = os.path.abspath(r'C:\tmp\snmpagent\conf\access.txt')
     agent = SNMPAgent(config_file, auth_config_file)
     agent.run()

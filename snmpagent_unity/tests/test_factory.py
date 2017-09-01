@@ -1,15 +1,19 @@
 # encoding: utf-8
+import sys
 import unittest
 
 import mock
+from requests import exceptions as requests_ex
 from snmpagent_unity import factory
 
 from pysnmp.proto import rfc1902
+from storops.connection import exceptions as storops_ex
 
 AGENT_VERSION = b'1.1'
 NUMBER_OF_DISK = 30
 NONE_STRING = b'n/a'
 ERROR_NUMBER = -999
+CONNECTION_ERROR_MSG = factory.CONNECTION_ERROR_MSG
 
 
 class FakeStringMibScalarInstance(object):
@@ -30,6 +34,16 @@ class FakeAgentVersionImpl(object):
 class FakeNumberOfDiskImpl(object):
     def read_get(self, *args):
         return NUMBER_OF_DISK
+
+
+class FakeMibVersionImpl(object):
+    def read_get(self, *args):
+        raise requests_ex.ConnectionError('err')
+
+
+class FakeNumberOfFanImpl(object):
+    def read_get(self, *args):
+        raise storops_ex.HttpError('401')
 
 
 class TestScalarInstanceFactory(unittest.TestCase):
@@ -59,22 +73,12 @@ class TestScalarInstanceFactory(unittest.TestCase):
         scalar_instance.instId = self.inst_oid
         self.assertEqual(scalar_instance.impl_class, impl_class)
 
-        def effect():
-            snmp_engine.unity_client = self.unity_client
-
-        parent_engine = mock.MagicMock()
-        parent_engine.connect_backend_device.side_effect = effect
-
-        snmp_engine.unity_client = None
-        snmp_engine.parent = parent_engine
-
         name = self.mib_oid
         result = scalar_instance.readGet(name, None, 0, (1, snmp_engine))
 
         self.assertEqual(result[0], name)
         self.assertTrue(isinstance(result[1], rfc1902.OctetString))
         self.assertEqual(result[1]._value, AGENT_VERSION)
-        self.assertEqual(snmp_engine.unity_client, self.unity_client)
 
     @mock.patch('snmpagent_unity.agent.engine.SnmpEngine')
     def test_build_integer_scalar_instance_class(self, snmp_engine):
@@ -97,28 +101,18 @@ class TestScalarInstanceFactory(unittest.TestCase):
         scalar_instance.instId = self.inst_oid
         self.assertEqual(scalar_instance.impl_class, impl_class)
 
-        def effect():
-            snmp_engine.unity_client = self.unity_client
-
-        parent_engine = mock.MagicMock()
-        parent_engine.connect_backend_device.side_effect = effect
-
-        snmp_engine.unity_client = None
-        snmp_engine.parent = parent_engine
-
         name = self.mib_oid
         result = scalar_instance.readGet(name, None, 0, (1, snmp_engine))
 
         self.assertEqual(result[0], name)
         self.assertTrue(isinstance(result[1], rfc1902.Integer32))
         self.assertEqual(result[1]._value, NUMBER_OF_DISK)
-        self.assertEqual(snmp_engine.unity_client, self.unity_client)
 
     @mock.patch('snmpagent_unity.agent.engine.SnmpEngine')
     def test_failed_to_build_string_scalar_instance_class(self, snmp_engine):
-        class_name = 'FakeAgentVersion'
+        class_name = 'FakeMibVersion'
         base_class = FakeStringMibScalarInstance
-        impl_class = FakeNumberOfDiskImpl
+        impl_class = FakeMibVersionImpl
 
         scalar_instance_clz = factory.ScalarInstanceFactory.build(
             name=class_name,
@@ -134,29 +128,23 @@ class TestScalarInstanceFactory(unittest.TestCase):
         scalar_instance = scalar_instance_clz()
         scalar_instance.instId = self.inst_oid
         self.assertEqual(scalar_instance.impl_class, impl_class)
-
-        def effect():
-            raise Exception('err')
-
-        parent_engine = mock.MagicMock()
-        parent_engine.connect_backend_device.side_effect = effect
-
-        snmp_engine.unity_client = None
-        snmp_engine.parent = parent_engine
 
         name = self.mib_oid
         result = scalar_instance.readGet(name, None, 0, (1, snmp_engine))
 
         self.assertEqual(result[0], name)
         self.assertTrue(isinstance(result[1], rfc1902.OctetString))
-        self.assertEqual(result[1]._value, NONE_STRING)
-        self.assertEqual(snmp_engine.unity_client, None)
+        if sys.version_info.major == 3:
+            err_msg = str(result[1]._value, 'utf-8')
+        else:
+            err_msg = str(result[1]._value)
+        self.assertEqual(err_msg, CONNECTION_ERROR_MSG)
 
     @mock.patch('snmpagent_unity.agent.engine.SnmpEngine')
     def test_failed_to_build_integer_scalar_instance_class(self, snmp_engine):
-        class_name = 'FakeNumberOfDisk'
+        class_name = 'FakeNumberOfFan'
         base_class = FakeIntegerMibScalarInstance
-        impl_class = FakeNumberOfDiskImpl
+        impl_class = FakeNumberOfFanImpl
 
         scalar_instance_clz = factory.ScalarInstanceFactory.build(
             name=class_name,
@@ -172,15 +160,6 @@ class TestScalarInstanceFactory(unittest.TestCase):
         scalar_instance = scalar_instance_clz()
         scalar_instance.instId = self.inst_oid
         self.assertEqual(scalar_instance.impl_class, impl_class)
-
-        def effect():
-            raise Exception('错误！')
-
-        parent_engine = mock.MagicMock()
-        parent_engine.connect_backend_device.side_effect = effect
-
-        snmp_engine.unity_client = None
-        snmp_engine.parent = parent_engine
 
         name = self.mib_oid
         result = scalar_instance.readGet(name, None, 0, (1, snmp_engine))
@@ -188,46 +167,6 @@ class TestScalarInstanceFactory(unittest.TestCase):
         self.assertEqual(result[0], name)
         self.assertTrue(isinstance(result[1], rfc1902.Integer32))
         self.assertEqual(result[1]._value, ERROR_NUMBER)
-        self.assertEqual(snmp_engine.unity_client, None)
-
-    @mock.patch('snmpagent_unity.agent.engine.SnmpEngine')
-    def test_failed_to_reconnect_unity(self, snmp_engine):
-        class_name = 'FakeAgentVersion'
-        base_class = FakeStringMibScalarInstance
-        impl_class = FakeNumberOfDiskImpl
-
-        scalar_instance_clz = factory.ScalarInstanceFactory.build(
-            name=class_name,
-            base_class=base_class,
-            impl_class=impl_class)
-
-        # check the basic info for generated class
-        self.assertTrue(issubclass(scalar_instance_clz, base_class))
-        self.assertEqual(scalar_instance_clz.__name__,
-                         class_name + 'ScalarInstance')
-
-        # check the read_get method for generated class
-        scalar_instance = scalar_instance_clz()
-        scalar_instance.instId = self.inst_oid
-        self.assertEqual(scalar_instance.impl_class, impl_class)
-
-        def effect():
-            snmp_engine.unity_client = None
-
-        parent_engine = mock.MagicMock()
-        parent_engine.connect_backend_device.side_effect = effect
-
-        snmp_engine.unity_client = None
-        snmp_engine.parent = parent_engine
-
-        name = self.mib_oid
-        result = scalar_instance.readGet(name, None, 0, (1, snmp_engine))
-
-        self.assertEqual(result[0], name)
-        self.assertTrue(isinstance(result[1], rfc1902.OctetString))
-        self.assertEqual(result[1]._value, NONE_STRING)
-        self.assertEqual(snmp_engine.unity_client, None)
-
 
 # class FakeMibTableColumn(object):
 #     pass

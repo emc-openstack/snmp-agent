@@ -1,37 +1,26 @@
 import logging
 
 from pyasn1.type import univ
+from requests import exceptions as requests_ex
+from snmpagent_unity import clients
+
 from pysnmp.proto import rfc1902
-from pysnmp.smi import error as pysnmp_ex
-from snmpagent_unity import exceptions as snmp_ex
+from storops.connection import exceptions as storops_ex
 
 LOG = logging.getLogger(__name__)
-NONE_STRING = 'n/a'
-ERROR_NUMBER = -999
+NONE_STRING = clients.NONE_STRING
+ERROR_NUMBER = clients.ERROR_NUMBER
+
+CONNECTION_ERROR_MSG = 'Error: Unity Connection Error'
 
 
-def error_message(syntax):
+def error_message(syntax, msg):
     if isinstance(syntax, rfc1902.Integer32):
         msg = ERROR_NUMBER
     if isinstance(syntax, rfc1902.OctetString):
-        msg = NONE_STRING
+        msg = msg
 
     return syntax.clone(msg)
-
-
-def connection_check(snmp_engine):
-    if snmp_engine.unity_client is None:
-        LOG.info(
-            'Reconnecting to unity: ip: {}, agent port: {}'.format(
-                snmp_engine.parent.array_config.mgmt_ip,
-                snmp_engine.parent.port))
-        snmp_engine.parent.connect_backend_device()
-
-    if snmp_engine.unity_client is None:
-        raise snmp_ex.UnityConnectionError(
-            'Connection failed: ip: {}, agent port: {}'.format(
-                snmp_engine.parent.array_config.mgmt_ip,
-                snmp_engine.parent.port))
 
 
 class ScalarInstanceFactory(object):
@@ -44,7 +33,6 @@ class ScalarInstanceFactory(object):
         def __read_get__(self, name, val, idx, acInfo):
             try:
                 engine = acInfo[1]
-                connection_check(engine)
 
                 idx_len = self.instId[0]
                 idx_name = ''.join(
@@ -59,9 +47,11 @@ class ScalarInstanceFactory(object):
                 else:
                     return name, syntax.clone(result)
 
-            except Exception as exc:
-                LOG.warning('{}: {}'.format(exc.__class__.__name__, exc))
-                return name, error_message(self.getSyntax())
+            except (storops_ex.ClientException, requests_ex.ConnectionError) \
+                    as exc:
+                LOG.info(exc)
+                return name, error_message(self.getSyntax(),
+                                           CONNECTION_ERROR_MSG)
 
         newclass = type(name + "ScalarInstance", (base_class,),
                         {"__init__": __init__,
@@ -82,7 +72,6 @@ class TableColumnInstanceFactory(object):
         def __read_getnext__(self, name, val, idx, acInfo, oName=None):
             try:
                 engine = acInfo[1]
-                connection_check(engine)
 
                 if self.name == name:
                     row_list = self.impl_class().get_idx(name, idx,
@@ -106,13 +95,11 @@ class TableColumnInstanceFactory(object):
                 next_node = self.getNextNode(name, idx)
                 return next_node.readGet(next_node.name, val, idx, acInfo)
 
-            except pysnmp_ex.NoSuchInstanceError:
-                # Need to raise NoSuchInstanceError, client will handle it
-                raise
-
-            except Exception as exc:
-                LOG.warning('{}: {}'.format(exc.__class__.__name__, exc))
-                return name, error_message(self.getSyntax())
+            except (storops_ex.ClientException, requests_ex.ConnectionError) \
+                    as exc:
+                LOG.info(exc)
+                return name, error_message(self.getSyntax(),
+                                           CONNECTION_ERROR_MSG)
 
         newclass = type(name + "Instance", (base_class,),
                         {"__init__": __init__,
