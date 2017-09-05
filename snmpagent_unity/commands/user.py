@@ -19,7 +19,7 @@ def check_length(string):
 
 class AddUser(base.BaseCommand):
     """
-Dell-EMC SNMP agent: adds a v3 user.
+Dell-EMC SNMP agent: Add a v3 user.
 
 usage:
     snmpagent-unity add-user --name <name> --auth <auth_protocol> --auth_key \
@@ -66,7 +66,7 @@ examples:
 
 class UpdateUser(base.BaseCommand):
     """
-Dell-EMC SNMP agent: updates the info of a v3 user.
+Dell-EMC SNMP agent: Update the info of a v3 user.
 
 usage:
     snmpagent-unity update-user --name <name> [--auth <auth_protocol>] \
@@ -116,7 +116,7 @@ authkey123 --priv des --priv_key privkey123
 
 class DeleteUser(base.BaseCommand):
     """
-Dell-EMC SNMP agent: deletes a v3 user.
+Dell-EMC SNMP agent: Delete a v3 user.
 
 usage:
     snmpagent-unity delete-user --name <name>
@@ -136,7 +136,7 @@ examples:
 
 class ListUsers(base.BaseCommand):
     """
-Dell-EMC SNMP agent: lists all the users, including the v2 community access.
+Dell-EMC SNMP agent: List all the users, including the v2 community access.
 
 usage:
     snmpagent-unity list-users

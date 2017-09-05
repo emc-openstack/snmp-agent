@@ -6,23 +6,23 @@ usage:
 <command> [<args>...]
 
 options:
-    -h --help               shows the help, could be used for commands.
-    -V --version            shows the version.
-    --log_file <log_file>   sets the log file path.
-    --log_level <log_level> sets the log level.
+    -h --help               Show the help, could be used for commands.
+    -V --version            Show the version.
+    --log_file <log_file>   Set the log file path.
+    --log_level <log_level> Set the log level.
 
 supported commands:
-    add-user                adds a v3 user
-    update-user             updates the info of a v3 user
-    delete-user             deletes a v3 user
-    create-community        creates a v2 community access
-    delete-community        deletes a v2 community access
-    list-users              lists all users/access
-    encrypt                 encrypts the configuration files
-    decrypt                 decrypts the configuration files
-    start                   starts a snmp agent daemon
-    stop                    stops the snmp agent daemon
-    restart                 restarts the snmp agent daemon
+    add-user                Add a v3 user
+    update-user             Update the info of a v3 user
+    delete-user             Delete a v3 user
+    create-community        Create a v2 community access
+    delete-community        Delete a v2 community access
+    list-users              List all users/access
+    encrypt                 Encrypt the configuration files
+    decrypt                 Decrypt the configuration files
+    start                   Start a snmp agent daemon
+    stop                    Stop the snmp agent daemon
+    restart                 Restart the snmp agent daemon
 
 examples:
     snmpagent-unity --help

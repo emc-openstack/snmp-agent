@@ -4,3 +4,4 @@
 __version__ = '0.1.0'
 
 SERVICE_NAME = 'snmpagent-unity'
+COMMNAD_NAME = 'snmpagent-unity'

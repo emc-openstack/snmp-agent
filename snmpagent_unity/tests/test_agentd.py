@@ -59,7 +59,7 @@ class TestWindowsDaemon(unittest.TestCase):
     @patches.patch_get_pid_file
     def test_stop_already_stopped(self, fake_process):
         r = agentd.WindowsDaemon.stop()
-        self.assertEqual(1, r)
+        self.assertEqual(2, r)
         fake_process.terminate.assert_not_called()
 
 

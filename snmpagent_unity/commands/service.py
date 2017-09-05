@@ -1,25 +1,18 @@
-import logging
-
 from snmpagent_unity import agentd, utils
 from snmpagent_unity.commands import base
 
 
-def get_log_handlers():
-    return [handler.stream for handler in logging.getLogger('').handlers if
-            isinstance(handler, logging.FileHandler)]
-
-
 def _start(conf_file):
-    agentd.agent_daemon.start(conf_file)
+    return agentd.agent_daemon.start(conf_file)
 
 
 def _stop():
-    agentd.agent_daemon.stop()
+    return agentd.agent_daemon.stop()
 
 
 class Start(base.BaseCommand):
     """
-Dell-EMC SNMP agent: starts the SNMP agent.
+Dell-EMC SNMP agent: Start the SNMP agent.
 
 usage:
     snmpagent-unity start --conf_file <conf_file>
@@ -35,12 +28,12 @@ examples:
 
     @utils.log_command_exception
     def do(self):
-        _start(self.args['--conf_file'])
+        return _start(self.args['--conf_file'])
 
 
 class Stop(base.BaseCommand):
     """
-Dell-EMC SNMP agent: stops the SNMP agent.
+Dell-EMC SNMP agent: Stop the SNMP agent.
 
 usage:
     snmpagent-unity stop
@@ -53,7 +46,7 @@ examples:
 
     @utils.log_command_exception
     def do(self):
-        _stop()
+        return _stop()
 
 
 class Restart(base.BaseCommand):
@@ -75,4 +68,4 @@ examples:
     @utils.log_command_exception
     def do(self):
         _stop()
-        _start(self.args['--conf_file'])
+        return _start(self.args['--conf_file'])

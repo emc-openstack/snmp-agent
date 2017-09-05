@@ -44,10 +44,12 @@ def setup_log(log_file_path='snmpagent-unity.log', level=None,
 def log_command_exception(cmd):
     def wrap_exception(*args, **kwargs):
         try:
-            cmd(*args, **kwargs)
+            r = cmd(*args, **kwargs)
         except snmp_ex.SNMPAgentException as ex:
             sys.stderr.writelines("Failed to execute '{}': {}\n".format(
                 args[0].name, ex))
+            r = -255
+        return r
 
     return wrap_exception
 

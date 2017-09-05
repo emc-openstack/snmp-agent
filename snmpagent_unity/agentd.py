@@ -58,7 +58,11 @@ class BaseDaemon(object):
 
     @classmethod
     def start(cls, conf_file):
-        if cls.exists():
+        p = cls.exists()
+        if p:
+            LOG.info(
+                "The {} Agent(pid={}) is already "
+                "running. Not starting new one.".format(SERVICE_NAME, p.pid))
             return 1
         cls.validate_conf(conf_file)
         p = cls._launch_process(conf_file)
@@ -94,7 +98,7 @@ class BaseDaemon(object):
                 ret = 1
         else:
             LOG.info("Agent service does not exist, not started yet?")
-            ret = 1
+            ret = 2
         return ret
 
 
@@ -116,7 +120,7 @@ class WindowsDaemon(BaseDaemon):
         DETACHED_PROCESS = 0x00000008
         return subprocess.Popen(
             [sys.executable, WindowsDaemon.prog_file_name, conf_file],
-            creationflags=DETACHED_PROCESS)
+            close_fds=True, creationflags=DETACHED_PROCESS)
 
 
 NAME = 'Dell EMC SNMP Agent Daemon'
@@ -131,7 +135,7 @@ else:
 
 
 def main(agent_conf=None):
-    """Main entry for running agent on Windows.
+    """Main entry for running agent on Windows/Linux.
 
     When running within a detached process, it acts as
     a daemon for SNMP background processing.

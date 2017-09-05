@@ -6,7 +6,7 @@ import snmpagent_unity
 from snmpagent_unity import config, enums, utils
 from snmpagent_unity import exceptions as snmp_ex
 
-LOG = logging.getLogger(__file__)
+LOG = logging.getLogger(__name__)
 
 
 def _validate_params(security_level, auth_protocol=None, auth_key=None,

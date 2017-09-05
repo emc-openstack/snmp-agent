@@ -5,7 +5,7 @@ from snmpagent_unity import utils
 
 class CreateCommunity(base.BaseCommand):
     """
-Dell-EMC SNMP agent: creates a v2 community public access.
+Dell-EMC SNMP agent: Create a v2 community public access.
 
 usage:
     snmpagent-unity create-community --name <name>
@@ -26,7 +26,7 @@ examples:
 
 class DeleteCommunity(base.BaseCommand):
     """
-Dell-EMC SNMP agent: deletes a v2 community access.
+Dell-EMC SNMP agent: Delete a v2 community access.
 
 usage:
     snmpagent-unity delete-community --name <name>

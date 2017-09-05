@@ -3,12 +3,12 @@ import logging
 from snmpagent_unity import config, utils
 from snmpagent_unity.commands import base
 
-LOG = logging.getLogger(__file__)
+LOG = logging.getLogger(__name__)
 
 
 class Encrypt(base.BaseCommand):
     """
-Dell-EMC SNMP agent: encrypts the configuration file.
+Dell-EMC SNMP agent: Encrypt the configuration file.
 
 usage:
     snmpagent-unity encrypt --conf_file <conf_file>
@@ -31,7 +31,7 @@ examples:
 
 class Decrypt(base.BaseCommand):
     """
-Dell-EMC SNMP agent: decrypts the configuration file.
+Dell-EMC SNMP agent: Decrypt the configuration file.
 
 usage:
     snmpagent-unity decrypt --conf_file <conf_file>
