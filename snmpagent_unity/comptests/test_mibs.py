@@ -86,8 +86,8 @@ class TestUnityMibs(unittest.TestCase):
         agent_ip = '127.0.0.1'
         agent_port = 11161
         community = 'public'
-        cls._snmp_client = snmpclient.SNMPClient(agent_ip, agent_port,
-                                                 community)
+        cls._snmp_client = snmpclient.SNMPv2Client(agent_ip, agent_port,
+                                                   community)
 
         cls._unity_system = storops.UnitySystem('10.245.101.39', 'admin',
                                                 'Password123!')
@@ -279,7 +279,8 @@ class TestUnityMibs(unittest.TestCase):
         mib_name = 'numberOfPhysicalDisk'
         result, time_used = self._snmp_client.get(mib_name)
 
-        print('Time used for Number of physical disk get: {}'.format(time_used))
+        print(
+        'Time used for Number of physical disk get: {}'.format(time_used))
         self._assert_less_equal(time_used, 10)
 
         item = len(self._unity_system.get_disk())
@@ -289,7 +290,8 @@ class TestUnityMibs(unittest.TestCase):
         mib_name = 'numberOfFrontendPort'
         result, time_used = self._snmp_client.get(mib_name)
 
-        print('Time used for Number of frontend port get: {}'.format(time_used))
+        print(
+        'Time used for Number of frontend port get: {}'.format(time_used))
         self._assert_less_equal(time_used, 10)
 
         item = len(self._unity_system.get_fc_port()) + len(
@@ -400,7 +402,8 @@ class TestUnityMibs(unittest.TestCase):
         mib_name = table_name + 'Table'
         result, time_used = self._snmp_client.table_view(mib_name)
 
-        print('Time used for Storage processor table view: {}'.format(time_used))
+        print(
+        'Time used for Storage processor table view: {}'.format(time_used))
         self._assert_less_equal(time_used, 30)
 
         items = self._unity_system.get_sp()
