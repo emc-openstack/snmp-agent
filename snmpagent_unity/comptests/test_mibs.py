@@ -1,20 +1,23 @@
 import collections
 import functools
-import sys
+import logging
+import random
+import time
 import unittest
 
+import six
 import snmpagent_unity
 from snmpagent_unity import clients
+from snmpagent_unity import utils
+from snmpagent_unity.comptests import cli_helper
 from snmpagent_unity.comptests import snmpclient
+from snmpagent_unity.comptests import utils as comp_utils
 
 import storops
 
-try:
-    import urllib3
+utils.disable_urllib3_warnings()
 
-    urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-except:
-    pass
+LOG = logging.getLogger(__name__)
 
 NONE_STRING = clients.NONE_STRING
 
@@ -70,10 +73,7 @@ def strip_type(string, *type_list):
 
 
 def has_str_value(value):
-    if sys.version_info.major == 2:
-        return isinstance(value, unicode) and bool(value)
-    if sys.version_info.major == 3:
-        return isinstance(value, str) and bool(value)
+    return isinstance(value, six.string_types) and bool(value)
 
 
 def has_num_value(value):
@@ -83,15 +83,43 @@ def has_num_value(value):
 class TestUnityMibs(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        agent_ip = '127.0.0.1'
-        agent_port = 11161
-        community = 'public'
+        cls.helper = cli_helper.Helper()
+        cls.helper.stop_service()
+        cls.helper.clear_access_data()
+
+        config = comp_utils.get_env_yaml()
+        agent_ip = config.get('agent').get('ip')
+        agent_port = random.choice(config.get('agent').get('ports'))
+        LOG.info('SNMP Agent port to be tested: {}'.format(agent_port))
+
+        unity_ip = config.get('unity').get('ip')
+        unity_user = config.get('unity').get('user')
+        unity_password = config.get('unity').get('password')
+        community = config.get('v2_user')[0].get('name')
+
+        # Connect to array
+        cls._unity_system = storops.UnitySystem(unity_ip,
+                                                unity_user,
+                                                unity_password)
+        cls._unity_system.enable_perf_stats()
+
+        # Create snmp client
         cls._snmp_client = snmpclient.SNMPv2Client(agent_ip, agent_port,
                                                    community)
 
-        cls._unity_system = storops.UnitySystem('10.245.101.39', 'admin',
-                                                'Password123!')
-        cls._unity_system.enable_perf_stats()
+        # Add community in agent
+        cls.helper.create_community(community)
+
+        # Start agent
+        cls.helper.start_service()
+
+        # Wait 10 sec to make sure agent service ready
+        time.sleep(10)
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.helper.stop_service()
+        cls.helper.clear_access_data()
 
     def _assert_equal(self, expect, actual):
         if isinstance(expect, bool):
@@ -139,7 +167,7 @@ class TestUnityMibs(unittest.TestCase):
         mib_name = 'agentVersion'
         result, time_used = self._snmp_client.get(mib_name)
 
-        print('Time used for Agent version get: {}'.format(time_used))
+        LOG.info('Time used for Agent version get: {}'.format(time_used))
         self._assert_less_equal(time_used, 5)
 
         self._assert_equal(snmpagent_unity.__version__,
@@ -149,7 +177,7 @@ class TestUnityMibs(unittest.TestCase):
         mib_name = 'mibVersion'
         result, time_used = self._snmp_client.get(mib_name)
 
-        print('Time used for Mib version get: {}'.format(time_used))
+        LOG.info('Time used for Mib version get: {}'.format(time_used))
         self._assert_less_equal(time_used, 5)
 
         self._assert_equal('1.0', result.get(get_scalar_mib(mib_name)))
@@ -158,7 +186,7 @@ class TestUnityMibs(unittest.TestCase):
         mib_name = 'manufacturer'
         result, time_used = self._snmp_client.get(mib_name)
 
-        print('Time used for Manufacturer get: {}'.format(time_used))
+        LOG.info('Time used for Manufacturer get: {}'.format(time_used))
         self._assert_less_equal(time_used, 5)
 
         self._assert_equal('DellEMC', result.get(get_scalar_mib(mib_name)))
@@ -167,7 +195,7 @@ class TestUnityMibs(unittest.TestCase):
         mib_name = 'model'
         result, time_used = self._snmp_client.get(mib_name)
 
-        print('Time used for Model get: {}'.format(time_used))
+        LOG.info('Time used for Model get: {}'.format(time_used))
         self._assert_less_equal(time_used, 10)
 
         item = self._unity_system.model
@@ -177,7 +205,7 @@ class TestUnityMibs(unittest.TestCase):
         mib_name = 'serialNumber'
         result, time_used = self._snmp_client.get(mib_name)
 
-        print('Time used for Serial number get: {}'.format(time_used))
+        LOG.info('Time used for Serial number get: {}'.format(time_used))
         self._assert_less_equal(time_used, 10)
 
         item = self._unity_system.serial_number
@@ -187,7 +215,7 @@ class TestUnityMibs(unittest.TestCase):
         mib_name = 'operationEnvironmentVersion'
         result, time_used = self._snmp_client.get(mib_name)
 
-        print('Time used for Operation environment version get: {}'.format(
+        LOG.info('Time used for Operation environment version get: {}'.format(
             time_used))
         self._assert_less_equal(time_used, 10)
 
@@ -198,7 +226,7 @@ class TestUnityMibs(unittest.TestCase):
         mib_name = 'managementIP'
         result, time_used = self._snmp_client.get(mib_name)
 
-        print('Time used for Management IP get: {}'.format(time_used))
+        LOG.info('Time used for Management IP get: {}'.format(time_used))
         self._assert_less_equal(time_used, 10)
 
         items = self._unity_system.get_mgmt_interface()
@@ -211,7 +239,7 @@ class TestUnityMibs(unittest.TestCase):
         mib_name = 'currentPower'
         result, time_used = self._snmp_client.get(mib_name)
 
-        print('Time used for Current power get: {}'.format(time_used))
+        LOG.info('Time used for Current power get: {}'.format(time_used))
         self._assert_less_equal(time_used, 10)
 
         # The value change frequently, so only check it has value
@@ -224,7 +252,7 @@ class TestUnityMibs(unittest.TestCase):
         mib_name = 'averagePower'
         result, time_used = self._snmp_client.get(mib_name)
 
-        print('Time used for Average power get: {}'.format(time_used))
+        LOG.info('Time used for Average power get: {}'.format(time_used))
         self._assert_less_equal(time_used, 10)
 
         # The value change frequently, so only check it has value
@@ -237,7 +265,7 @@ class TestUnityMibs(unittest.TestCase):
         mib_name = 'numberOfStorageProcessor'
         result, time_used = self._snmp_client.get(mib_name)
 
-        print(
+        LOG.info(
             'Number of storage processor get: {}'.format(time_used))
         self._assert_less_equal(time_used, 10)
 
@@ -248,7 +276,7 @@ class TestUnityMibs(unittest.TestCase):
         mib_name = 'numberOfEnclosure'
         result, time_used = self._snmp_client.get(mib_name)
 
-        print('Time used for Number of enclosure get: {}'.format(time_used))
+        LOG.info('Time used for Number of enclosure get: {}'.format(time_used))
         self._assert_less_equal(time_used, 10)
 
         item = len(self._unity_system.get_dpe()) + len(
@@ -259,7 +287,8 @@ class TestUnityMibs(unittest.TestCase):
         mib_name = 'numberOfPowerSupply'
         result, time_used = self._snmp_client.get(mib_name)
 
-        print('Time used for Number of power supply get: {}'.format(time_used))
+        LOG.info(
+            'Time used for Number of power supply get: {}'.format(time_used))
         self._assert_less_equal(time_used, 10)
 
         item = len(self._unity_system.get_power_supply())
@@ -269,7 +298,7 @@ class TestUnityMibs(unittest.TestCase):
         mib_name = 'numberOfFan'
         result, time_used = self._snmp_client.get(mib_name)
 
-        print('Time used for Number of fan get: {}'.format(time_used))
+        LOG.info('Time used for Number of fan get: {}'.format(time_used))
         self._assert_less_equal(time_used, 10)
 
         item = len(self._unity_system.get_fan())
@@ -279,8 +308,8 @@ class TestUnityMibs(unittest.TestCase):
         mib_name = 'numberOfPhysicalDisk'
         result, time_used = self._snmp_client.get(mib_name)
 
-        print(
-        'Time used for Number of physical disk get: {}'.format(time_used))
+        LOG.info(
+            'Time used for Number of physical disk get: {}'.format(time_used))
         self._assert_less_equal(time_used, 10)
 
         item = len(self._unity_system.get_disk())
@@ -290,8 +319,8 @@ class TestUnityMibs(unittest.TestCase):
         mib_name = 'numberOfFrontendPort'
         result, time_used = self._snmp_client.get(mib_name)
 
-        print(
-        'Time used for Number of frontend port get: {}'.format(time_used))
+        LOG.info(
+            'Time used for Number of frontend port get: {}'.format(time_used))
         self._assert_less_equal(time_used, 10)
 
         item = len(self._unity_system.get_fc_port()) + len(
@@ -302,10 +331,10 @@ class TestUnityMibs(unittest.TestCase):
         mib_name = 'numberOfBackendPort'
         result, time_used = self._snmp_client.get(mib_name)
 
-        print('Time used for Number of backend port get: {}'.format(time_used))
+        LOG.info(
+            'Time used for Number of backend port get: {}'.format(time_used))
         self._assert_less_equal(time_used, 10)
 
-        print(result)
         item = len(self._unity_system.get_sas_port())
         self._assert_equal(item, result.get(get_scalar_mib(mib_name)))
 
@@ -313,7 +342,7 @@ class TestUnityMibs(unittest.TestCase):
         mib_name = 'totalCapacity'
         result, time_used = self._snmp_client.get(mib_name)
 
-        print('Time used for Total capacity get: {}'.format(time_used))
+        LOG.info('Time used for Total capacity get: {}'.format(time_used))
         self._assert_less_equal(time_used, 10)
 
         item = self._unity_system.get_system_capacity()[0].size_total
@@ -324,7 +353,7 @@ class TestUnityMibs(unittest.TestCase):
         mib_name = 'usedCapacity'
         result, time_used = self._snmp_client.get(mib_name)
 
-        print('Time used for Used capacity get: {}'.format(time_used))
+        LOG.info('Time used for Used capacity get: {}'.format(time_used))
         self._assert_less_equal(time_used, 10)
 
         item = self._unity_system.get_system_capacity()[0].size_used
@@ -335,7 +364,7 @@ class TestUnityMibs(unittest.TestCase):
         mib_name = 'freeCapacity'
         result, time_used = self._snmp_client.get(mib_name)
 
-        print('Time used for Free capacity get: {}'.format(time_used))
+        LOG.info('Time used for Free capacity get: {}'.format(time_used))
         self._assert_less_equal(time_used, 10)
 
         item = self._unity_system.get_system_capacity()[0].size_free
@@ -347,7 +376,7 @@ class TestUnityMibs(unittest.TestCase):
         mib_name = 'totalThroughput'
         result, time_used = self._snmp_client.get(mib_name)
 
-        print('Time used for Total throughput get: {}'.format(time_used))
+        LOG.info('Time used for Total throughput get: {}'.format(time_used))
         self._assert_less_equal(time_used, 10)
 
         self._assert_has_str_value(result.get(get_scalar_mib(mib_name)))
@@ -356,7 +385,7 @@ class TestUnityMibs(unittest.TestCase):
         mib_name = 'readThroughput'
         result, time_used = self._snmp_client.get(mib_name)
 
-        print('Time used for Read throughput get: {}'.format(time_used))
+        LOG.info('Time used for Read throughput get: {}'.format(time_used))
         self._assert_less_equal(time_used, 10)
 
         self._assert_has_str_value(result.get(get_scalar_mib(mib_name)))
@@ -365,7 +394,7 @@ class TestUnityMibs(unittest.TestCase):
         mib_name = 'writeThroughput'
         result, time_used = self._snmp_client.get(mib_name)
 
-        print('Time used for Write throughput get: {}'.format(time_used))
+        LOG.info('Time used for Write throughput get: {}'.format(time_used))
         self._assert_less_equal(time_used, 10)
 
         self._assert_has_str_value(result.get(get_scalar_mib(mib_name)))
@@ -374,7 +403,7 @@ class TestUnityMibs(unittest.TestCase):
         mib_name = 'totalBandwidth'
         result, time_used = self._snmp_client.get(mib_name)
 
-        print('Time used for Total bandwidth get: {}'.format(time_used))
+        LOG.info('Time used for Total bandwidth get: {}'.format(time_used))
         self._assert_less_equal(time_used, 10)
 
         self._assert_has_str_value(result.get(get_scalar_mib(mib_name)))
@@ -383,7 +412,7 @@ class TestUnityMibs(unittest.TestCase):
         mib_name = 'readBandwidth'
         result, time_used = self._snmp_client.get(mib_name)
 
-        print('Time used for Read bandwidth get: {}'.format(time_used))
+        LOG.info('Time used for Read bandwidth get: {}'.format(time_used))
         self._assert_less_equal(time_used, 10)
 
         self._assert_has_str_value(result.get(get_scalar_mib(mib_name)))
@@ -392,7 +421,7 @@ class TestUnityMibs(unittest.TestCase):
         mib_name = 'writeBandwidth'
         result, time_used = self._snmp_client.get(mib_name)
 
-        print('Time used for Write bandwidth get: {}'.format(time_used))
+        LOG.info('Time used for Write bandwidth get: {}'.format(time_used))
         self._assert_less_equal(time_used, 10)
 
         self._assert_has_str_value(result.get(get_scalar_mib(mib_name)))
@@ -402,8 +431,8 @@ class TestUnityMibs(unittest.TestCase):
         mib_name = table_name + 'Table'
         result, time_used = self._snmp_client.table_view(mib_name)
 
-        print(
-        'Time used for Storage processor table view: {}'.format(time_used))
+        LOG.info(
+            'Time used for Storage processor table view: {}'.format(time_used))
         self._assert_less_equal(time_used, 30)
 
         items = self._unity_system.get_sp()
@@ -446,7 +475,7 @@ class TestUnityMibs(unittest.TestCase):
         mib_name = table_name + 'Table'
         result, time_used = self._snmp_client.table_view(mib_name)
 
-        print('Time used for Pool table view: {}'.format(time_used))
+        LOG.info('Time used for Pool table view: {}'.format(time_used))
         self._assert_less_equal(time_used, 30)
 
         items = self._unity_system.get_pool()
@@ -492,7 +521,7 @@ class TestUnityMibs(unittest.TestCase):
         mib_name = table_name + 'Table'
         result, time_used = self._snmp_client.table_view(mib_name)
 
-        print('Time used for Volume table view: {}'.format(time_used))
+        LOG.info('Time used for Volume table view: {}'.format(time_used))
         self._assert_less_equal(time_used, 90)
 
         items = self._unity_system.get_lun()
@@ -567,7 +596,7 @@ class TestUnityMibs(unittest.TestCase):
         mib_name = table_name + 'Table'
         result, time_used = self._snmp_client.table_view(mib_name)
 
-        print('Time used for Disk table view: {}'.format(time_used))
+        LOG.info('Time used for Disk table view: {}'.format(time_used))
         self._assert_less_equal(time_used, 90)
 
         items = self._unity_system.get_disk()
@@ -623,7 +652,7 @@ class TestUnityMibs(unittest.TestCase):
         result = {strip_type(k, FC_PORT_TYPE, ISCSI_PORT_TYPE): v for k, v in
                   result.items()}
 
-        print('Time used for Fronend port table view: {}'.format(time_used))
+        LOG.info('Time used for Fronend port table view: {}'.format(time_used))
         self._assert_less_equal(time_used, 30)
 
         items = self._unity_system.get_fc_port() + self._unity_system \
@@ -705,7 +734,7 @@ class TestUnityMibs(unittest.TestCase):
         mib_name = table_name + 'Table'
         result, time_used = self._snmp_client.table_view(mib_name)
 
-        print('Time used for Backend port table view: {}'.format(time_used))
+        LOG.info('Time used for Backend port table view: {}'.format(time_used))
         self._assert_less_equal(time_used, 30)
 
         items = self._unity_system.get_sas_port()
@@ -737,7 +766,7 @@ class TestUnityMibs(unittest.TestCase):
         mib_name = table_name + 'Table'
         result, time_used = self._snmp_client.table_view(mib_name)
 
-        print('Time used for Host table view: {}'.format(time_used))
+        LOG.info('Time used for Host table view: {}'.format(time_used))
         self._assert_less_equal(time_used, 60)
 
         items = self._unity_system.get_host()
@@ -766,8 +795,13 @@ class TestUnityMibs(unittest.TestCase):
                     .iscsi_host_initiators is not None:
                 initiators_by_storops.extend(item.iscsi_host_initiators)
             if initiators_by_storops:
-                for initiator in initiators_by_storops:
-                    self._assert_in(initiator.initiator_id, initiators_by_snmp)
+                if len(', '.join(initiator.initiator_id for initiator in
+                                 initiators_by_storops)) > 255:
+                    self._assert_has_str_value(initiators_by_snmp)
+                else:
+                    for initiator in initiators_by_storops:
+                        self._assert_in(initiator.initiator_id,
+                                        initiators_by_snmp)
             else:
                 self._assert_equal(NONE_STRING, initiators_by_snmp)
 
@@ -791,7 +825,7 @@ class TestUnityMibs(unittest.TestCase):
         result = {strip_type(k, DAE_TYPE, DPE_TYPE): v for k, v in
                   result.items()}
 
-        print('Time used for Enclosure table view: {}'.format(time_used))
+        LOG.info('Time used for Enclosure table view: {}'.format(time_used))
         self._assert_less_equal(time_used, 30)
 
         items = self._unity_system.get_dae() + self._unity_system.get_dpe()
@@ -810,8 +844,11 @@ class TestUnityMibs(unittest.TestCase):
             self._assert_equal(
                 get_nested_value(item, 'health', 'value', 'name'),
                 result.get(column_mib('health_status', item.id)))
-            self._assert_equal(str(item.current_power), result.get(
-                column_mib('current_power', item.id)))
+            # The value change frequently, so only check it has value
+            # self._assert_equal(str(item.current_power), result.get(
+            #     column_mib('current_power', item.id)))
+            self._assert_has_str_value(
+                result.get(column_mib('current_power', item.id)))
             self._assert_equal(str(item.avg_power), result.get(
                 column_mib('average_power', item.id)))
             self._assert_equal(str(item.max_power),
@@ -828,7 +865,7 @@ class TestUnityMibs(unittest.TestCase):
         mib_name = table_name + 'Table'
         result, time_used = self._snmp_client.table_view(mib_name)
 
-        print('Time used for Power supply table view: {}'.format(time_used))
+        LOG.info('Time used for Power supply table view: {}'.format(time_used))
         self._assert_less_equal(time_used, 30)
 
         items = self._unity_system.get_power_supply()
@@ -858,7 +895,7 @@ class TestUnityMibs(unittest.TestCase):
         mib_name = table_name + 'Table'
         result, time_used = self._snmp_client.table_view(mib_name)
 
-        print('Time used for Fan table view: {}'.format(time_used))
+        LOG.info('Time used for Fan table view: {}'.format(time_used))
         self._assert_less_equal(time_used, 30)
 
         items = self._unity_system.get_fan()
@@ -881,7 +918,7 @@ class TestUnityMibs(unittest.TestCase):
         mib_name = table_name + 'Table'
         result, time_used = self._snmp_client.table_view(mib_name)
 
-        print('Time used for Bbu table view: {}'.format(time_used))
+        LOG.info('Time used for Bbu table view: {}'.format(time_used))
         self._assert_less_equal(time_used, 30)
 
         items = self._unity_system.get_battery()

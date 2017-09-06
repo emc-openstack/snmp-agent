@@ -4,15 +4,11 @@ from functools import wraps, partial
 
 import six
 import snmpagent_unity
+from snmpagent_unity import utils
 
 import storops
 
-try:
-    import urllib3
-
-    urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-except:
-    pass
+utils.disable_urllib3_warnings()
 
 LOG = logging.getLogger(__name__)
 
@@ -39,6 +35,10 @@ def to_string(func):
                     rst = NONE_STRING
                 elif isinstance(result, (int, float, bool, type(None))):
                     rst = str(result)
+                # In SNMPv2, the max length of DisplayString is 255 (RFC-1213)
+                # So if string is longer than 255, will strip the longer part
+                elif len(result) > 255:
+                    rst = result[:250] + '...'
                 else:
                     rst = result
             else:
@@ -159,13 +159,6 @@ class UnityClient(object):
     @classmethod
     def get_unity_client(cls, name, *args, **kwargs):
         return cls.manager.get_unity_client(name, *args, **kwargs)
-
-    def _get_item(self, items, **filter):
-        for k, v in filter.items():
-            items = [item for item in items if getattr(item, k) == v]
-
-        if len(items) >= 1:
-            return items[0]
 
     # system
     @to_string
@@ -297,10 +290,11 @@ class UnityClient(object):
 
     # storageProcessorTable
     def get_sps(self):
-        return [pool.id for pool in self.unity_system.get_sp()]
+        self.sps = {sp.id: sp for sp in self.unity_system.get_sp()}
+        return self.sps.keys()
 
     def _get_sp(self, id):
-        return self._get_item(self.unity_system.get_sp(), id=id)
+        return self.sps.get(id)
 
     @to_string
     def get_sp_name(self, id):
@@ -382,10 +376,11 @@ class UnityClient(object):
 
     # poolTable
     def get_pools(self):
-        return [pool.id for pool in self.unity_system.get_pool()]
+        self.pools = {pool.id: pool for pool in self.unity_system.get_pool()}
+        return self.pools.keys()
 
     def _get_pool(self, id):
-        return self._get_item(self.unity_system.get_pool(), id=id)
+        return self.pools.get(id)
 
     @to_string
     def get_pool_name(self, id):
@@ -451,10 +446,11 @@ class UnityClient(object):
 
     # volumeTable
     def get_luns(self):
-        return [lun.id for lun in self.unity_system.get_lun()]
+        self.luns = {lun.id: lun for lun in self.unity_system.get_lun()}
+        return self.luns.keys()
 
     def _get_lun(self, id):
-        return self._get_item(self.unity_system.get_lun(), id=id)
+        return self.luns.get(id)
 
     @to_string
     def get_lun_name(self, id):
@@ -584,18 +580,40 @@ class UnityClient(object):
 
     @to_string
     def get_lun_host_access(self, id):
-        lun = self._get_lun(id)
-        if hasattr(lun, 'host_access') and lun.host_access:
-            return ', '.join(x.host.name for x in lun.host_access)
+        # lun = self._get_lun(id)
+        # if hasattr(lun, 'host_access') and lun.host_access:
+        #     return ', '.join(x.host.name for x in lun.host_access)
+        # else:
+        #     return NONE_STRING
+
+        # Unity (version: 4.2.0.9390692) has an issue which failed to get
+        # hostAccess nested properties (AR entry-id: 000000000920482).
+        # So host access info can't be cached in storops, it reduce the
+        # performance for volumeTable view.
+        # The workaround is query hosts first, then filter the hosts which
+        # used by current lun.
+
+        lst = []
+
+        self.get_hosts()
+        for host in self.hosts.values():
+            if hasattr(host, 'host_luns') and host.host_luns is not None:
+                for host_lun in host.host_luns:
+                    if host_lun.lun.id == id:
+                        lst.append(host.name)
+
+        if lst:
+            return ', '.join(lst)
         else:
             return NONE_STRING
 
     # diskTable
     def get_disks(self):
-        return [disk.id for disk in self.unity_system.get_disk()]
+        self.disks = {disk.id: disk for disk in self.unity_system.get_disk()}
+        return self.disks.keys()
 
     def _get_disk(self, id):
-        return self._get_item(self.unity_system.get_disk(), id=id)
+        return self.disks.get(id)
 
     @to_string
     def get_disk_name(self, id):
@@ -704,21 +722,17 @@ class UnityClient(object):
 
     # frontendPortTable
     def get_frontend_ports(self):
-        fc_ports = [FC_PORT_TYPE + port.id for port in
-                    self.unity_system.get_fc_port()]
-        iscsi_ports = [ISCSI_PORT_TYPE + port.id for port in
-                       self.unity_system.get_iscsi_node()]
-        return fc_ports + iscsi_ports
+        self.fc_ports = {FC_PORT_TYPE + port.id: port for port in
+                         self.unity_system.get_fc_port()}
+        self.iscsi_ports = {ISCSI_PORT_TYPE + port.id: port for port in
+                            self.unity_system.get_iscsi_node()}
+        return list(self.fc_ports.keys()) + list(self.iscsi_ports.keys())
 
     def _get_frontend_port(self, id):
         if id.startswith(FC_PORT_TYPE):
-            id = id.replace(FC_PORT_TYPE, '', 1)
-            return self._get_item(self.unity_system.get_fc_port(),
-                                  id=id), FC_PORT_TYPE
+            return self.fc_ports.get(id), FC_PORT_TYPE
         if id.startswith(ISCSI_PORT_TYPE):
-            id = id.replace(ISCSI_PORT_TYPE, '', 1)
-            return self._get_item(self.unity_system.get_iscsi_node(),
-                                  id=id), ISCSI_PORT_TYPE
+            return self.iscsi_ports.get(id), ISCSI_PORT_TYPE
 
     @to_string
     def get_frontend_port_id(self, id):
@@ -826,10 +840,12 @@ class UnityClient(object):
 
     # backendPortTable
     def get_backend_ports(self):
-        return [port.id for port in self.unity_system.get_sas_port()]
+        self.sas_ports = {port.id: port for port in
+                          self.unity_system.get_sas_port()}
+        return self.sas_ports.keys()
 
     def _get_backend_port(self, id):
-        return self._get_item(self.unity_system.get_sas_port(), id=id)
+        return self.sas_ports.get(id)
 
     @to_string
     def get_backend_port_name(self, id):
@@ -892,10 +908,11 @@ class UnityClient(object):
 
     # hostTable
     def get_hosts(self):
-        return [host.id for host in self.unity_system.get_host()]
+        self.hosts = {host.id: host for host in self.unity_system.get_host()}
+        return self.hosts.keys()
 
     def _get_host(self, id):
-        return self._get_item(self.unity_system.get_host(), id=id)
+        return self.hosts.get(id)
 
     @to_string
     def get_host_name(self, id):
@@ -941,19 +958,17 @@ class UnityClient(object):
 
     # enclosureTable
     def get_enclosures(self):
-        daes = [DAE_TYPE + dae.id for dae in
-                self.unity_system.get_dae()]
-        dpes = [DPE_TYPE + dpe.id for dpe in
-                self.unity_system.get_dpe()]
-        return daes + dpes
+        self.daes = {DAE_TYPE + dae.id: dae for dae in
+                     self.unity_system.get_dae()}
+        self.dpes = {DPE_TYPE + dpe.id: dpe for dpe in
+                     self.unity_system.get_dpe()}
+        return list(self.daes.keys()) + list(self.dpes.keys())
 
     def _get_enclosure(self, id):
         if id.startswith(DAE_TYPE):
-            id = id.replace(DAE_TYPE, '', 1)
-            return self._get_item(self.unity_system.get_dae(), id=id)
+            return self.daes.get(id)
         if id.startswith(DPE_TYPE):
-            id = id.replace(DPE_TYPE, '', 1)
-            return self._get_item(self.unity_system.get_dpe(), id=id)
+            return self.dpes.get(id)
 
     @to_string
     def get_enclosure_id(self, id):
@@ -1023,11 +1038,12 @@ class UnityClient(object):
 
     # powerSupplyTable
     def get_power_supplies(self):
-        return [power_supply.id for power_supply in
-                self.unity_system.get_power_supply()]
+        self.power_supplies = {power_supply.id: power_supply for power_supply
+                               in self.unity_system.get_power_supply()}
+        return self.power_supplies.keys()
 
     def _get_power_supply(self, id):
-        return self._get_item(self.unity_system.get_power_supply(), id=id)
+        return self.power_supplies.get(id)
 
     @to_string
     def get_power_supply_name(self, id):
@@ -1075,10 +1091,11 @@ class UnityClient(object):
 
     # fanTable
     def get_fans(self):
-        return [fan.id for fan in self.unity_system.get_fan()]
+        self.fans = {fan.id: fan for fan in self.unity_system.get_fan()}
+        return self.fans.keys()
 
     def _get_fan(self, id):
-        return self._get_item(self.unity_system.get_fan(), id=id)
+        return self.fans.get(id)
 
     @to_string
     def get_fan_name(self, id):
@@ -1111,10 +1128,11 @@ class UnityClient(object):
 
     # BBUTable
     def get_bbus(self):
-        return [bbu.id for bbu in self.unity_system.get_battery()]
+        self.bbus = {bbu.id: bbu for bbu in self.unity_system.get_battery()}
+        return self.bbus.keys()
 
     def _get_bbu(self, id):
-        return self._get_item(self.unity_system.get_battery(), id=id)
+        return self.bbus.get(id)
 
     @to_string
     def get_bbu_name(self, id):

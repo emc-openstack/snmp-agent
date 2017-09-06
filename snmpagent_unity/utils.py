@@ -1,7 +1,6 @@
-import sys
 import logging
+import sys
 from logging import handlers
-
 
 from snmpagent_unity import exceptions as snmp_ex
 
@@ -58,3 +57,12 @@ def log_trace(excType, excValue, traceback):
     logging.error(
         "Got an uncaught exception",
         exc_info=(excType, excValue, traceback))
+
+
+def disable_urllib3_warnings():
+    try:
+        import urllib3
+
+        urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+    except:
+        pass

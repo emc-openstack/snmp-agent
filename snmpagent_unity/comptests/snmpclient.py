@@ -132,8 +132,10 @@ class SNMPv2Client(SNMPClient):
             (self.agent_ip, self.agent_port))
         self.context_data = hlapi.ContextData()
 
-        self.snmp_basic_info = self.engine, self.community_data, \
-                               self.transport_target, self.context_data
+        self.snmp_basic_info = (self.engine,
+                                self.community_data,
+                                self.transport_target,
+                                self.context_data)
 
         super(SNMPv2Client, self).__init__()
 
@@ -160,8 +162,10 @@ class SNMPv3Client(SNMPClient):
             (self.agent_ip, self.agent_port))
         self.context_data = hlapi.ContextData()
 
-        self.snmp_basic_info = self.engine, self.user_data, \
-                               self.transport_target, self.context_data
+        self.snmp_basic_info = (self.engine,
+                                self.user_data,
+                                self.transport_target,
+                                self.context_data)
 
         super(SNMPv3Client, self).__init__()
 
@@ -224,14 +228,11 @@ if __name__ == '__main__':
     #           'hostTable', 'backendPortTable', 'frontendPortTable',
     #           'diskTable', 'volumeTable', 'poolTable',
     #           'storageProcessorTable']
-    # tables = ['diskTable']
-    # tables = ['volumeTable']
-    # tables = ['diskTable', 'volumeTable']
     tables = ['bbuTable']
 
     for snmpclient in (
-    snmpclient_v3_md5_aes, snmpclient_v3_md5_des, snmpclient_v3_md5,
-    snmpclient_v3_sha_aes, snmpclient_v3_sha_des, snmpclient_v3_sha):
+            snmpclient_v3_md5_aes, snmpclient_v3_md5_des, snmpclient_v3_md5,
+            snmpclient_v3_sha_aes, snmpclient_v3_sha_des, snmpclient_v3_sha):
         print('SNMP Client: {}'.format(snmpclient))
         print(snmpclient.get('agentVersion'))
 
@@ -239,9 +240,3 @@ if __name__ == '__main__':
             result, time_used = snmpclient.table_view(table)
             print('Table: {}, time used: {}'.format(table, time_used))
             print(result)
-
-
-    # snmpclient = SNMPv3Client(agent_ip, agent_port, 'user-shaa',
-    #                           auth_key='12345678', auth_proto='sha')
-    #
-    # print(snmpclient.get('agentVersion'))

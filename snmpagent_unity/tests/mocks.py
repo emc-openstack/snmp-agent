@@ -8,6 +8,8 @@ class MockUnitySystem(object):
         self.model = 'Unity 500'
         self.serial_number = 'FNM00150600267'
         self.system_version = '4.2.0'
+        self.sas_ports = {port.id: port for port in
+                          self.get_sas_port()}
 
     def enable_perf_stats(self):
         pass
@@ -329,7 +331,8 @@ class MockUnitySystem(object):
                                                 ':00:00:90:FA:53:49:29')],
                            os_type='Linux',
                            host_luns=[FakeObject(
-                               lun=FakeObject(name='storops_dummy_lun'))],
+                               lun=FakeObject(id='sv_1',
+                                              name='storops_dummy_lun'))],
                            ),
                 FakeObject(id='host_2'),
                 FakeObject(id='host_3',
