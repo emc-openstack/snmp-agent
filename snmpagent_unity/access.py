@@ -125,6 +125,6 @@ class Access(object):
     def list_users(self):
         v2, v3 = config.UserConfig.split_v2_v3(self.user_conf.entries)
         print('\n'.join([config.USER_V2_SHOW_HEAD] +
-                        [e.show() for e in v2] +
+                        [str(e) for e in v2] +
                         ['\n' + config.USER_V3_SHOW_HEAD] +
-                        [e.show() for e in v3]))
+                        [str(e) for e in v3]))

@@ -29,7 +29,7 @@ Command Line Interface
   Start a SNMP agent with the specified configuration file ``<file_path>``.
   If the agent is already running, an error message will be returned in both console and log file.
 
-*snmpagent-unity restart --conf_file <file_path>*
+*snmpagent-unity restart*
   Restart a SNMP agent. It returns an error if the agent fails to start the agent.
   
 *snmpagent-unity stop*
@@ -66,17 +66,18 @@ Command Line Interface
 .. code-block:: console
 
     SNMP Version 2 Community Access:
-    user_1
-      Version:    SNMPv2c
-      Community:  Public
+    public
+        Version:    SNMP Version 2c
+        Community:  public
+
     SNMP Version 3 Users:
-    user_2
-      Version:            SNMPv3
-      Security Level:     authPriv
-      Auth Protocol:      MD5
-      Auth Key:           34a0323fa11e5432ebe681b103de1fa5\x06
-      Privacy Protocol:   AES
-      Privacy Key:        040591c13f4a9d3b470f108493d26b0f\x06
+    for_update
+        Version:            SNMP Version 3
+        Security Level:     Authentication
+        Auth Protocol:      MD5
+        Auth Key:           ******
+        Privacy Protocol:   -
+        Privacy Key:        -
 
 
 

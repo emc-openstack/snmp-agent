@@ -12,10 +12,20 @@ LOG = logging.getLogger(__file__)
 V2, V3 = enums.UserVersion.V2, enums.UserVersion.V3
 
 
-def dash_if_empty(value):
-    if value is None or not str(value):
+def to_console_str(value):
+    if not value:
         return '-'
-    return str(value)
+    if isinstance(value, enums.CaseInsensitiveEnum):
+        return str(value)
+    return value
+
+
+class Serializable(object):
+    def __init__(self, value):
+        self.value = value
+
+    def to_config_string(self):
+        return self.value
 
 
 class Password(object):
@@ -26,7 +36,12 @@ class Password(object):
             self.encrypted, self.raw = cipher.encrypt(password), password
 
     def __str__(self):
-        return dash_if_empty(self.encrypted)
+        """Used for representing value in console."""
+        return '******' if self.encrypted else '-'
+
+    def to_config_string(self):
+        """Used for representing value to be stored in file."""
+        return self.encrypted if self.raw else '-'
 
 
 class ConfigEntry(object):
@@ -71,7 +86,8 @@ USER_V3_SHOW = '''{name}
 
 def _show(format_str, **kwargs):
     for k, v in kwargs.items():
-        kwargs[k] = dash_if_empty(v)
+        kwargs[k] = to_console_str(v)
+
     return format_str.format(**kwargs)
 
 
@@ -82,12 +98,16 @@ class UserV2ConfigEntry(ConfigEntry):
             community=name)
 
     def __str__(self):
-        return ' '.join(dash_if_empty(item)
-                        for item in (self.mode, self.name, self.community))
-
-    def show(self):
+        """Used for representing value in console."""
         return _show(USER_V2_SHOW, name=self.name, mode=self.mode,
                      community=self.community)
+
+    def to_config_string(self):
+        """Used for representing value to be stored in file."""
+        return ' '.join('-' if not item else item.to_config_string()
+                        for item in (
+                            self.mode, Serializable(self.name),
+                            Serializable(self.community)))
 
 
 class UserV3ConfigEntry(ConfigEntry):
@@ -103,17 +123,22 @@ class UserV3ConfigEntry(ConfigEntry):
             priv_key=Password(priv_key))
 
     def __str__(self):
-        return ' '.join(dash_if_empty(item)
-                        for item in (self.mode, self.name,
-                                     self.context, self.security_level,
-                                     self.auth_protocol, self.auth_key,
-                                     self.priv_protocol, self.priv_key))
+        """Used for representing value in console."""
 
-    def show(self):
         return _show(USER_V3_SHOW, name=self.name, mode=self.mode,
                      security_level=self.security_level,
                      auth_protocol=self.auth_protocol, auth_key=self.auth_key,
                      priv_protocol=self.priv_protocol, priv_key=self.priv_key)
+
+    def to_config_string(self):
+        """Used for representing value to be stored in file."""
+
+        return ' '.join('-' if not item else item.to_config_string()
+                        for item in (self.mode, Serializable(self.name),
+                                     self.context,
+                                     self.security_level,
+                                     self.auth_protocol, self.auth_key,
+                                     self.priv_protocol, self.priv_key))
 
 
 class AgentConfigParser(object):
@@ -177,6 +202,9 @@ class UserConfigParser(object):
 
     def save(self, conf_dict, encrypt=True):
         v2, v3 = UserConfig.split_v2_v3(conf_dict)
+        v2 = [e.to_config_string() for e in v2]
+        v3 = [e.to_config_string() for e in v3]
+
         with open(self._conf_file, 'w') as f:
             f.writelines(str(line) + '\n'
                          for line in ([USER_V2_HEAD] + v2 +

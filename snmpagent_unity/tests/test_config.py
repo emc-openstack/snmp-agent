@@ -55,25 +55,25 @@ class TestConfig(unittest.TestCase):
         for name, entry in conf.entries.items():
             if name == 'user-md5-des':
                 self.assertEqual('user-md5-des', entry.name)
-                self.assertEqual('SNMPv3', entry.mode.value)
+                self.assertEqual('SNMPv3', entry.mode.value[0])
                 self.assertEqual('', entry.context)
-                self.assertEqual('authPriv', entry.security_level.value)
-                self.assertEqual('MD5', entry.auth_protocol.value)
+                self.assertEqual('authPriv', entry.security_level.value[0])
+                self.assertEqual('MD5', entry.auth_protocol.value[0])
                 self.assertEqual('authkey1', entry.auth_key.raw)
-                self.assertEqual('DES', entry.priv_protocol.value)
+                self.assertEqual('DES', entry.priv_protocol.value[0])
                 self.assertEqual('privkey1', entry.priv_key.raw)
             elif name == 'user-sha-none':
                 self.assertEqual('user-sha-none', entry.name)
-                self.assertEqual('SNMPv3', entry.mode.value)
+                self.assertEqual('SNMPv3', entry.mode.value[0])
                 self.assertEqual('', entry.context)
-                self.assertEqual('authNoPriv', entry.security_level.value)
-                self.assertEqual('SHA', entry.auth_protocol.value)
+                self.assertEqual('authNoPriv', entry.security_level.value[0])
+                self.assertEqual('SHA', entry.auth_protocol.value[0])
                 self.assertEqual('authkey2', entry.auth_key.raw)
                 self.assertIsNone(entry.priv_protocol)
                 self.assertEqual('', entry.priv_key.raw)
             elif name == 'user-public':
                 self.assertEqual('user-public', entry.name)
-                self.assertEqual('SNMPv2c', entry.mode.value)
+                self.assertEqual('SNMPv2c', entry.mode.value[0])
                 self.assertEqual('user-public', entry.community)
             else:
                 self.assertTrue(False)

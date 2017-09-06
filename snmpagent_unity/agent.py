@@ -102,7 +102,7 @@ class SNMPEngine(object):
                                                    obj.auth_protocol,
                                                    None))
             else:
-                security_level = enums.SecurityLevel.NO_AUTH_NO_PRIV.value
+                security_level = enums.SecurityLevel.NO_AUTH_NO_PRIV.value[0]
                 try:
                     config.addV1System(self.engine, name, obj.community)
                     config.addVacmUser(self.engine, 2, name, security_level,

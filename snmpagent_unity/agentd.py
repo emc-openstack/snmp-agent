@@ -49,6 +49,16 @@ class BaseDaemon(object):
         return None
 
     @classmethod
+    def get_running_conf(cls):
+        process = cls.exists()
+        if process:
+            params = process.cmdline()
+            return params[2]
+        else:
+            LOG.debug("No configuration file used by running agent.")
+        return None
+
+    @classmethod
     def get_pid_file(cls):
         return os.path.join(tempfile.gettempdir(), 'snmpagent-unity.pid')
 

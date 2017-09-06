@@ -64,6 +64,7 @@ class SNMPCliTest(unittest.TestCase):
         self.helper.decrypt(tmp_file)
 
     def test_start_service(self):
+        self.helper.create_community('for_start')
         r = self.helper.start_service()
         self.assertEqual(0, r)
         self.addCleanup(self.helper.stop_service)
@@ -79,5 +80,11 @@ class SNMPCliTest(unittest.TestCase):
         self.assertNotEqual(0, r)
 
     def test_restart_service(self):
+        self.helper.create_community('for_restart')
+        self.helper.start_service()
         r = self.helper.restart_service()
         self.assertEqual(0, r)
+
+    def test_restart_service_no_running(self):
+        r = self.helper.restart_service()
+        self.assertEqual(3, r)

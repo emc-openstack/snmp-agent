@@ -181,25 +181,25 @@ class TestAccess(unittest.TestCase):
 
         expected = '''SNMP Version 2 Community Access:
 user_1
-    Version:    SNMPv2c
+    Version:    SNMP Version 2c
     Community:  user_1
 user_2
-    Version:    SNMPv2c
+    Version:    SNMP Version 2c
     Community:  user_2
 
 SNMP Version 3 Users:
 user_3
-    Version:            SNMPv3
-    Security Level:     authPriv
+    Version:            SNMP Version 3
+    Security Level:     Authentication and Private
     Auth Protocol:      MD5
-    Auth Key:           34a0323fa11e5432ebe681b103de1fa5\x06
+    Auth Key:           ******
     Privacy Protocol:   AES
-    Privacy Key:        040591c13f4a9d3b470f108493d26b0f\x06
+    Privacy Key:        ******
 user_4
-    Version:            SNMPv3
-    Security Level:     authNoPriv
+    Version:            SNMP Version 3
+    Security Level:     Authentication
     Auth Protocol:      SHA
-    Auth Key:           34a0323fa11e5432ebe681b103de1fa5\x06
+    Auth Key:           ******
     Privacy Protocol:   -
     Privacy Key:        -
 '''

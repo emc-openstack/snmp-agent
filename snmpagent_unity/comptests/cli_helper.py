@@ -71,7 +71,7 @@ class Helper(object):
 
     @utils.cli_executor
     def restart_service(self):
-        return ['restart', '--conf_file', self.conf_file]
+        return ['restart']
 
     @classmethod
     def clear_access_data(cls):
