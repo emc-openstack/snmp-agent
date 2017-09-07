@@ -92,7 +92,8 @@ class SNMPEngine(object):
                                                        obj.auth_protocol,
                                                        obj.priv_protocol))
                     config.addVacmUser(self.engine, 3, name,
-                                       obj.security_level.value, READ_SUB_TREE,
+                                       obj.security_level.index,
+                                       READ_SUB_TREE,
                                        WRITE_SUB_TREE)
                 except smi_ex.WrongValueError:
                     LOG.exception(

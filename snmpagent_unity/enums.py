@@ -2,24 +2,32 @@ import enum
 
 
 class CaseInsensitiveEnum(enum.Enum):
-    def to_config_string(self):
+    @property
+    def description(self):
+        return self.value[1]
+
+    @property
+    def index(self):
         return self.value[0]
+
+    def to_config_string(self):
+        return self.index
 
     @classmethod
     def from_str(cls, value):
         try:
-            return [m for m in cls if m.value[0].lower() == value.lower()][0]
+            return [m for m in cls if m.index.lower() == value.lower()][0]
         except IndexError:
             return None
 
     def __str__(self):
-        return self.value[1]
+        return self.description
 
     def __lt__(self, other):
         # An equivalent for cmp(self.value, other.value)
         # https://docs.python.org/3.0/whatsnew/3.0.html#ordering-comparisons
-        return (self.value[0] > other.value[0]) - (
-        self.value[0] < other.value[0])
+        return (self.index > other.index) - (
+            self.index < other.index)
 
 
 class UserVersion(CaseInsensitiveEnum):
