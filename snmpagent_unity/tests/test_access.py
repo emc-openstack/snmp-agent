@@ -152,16 +152,20 @@ class TestAccess(unittest.TestCase):
                                             enums.AuthProtocol.SHA, 'key123',
                                             enums.PrivProtocol.AES, 'key456')
         self.access.user_conf.entries = {name: old_user}
-        self.access.update_v3_user(name, auth_protocol=enums.AuthProtocol.SHA,
-                                   auth_key='key123',
-                                   priv_key='key789')
+        self.access.update_v3_user(
+            name,
+            security_level=enums.SecurityLevel.AUTH_PRIV,
+            auth_protocol=enums.AuthProtocol.SHA,
+            auth_key='key123',
+            priv_key='key789',
+            priv_protocol=enums.PrivProtocol.DES)
         new_user = self.access.user_conf.entries[name]
         self.assertEqual(name, new_user.name)
         self.assertEqual(enums.SecurityLevel.AUTH_PRIV,
                          new_user.security_level)
         self.assertEqual(enums.AuthProtocol.SHA, new_user.auth_protocol)
         self.assertEqual('key123', new_user.auth_key.raw)
-        self.assertEqual(enums.PrivProtocol.AES, new_user.priv_protocol)
+        self.assertEqual(enums.PrivProtocol.DES, new_user.priv_protocol)
         self.assertEqual('key789', new_user.priv_key.raw)
         self.access.user_conf.save.assert_called_once()
 
@@ -193,23 +197,27 @@ class TestAccess(unittest.TestCase):
 
         self.assertRaises(snmp_ex.UserInvalidProtocolError,
                           self.access.update_v3_user,
-                          name, auth_protocol=enums.AuthProtocol.MD5,
+                          name, security_level=enums.SecurityLevel.AUTH_PRIV,
+                          auth_protocol=enums.AuthProtocol.MD5,
                           auth_key='key123',
-                          priv_key='key789')
+                          priv_key='key789',
+                          priv_protocol=enums.PrivProtocol.AES)
 
     def test_update_v3_user_invalid_password(self):
         name = 'user_1'
         old_user = config.UserV3ConfigEntry(name, None,
                                             enums.SecurityLevel.AUTH_PRIV,
                                             enums.AuthProtocol.SHA, 'key123',
-                                            enums.PrivProtocol.AES, None)
+                                            enums.PrivProtocol.AES, 'password')
         self.access.user_conf.entries = {name: old_user}
 
         self.assertRaises(snmp_ex.UserInvalidPasswordError,
                           self.access.update_v3_user,
-                          name, auth_protocol=enums.AuthProtocol.SHA,
+                          name, security_level=enums.SecurityLevel.AUTH_PRIV,
+                          auth_protocol=enums.AuthProtocol.SHA,
                           auth_key='invalid',
-                          priv_key='key789')
+                          priv_key='key789',
+                          priv_protocol=enums.PrivProtocol.AES)
 
     def test_list_users(self):
         users = collections.OrderedDict()
