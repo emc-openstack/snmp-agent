@@ -11,7 +11,7 @@ usage:
     snmpagent-unity create-community --name <name>
 
 options:
-    --name <name>               the user name
+    --name <name>               User name
 
 examples:
     snmpagent-unity create-community --name user_1
@@ -32,7 +32,7 @@ usage:
     snmpagent-unity delete-community --name <name>
 
 options:
-    --name <name>               the user name
+    --name <name>               User name
 
 examples:
     snmpagent-unity delete-community --name user_1

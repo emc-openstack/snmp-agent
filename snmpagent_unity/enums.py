@@ -53,4 +53,4 @@ class PrivProtocol(CaseInsensitiveEnum):
 class SecurityLevel(CaseInsensitiveEnum):
     NO_AUTH_NO_PRIV = ('noAuthNoPriv', 'No Authentication')
     AUTH_NO_PRIV = ('authNoPriv', 'Authentication')
-    AUTH_PRIV = ('authPriv', "Authentication and Private")
+    AUTH_PRIV = ('authPriv', "Authentication and Privacy")

@@ -78,8 +78,8 @@ class BaseDaemon(object):
         p = cls._launch_process(conf_file)
         pid = p.pid
 
-        LOG.info(
-            "{} pid file path: {}.".format(SERVICE_NAME, cls.get_pid_file()))
+        # LOG.info(
+        #     "{} pid file path: {}.".format(SERVICE_NAME, cls.get_pid_file()))
         LOG.info("Service {}(pid={}) started.".format(SERVICE_NAME, pid))
 
         # Create process id file to signal that

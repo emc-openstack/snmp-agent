@@ -26,12 +26,12 @@ usage:
 <auth_key> [--priv <priv_protocol>] [--priv_key <priv_key>]
 
 options:
-    --name <name>               the user name
-    --auth <auth_protocol>      the authentication protocol (MD5 or SHA)
-    --auth_key <auth_key>       the authentication password \
+    --name <name>               User name
+    --auth <auth_protocol>      Authentication protocol (MD5 or SHA)
+    --auth_key <auth_key>       Authentication password \
 (length: 8 to 24 characters)
-    --priv <priv_protocol>      the privacy protocol (AES or DES)
-    --priv_key <priv_key>       the privacy password \
+    --priv <priv_protocol>      Privacy protocol (AES or DES)
+    --priv_key <priv_key>       Privacy password \
 (length: 8 to 24 characters)
 
 examples:
@@ -73,12 +73,12 @@ usage:
 [--auth_key <auth_key>] [--priv <priv_protocol>] [--priv_key <priv_key>]
 
 options:
-    --name <name>               the user name
-    --auth <auth_protocol>      the authentication protocol (MD5 or SHA)
-    --auth_key <auth_key>       the authentication password \
+    --name <name>               User name
+    --auth <auth_protocol>      Authentication protocol (MD5 or SHA)
+    --auth_key <auth_key>       Authentication password \
 (length: 8 to 24 characters)
-    --priv <priv_protocol>      the privacy protocol (AES or DES)
-    --priv_key <priv_key>       the privacy password \
+    --priv <priv_protocol>      Privacy protocol (AES or DES)
+    --priv_key <priv_key>       Privacy password \
 (length: 8 to 24 characters)
 
 examples:
@@ -122,7 +122,7 @@ usage:
     snmpagent-unity delete-user --name <name>
 
 options:
-    --name <name>               the user name
+    --name <name>               User name
 
 examples:
     snmpagent-unity delete-user --name user_1

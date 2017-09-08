@@ -19,7 +19,7 @@ class SNMPCliTest(unittest.TestCase):
     def test_update_user(self):
         self.helper.add_user('for_update', 'SHA', 'password', 'AES',
                              'password')
-        r = self.helper.update_user('for_update', 'MD5', 'password1')
+        r = self.helper.update_user('for_update', 'SHA', 'password')
         self.assertEqual(0, r)
 
     def test_delete_user(self):

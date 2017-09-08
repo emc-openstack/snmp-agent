@@ -25,7 +25,7 @@ usage:
     snmpagent-unity start --conf_file <conf_file>
 
 options:
-    --conf_file <conf_file>     the agent configuration file path
+    --conf_file <conf_file>     Agent configuration file path
 
 examples:
     snmpagent-unity start --conf_file /tmp/agent.conf

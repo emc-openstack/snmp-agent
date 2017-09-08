@@ -2,14 +2,11 @@
 Dell EMC Unity SNMP Off-Array Agent.
 
 usage:
-    snmpagent-unity [-hV --log_file <log_file> --log_level <log_level>] \
-<command> [<args>...]
+    snmpagent-unity [-hV] <command> [<args>...]
 
 options:
-    -h --help               Show the help, could be used for commands.
-    -V --version            Show the version.
-    --log_file <log_file>   Set the log file path.
-    --log_level <log_level> Set the log level.
+    -h --help               Show the help, could be used for commands
+    -V --version            Show the version
 
 supported commands:
     add-user                Add a v3 user
@@ -20,9 +17,9 @@ supported commands:
     list-users              List all users/access
     encrypt                 Encrypt the configuration files
     decrypt                 Decrypt the configuration files
-    start                   Start a snmp agent daemon
-    stop                    Stop the snmp agent daemon
-    restart                 Restart the snmp agent daemon
+    start                   Start a SNMP agent daemon
+    stop                    Stop the SNMP agent daemon
+    restart                 Restart the SNMP agent daemon
 
 examples:
     snmpagent-unity --help

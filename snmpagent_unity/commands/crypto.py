@@ -14,7 +14,7 @@ usage:
     snmpagent-unity encrypt --conf_file <conf_file>
 
 options:
-    --conf_file <conf_file>     the configuration file to be encrypted
+    --conf_file <conf_file>     Configuration file to be encrypted
 
 examples:
     snmpagent-unity encrypt --conf_file /tmp/agent.conf

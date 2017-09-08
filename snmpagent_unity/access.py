@@ -108,19 +108,22 @@ class Access(object):
             raise snmp_ex.UserNotExistsError(
                 "Could not update nonexistent user '{}'.".format(name))
         old = self.user_conf.entries[name]
-        security_level = (old.security_level if security_level is None
-                          else security_level)
-        auth_protocol = (old.auth_protocol if auth_protocol is None
-                         else auth_protocol)
-        auth_key = old.auth_key.raw if auth_key is None else auth_key
-        priv_protocol = (old.priv_protocol if priv_protocol is None
-                         else priv_protocol)
-        priv_key = old.priv_key.raw if priv_key is None else priv_key
+
         level, auth_p, auth_k, priv_p, priv_k = _validate_params(
             security_level, auth_protocol, auth_key, priv_protocol, priv_key)
+        if old.auth_protocol != auth_p:
+            raise snmp_ex.UserInvalidProtocolError(
+                "'{}' does not match auth with '{}'.".format(
+                    auth_p,
+                    old.auth_protocol))
+
+        if old.auth_key.raw != auth_k:
+            raise snmp_ex.UserInvalidPasswordError(
+                'Incorrect password supplied.')
         self.user_conf.entries[name] = config.UserV3ConfigEntry(
             name, None, level, auth_p, auth_k, priv_p, priv_k)
         self.user_conf.save()
+        LOG.info("Updated user '{}' successfully.".format(name))
 
     def list_users(self):
         v2, v3 = config.UserConfig.split_v2_v3(self.user_conf.entries)

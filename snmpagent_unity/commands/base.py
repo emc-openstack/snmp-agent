@@ -17,9 +17,7 @@ class BaseCommand(object):
         """
         self.args = docopt.docopt(self.__doc__, argv=cmd_args)
         self.global_args = global_args
-        utils.setup_log(log_file_path=self.global_args['--log_file'],
-                        level=self.global_args['--log_level'],
-                        log_to_stdout=self.log_to_stdout)
+        utils.setup_log(log_to_stdout=self.log_to_stdout)
 
     def do(self):
         """Execute the commands"""
