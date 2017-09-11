@@ -244,9 +244,8 @@ class TestUnityClient(unittest.TestCase):
                          self.client.get_pool_fast_cache_status(
                              param_dict['key']))
 
-    # TODO:
-    @ddt.data({'key': 'pool_1', 'disk_count': '30'},
-              {'key': 'pool_2', 'disk_count': '0'}, )
+    @ddt.data({'key': 'pool_1', 'disk_count': 30},
+              {'key': 'pool_2', 'disk_count': 0}, )
     def test_get_pool_number_of_disk(self, param_dict):
         self.client.get_pools()
         self.assertEqual(param_dict['disk_count'],
@@ -856,42 +855,6 @@ class TestUnityClient(unittest.TestCase):
         self.client.get_backend_ports()
         self.assertEqual(param_dict['health'],
                          self.client.get_backend_port_health_status(
-                             param_dict['key']))
-
-    @ddt.data({'key': 'spa_sas0', 'total_iops': NONE_STRING})
-    def test_get_backend_port_total_iops(self, param_dict):
-        self.assertEqual(param_dict['total_iops'],
-                         self.client.get_backend_port_total_iops(
-                             param_dict['key']))
-
-    @ddt.data({'key': 'spa_sas0', 'read_iops': NONE_STRING})
-    def test_get_backend_port_read_iops(self, param_dict):
-        self.assertEqual(param_dict['read_iops'],
-                         self.client.get_backend_port_read_iops(
-                             param_dict['key']))
-
-    @ddt.data({'key': 'spa_sas0', 'write_iops': NONE_STRING})
-    def test_get_backend_port_write_iops(self, param_dict):
-        self.assertEqual(param_dict['write_iops'],
-                         self.client.get_backend_port_write_iops(
-                             param_dict['key']))
-
-    @ddt.data({'key': 'spa_sas0', 'total_byte_rate': NONE_STRING})
-    def test_get_backend_port_total_byte_rate(self, param_dict):
-        self.assertEqual(param_dict['total_byte_rate'],
-                         self.client.get_backend_port_total_byte_rate(
-                             param_dict['key']))
-
-    @ddt.data({'key': 'spa_sas0', 'read_byte_rate': NONE_STRING})
-    def test_get_backend_port_read_byte_rate(self, param_dict):
-        self.assertEqual(param_dict['read_byte_rate'],
-                         self.client.get_backend_port_read_byte_rate(
-                             param_dict['key']))
-
-    @ddt.data({'key': 'spa_sas0', 'write_byte_rate': NONE_STRING})
-    def test_get_backend_port_write_byte_rate(self, param_dict):
-        self.assertEqual(param_dict['write_byte_rate'],
-                         self.client.get_backend_port_write_byte_rate(
                              param_dict['key']))
 
     # hostTable

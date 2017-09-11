@@ -105,10 +105,10 @@ class TestEngine(unittest.TestCase):
         self.assertNotEqual(snmp_engine.engine.unity_client, None)
         self.assertEqual(len(snmp_engine.engine.msgAndPduDsp.
                              mibInstrumController.mibBuilder.
-                             mibSymbols['Unity-MIB']), 187)
+                             mibSymbols['Unity-MIB']), 181)
         self.assertEqual(len(snmp_engine.engine.msgAndPduDsp.
                              mibInstrumController.mibBuilder.
-                             mibSymbols['Exported-Unity-MIB']), 156)
+                             mibSymbols['Exported-Unity-MIB']), 150)
 
     @patches.mock_engine
     @patches.mock_client
@@ -151,10 +151,10 @@ class TestEngine(unittest.TestCase):
         self.assertNotEqual(snmp_engine.engine.unity_client, None)
         self.assertEqual(len(snmp_engine.engine.msgAndPduDsp.
                              mibInstrumController.mibBuilder.
-                             mibSymbols['Unity-MIB']), 187)
+                             mibSymbols['Unity-MIB']), 181)
         self.assertEqual(len(snmp_engine.engine.msgAndPduDsp.
                              mibInstrumController.mibBuilder.
-                             mibSymbols['Exported-Unity-MIB']), 156)
+                             mibSymbols['Exported-Unity-MIB']), 150)
 
     @patches.mock_engine
     @patches.mock_client
@@ -195,10 +195,10 @@ class TestEngine(unittest.TestCase):
         self.assertNotEqual(snmp_engine.engine.unity_client, None)
         self.assertEqual(len(snmp_engine.engine.msgAndPduDsp.
                              mibInstrumController.mibBuilder.
-                             mibSymbols['Unity-MIB']), 187)
+                             mibSymbols['Unity-MIB']), 181)
         self.assertEqual(len(snmp_engine.engine.msgAndPduDsp.
                              mibInstrumController.mibBuilder.
-                             mibSymbols['Exported-Unity-MIB']), 156)
+                             mibSymbols['Exported-Unity-MIB']), 150)
 
     @patches.mock_engine
     @patches.mock_client
@@ -228,7 +228,7 @@ class TestEngine(unittest.TestCase):
         self.assertNotEqual(snmp_engine.engine.unity_client, None)
         self.assertEqual(len(snmp_engine.engine.msgAndPduDsp.
                              mibInstrumController.mibBuilder.
-                             mibSymbols['Unity-MIB']), 187)
+                             mibSymbols['Unity-MIB']), 181)
         self.assertEqual(len(snmp_engine.engine.msgAndPduDsp.
                              mibInstrumController.mibBuilder.
-                             mibSymbols['Exported-Unity-MIB']), 156)
+                             mibSymbols['Exported-Unity-MIB']), 150)

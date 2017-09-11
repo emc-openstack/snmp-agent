@@ -98,3 +98,7 @@ run/
 
 # Temp file
 ~$MIB_tree.xlsx
+
+# Performance test result
+perf_test*.json
+perf_test*.csv

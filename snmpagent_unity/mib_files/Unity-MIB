@@ -1195,13 +1195,7 @@ IMPORTS
 			backendPortCurrentSpeed             DisplayString,
 			backendPortParentIoModule           DisplayString,
 			backendPortParentStorageProcessor   DisplayString,
-			backendPortStatus                   DisplayString,
-			backendPortTotalThroughput          DisplayString,
-			backendPortReadThroughput           DisplayString,
-			backendPortWriteThroughput          DisplayString,
-			backendPortTotalBandwidth           DisplayString,
-			backendPortReadBandwidth            DisplayString,
-			backendPortWriteBandwidth           DisplayString
+			backendPortStatus                   DisplayString
 		 }
 
 	-- 1.3.6.1.4.1.1139.103.1.19.31.1.1
@@ -1275,60 +1269,6 @@ IMPORTS
 		DESCRIPTION
 			"Description."
 		::= { backendPortEntry 8 }
-
-	-- 1.3.6.1.4.1.1139.103.1.19.31.1.9
-	backendPortTotalThroughput OBJECT-TYPE
-		SYNTAX DisplayString
-		ACCESS read-only
-		STATUS mandatory
-		DESCRIPTION
-			"Description."
-		::= { backendPortEntry 9 }
-
-	-- 1.3.6.1.4.1.1139.103.1.19.31.1.10
-	backendPortReadThroughput OBJECT-TYPE
-		SYNTAX DisplayString
-		ACCESS read-only
-		STATUS mandatory
-		DESCRIPTION
-			"Description."
-		::= { backendPortEntry 10 }
-
-	-- 1.3.6.1.4.1.1139.103.1.19.31.1.11
-	backendPortWriteThroughput OBJECT-TYPE
-		SYNTAX DisplayString
-		ACCESS read-only
-		STATUS mandatory
-		DESCRIPTION
-			"Description."
-		::= { backendPortEntry 11 }
-
-	-- 1.3.6.1.4.1.1139.103.1.19.31.1.12
-	backendPortTotalBandwidth OBJECT-TYPE
-		SYNTAX DisplayString
-		ACCESS read-only
-		STATUS mandatory
-		DESCRIPTION
-			"Description."
-		::= { backendPortEntry 12 }
-
-	-- 1.3.6.1.4.1.1139.103.1.19.31.1.13
-	backendPortReadBandwidth OBJECT-TYPE
-		SYNTAX DisplayString
-		ACCESS read-only
-		STATUS mandatory
-		DESCRIPTION
-			"Description."
-		::= { backendPortEntry 13 }
-
-	-- 1.3.6.1.4.1.1139.103.1.19.31.1.14
-	backendPortWriteBandwidth OBJECT-TYPE
-		SYNTAX DisplayString
-		ACCESS read-only
-		STATUS mandatory
-		DESCRIPTION
-			"Description."
-		::= { backendPortEntry 14 }
 
 	-- 1.3.6.1.4.1.1139.103.1.19.32
 	hostTable OBJECT-TYPE

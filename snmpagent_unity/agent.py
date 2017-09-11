@@ -1,7 +1,9 @@
 import logging
 import os
+import random
 import sys
 import threading
+import time
 
 from snmpagent_unity import clients, enums, factory, mib_parser
 from snmpagent_unity import config as snmp_config
@@ -245,6 +247,9 @@ class SNMPAgent(object):
         """Starts the SNMP engine in multi-thread mode."""
         setup_thread_excepthook()
         for index, array_name in enumerate(self.agent_entries):
+            # Sleep 1~3 sec to avoid too many engine connect to unities
+            # in a short time
+            time.sleep(random.randint(1, 3))
             t = threading.Thread(target=self.run_instance,
                                  args=(
                                      self.agent_entries[array_name],
@@ -277,10 +282,3 @@ def setup_thread_excepthook():
         self.run = run_with_except_hook
 
     threading.Thread.__init__ = init
-
-
-if __name__ == '__main__':
-    config_file = os.path.abspath(r'C:\tmp\snmpagent\conf\agent.txt')
-    auth_config_file = os.path.abspath(r'C:\tmp\snmpagent\conf\access.txt')
-    agent = SNMPAgent(config_file, auth_config_file)
-    agent.run()

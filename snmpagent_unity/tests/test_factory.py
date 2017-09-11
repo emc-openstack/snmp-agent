@@ -4,6 +4,7 @@ import unittest
 
 import mock
 from requests import exceptions as requests_ex
+from snmpagent_unity import clients
 from snmpagent_unity import factory
 
 from pysnmp.proto import rfc1902
@@ -12,7 +13,7 @@ from storops.connection import exceptions as storops_ex
 AGENT_VERSION = b'1.1'
 NUMBER_OF_DISK = 30
 NONE_STRING = b'n/a'
-ERROR_NUMBER = -999
+ERROR_NUMBER = clients.ERROR_NUMBER
 CONNECTION_ERROR_MSG = factory.CONNECTION_ERROR_MSG
 
 

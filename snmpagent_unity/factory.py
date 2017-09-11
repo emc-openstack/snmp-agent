@@ -1,6 +1,5 @@
 import logging
 
-from pyasn1.type import univ
 from requests import exceptions as requests_ex
 from snmpagent_unity import clients
 
@@ -11,7 +10,7 @@ LOG = logging.getLogger(__name__)
 NONE_STRING = clients.NONE_STRING
 ERROR_NUMBER = clients.ERROR_NUMBER
 
-CONNECTION_ERROR_MSG = 'Error: Unity Connection Error'
+CONNECTION_ERROR_MSG = 'Error: Unity connection failure'
 
 
 def error_message(syntax, msg):
@@ -84,9 +83,10 @@ class TableColumnInstanceFactory(object):
                         # Create table row and set default value
                         # DisplayString: null, Integer32: 0
                         # Only two types of data now: DisplayString, Integer32
-                        # If new data types added, need to consider how handle
-                        if isinstance(val, univ.Null) and isinstance(
-                                self.syntax, rfc1902.Integer32):
+                        # If new data types added,
+                        # need to consider how to handle
+                        if not isinstance(val, rfc1902.Integer32) and \
+                                isinstance(self.syntax, rfc1902.Integer32):
                             val = 0
                         self.createTest(name + row_instance_id, val, idx,
                                         acInfo)

@@ -14,7 +14,7 @@ LOG = logging.getLogger(__name__)
 
 # error string/number
 NONE_STRING = 'n/a'
-ERROR_NUMBER = -999
+ERROR_NUMBER = -1
 
 # frontend port types
 FC_PORT_TYPE = 'fc_port_'
@@ -405,7 +405,6 @@ class UnityClient(object):
         pool = self._get_pool(id)
         return pool.is_fast_cache_enabled
 
-    @to_string
     @to_number
     def get_pool_number_of_disk(self, id):
         pool = self._get_pool(id)
@@ -447,6 +446,15 @@ class UnityClient(object):
     # volumeTable
     def get_luns(self):
         self.luns = {lun.id: lun for lun in self.unity_system.get_lun()}
+
+        # Unity (version: 4.2.0.9390692) has an issue which failed to get
+        # hostAccess nested properties (AR entry-id: 000000000920482).
+        # So host access info can't be cached in storops, it reduce the
+        # performance for volumeTable view.
+        # The workaround is query hosts first, then filter the hosts which
+        # used by current lun.
+        self.get_hosts()
+
         return self.luns.keys()
 
     def _get_lun(self, id):
@@ -595,7 +603,6 @@ class UnityClient(object):
 
         lst = []
 
-        self.get_hosts()
         for host in self.hosts.values():
             if hasattr(host, 'host_luns') and host.host_luns is not None:
                 for host_lun in host.host_luns:
@@ -881,30 +888,6 @@ class UnityClient(object):
     def get_backend_port_health_status(self, id):
         port = self._get_backend_port(id)
         return port.health.value.name
-
-    @to_string
-    def get_backend_port_total_iops(self, id):
-        return NONE_STRING
-
-    @to_string
-    def get_backend_port_read_iops(self, id):
-        return NONE_STRING
-
-    @to_string
-    def get_backend_port_write_iops(self, id):
-        return NONE_STRING
-
-    @to_string
-    def get_backend_port_total_byte_rate(self, id):
-        return NONE_STRING
-
-    @to_string
-    def get_backend_port_read_byte_rate(self, id):
-        return NONE_STRING
-
-    @to_string
-    def get_backend_port_write_byte_rate(self, id):
-        return NONE_STRING
 
     # hostTable
     def get_hosts(self):
