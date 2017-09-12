@@ -22,7 +22,7 @@ Dell EMC Unity SNMP Off-Array Agent
 Introduction
 ------------
 Dell EMC Unity SNMP Off-Array Agent is a python-based application running outside of Unity system.
-It provides a easy-to-user CLI tool for management purpose and a daemon to handle the incoming SNMP
+It provides a easy-to-use CLI tool for management purpose and a daemon to handle the incoming SNMP
 queries.
 
 Any SNMP client can communicate with this agent to retrieve the storage information via SNMP protocol.
@@ -124,8 +124,6 @@ Restart a SNMP agent. An error will occur if not running daemon found.
 
     snmpagent-unity stop
 
-Stop the running SNMP agent.
-
 SNMP user management
 ^^^^^^^^^^^^^^^^^^^^
 - Create a SNMP v2 community
@@ -140,8 +138,6 @@ SNMP user management
 .. code-block:: console
 
     snmpagent-unity delete-community --name <community_name>
-
-Delete a SNMPv2c community.
 
 - Create a SNMP v3 user
 
@@ -241,7 +237,8 @@ Following options can be configured under ``[DEFAULT]``:
     # Host IP address for listening by the agent
     agent_ip=0.0.0.0
     # Logging level of the agent
-    log_level=debug
+    # Supported log level: debug, info, warning, error, critical
+    log_level=info
     # Log file, can be relative or absolute file path
     log_file=snmpagent-unity.log
     # Max size in bytes before log rotation
@@ -251,7 +248,7 @@ Following options can be configured under ``[DEFAULT]``:
 
 
 
-The agent also supports varying amount of Unity systems in one agent file, here is the configuration for one unity system:
+The agent also supports varying amount of Unity systems in one agent file, here is the configuration for two unity systems:
 
 .. code-block:: ini
 
@@ -269,12 +266,14 @@ The agent also supports varying amount of Unity systems in one agent file, here 
     # Cache interval before fetching new stats From Unity system.
     # Consider setting it to a appropriate value in second for aspects of
     # performance and timeliness
+    # Please set a smaller value than metric query interval (60s)
+    # so the metric info can be calculated correctly
     cache_interval=30
 
     [unity-2]
     agent_port=11162
     model=unity
-    mgmt_ip=10.10.10.1
+    mgmt_ip=10.10.10.2
     user=admin
     password=password
     cache_interval=30
