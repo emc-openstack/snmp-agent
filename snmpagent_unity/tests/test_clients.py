@@ -208,6 +208,42 @@ class TestUnityClient(unittest.TestCase):
                          self.client.get_sp_block_cache_write_hit_ratio(
                              param_dict['key']))
 
+    @ddt.data({'key': 'spa', 'fast_cache_read_hits': '30.0'},
+              {'key': 'spb', 'fast_cache_read_hits': '0'},
+              {'key': 'spc', 'fast_cache_read_hits': NONE_STRING}, )
+    def test_get_sp_fast_cache_read_hits(self, param_dict):
+        self.client.get_sps()
+        self.assertEqual(param_dict['fast_cache_read_hits'],
+                         self.client.get_sp_fast_cache_read_hits(
+                             param_dict['key']))
+
+    @ddt.data({'key': 'spa', 'fast_cache_write_hits': '30.0'},
+              {'key': 'spb', 'fast_cache_write_hits': '0'},
+              {'key': 'spc', 'fast_cache_write_hits': NONE_STRING}, )
+    def test_get_sp_fast_cache_write_hits(self, param_dict):
+        self.client.get_sps()
+        self.assertEqual(param_dict['fast_cache_write_hits'],
+                         self.client.get_sp_fast_cache_write_hits(
+                             param_dict['key']))
+
+    @ddt.data({'key': 'spa', 'fast_cache_read_hit_rate': '30.0'},
+              {'key': 'spb', 'fast_cache_read_hit_rate': '0'},
+              {'key': 'spc', 'fast_cache_read_hit_rate': NONE_STRING}, )
+    def test_get_sp_fast_cache_read_hit_rate(self, param_dict):
+        self.client.get_sps()
+        self.assertEqual(param_dict['fast_cache_read_hit_rate'],
+                         self.client.get_sp_fast_cache_read_hit_rate(
+                             param_dict['key']))
+
+    @ddt.data({'key': 'spa', 'fast_cache_write_hit_rate': '30.03'},
+              {'key': 'spb', 'fast_cache_write_hit_rate': '0'},
+              {'key': 'spc', 'fast_cache_write_hit_rate': NONE_STRING}, )
+    def test_get_sp_fast_cache_write_hit_rate(self, param_dict):
+        self.client.get_sps()
+        self.assertEqual(param_dict['fast_cache_write_hit_rate'],
+                         self.client.get_sp_fast_cache_write_hit_rate(
+                             param_dict['key']))
+
     # poolTable
     def test_get_pools(self):
         items = self.client.get_pools()
@@ -427,46 +463,6 @@ class TestUnityClient(unittest.TestCase):
         self.client.get_luns()
         self.assertEqual(param_dict['write_byte_rate'],
                          self.client.get_lun_write_byte_rate(
-                             param_dict['key']))
-
-    @ddt.data({'key': 'sv_1', 'fast_cache_read_hits': '30.0'},
-              {'key': 'sv_2', 'fast_cache_read_hits': '0'},
-              {'key': 'sv_3', 'fast_cache_read_hits': '0'},
-              {'key': 'sv_4', 'fast_cache_read_hits': NONE_STRING}, )
-    def test_get_lun_fast_cache_read_hits(self, param_dict):
-        self.client.get_luns()
-        self.assertEqual(param_dict['fast_cache_read_hits'],
-                         self.client.get_lun_fast_cache_read_hits(
-                             param_dict['key']))
-
-    @ddt.data({'key': 'sv_1', 'fast_cache_write_hits': '30.0'},
-              {'key': 'sv_2', 'fast_cache_write_hits': '0'},
-              {'key': 'sv_3', 'fast_cache_write_hits': '0'},
-              {'key': 'sv_4', 'fast_cache_write_hits': NONE_STRING}, )
-    def test_get_lun_fast_cache_write_hits(self, param_dict):
-        self.client.get_luns()
-        self.assertEqual(param_dict['fast_cache_write_hits'],
-                         self.client.get_lun_fast_cache_write_hits(
-                             param_dict['key']))
-
-    @ddt.data({'key': 'sv_1', 'fast_cache_read_hit_rate': '30.0'},
-              {'key': 'sv_2', 'fast_cache_read_hit_rate': '0'},
-              {'key': 'sv_3', 'fast_cache_read_hit_rate': '0'},
-              {'key': 'sv_4', 'fast_cache_read_hit_rate': NONE_STRING}, )
-    def test_get_lun_fast_cache_read_hit_rate(self, param_dict):
-        self.client.get_luns()
-        self.assertEqual(param_dict['fast_cache_read_hit_rate'],
-                         self.client.get_lun_fast_cache_read_hit_rate(
-                             param_dict['key']))
-
-    @ddt.data({'key': 'sv_1', 'fast_cache_write_hit_rate': '30.03'},
-              {'key': 'sv_2', 'fast_cache_write_hit_rate': '0'},
-              {'key': 'sv_3', 'fast_cache_write_hit_rate': '0'},
-              {'key': 'sv_4', 'fast_cache_write_hit_rate': NONE_STRING}, )
-    def test_get_lun_fast_cache_write_hit_rate(self, param_dict):
-        self.client.get_luns()
-        self.assertEqual(param_dict['fast_cache_write_hit_rate'],
-                         self.client.get_lun_fast_cache_write_hit_rate(
                              param_dict['key']))
 
     @ddt.data({'key': 'sv_1', 'utilization': '0.081'},

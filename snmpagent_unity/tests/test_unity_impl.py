@@ -43,12 +43,13 @@ from snmpagent_unity.unity_impl import AgentVersion, AveragePower, \
     StorageProcessorReadThroughput, StorageProcessorSerialNumber, \
     StorageProcessorTotalBandwidth, StorageProcessorTotalThroughput, \
     StorageProcessorWriteBandwidth, StorageProcessorWriteCacheState, \
-    StorageProcessorWriteThroughput, TotalBandwidth, TotalCapacity, \
+    StorageProcessorWriteThroughput, StorageProcessorFastCacheReadHitIOs, \
+    StorageProcessorFastCacheReadHitRate, \
+    StorageProcessorFastCacheWriteHitIOs, \
+    StorageProcessorFastCacheWriteHitRate, TotalBandwidth, TotalCapacity, \
     TotalThroughput, UsedCapacity, VolumeAllocatedSize, \
     VolumeCurrentStorageProcessor, VolumeDefaultStorageProcessor, \
-    VolumeFastCacheReadHitIOs, VolumeFastCacheReadHitRate, \
-    VolumeFastCacheState, VolumeFastCacheWriteHitIOs, \
-    VolumeFastCacheWriteHitRate, VolumeHostInfo, VolumeId, VolumeName, \
+    VolumeFastCacheState, VolumeHostInfo, VolumeId, VolumeName, \
     VolumeOperationalState, VolumeQueueLength, VolumeRaidLevels, \
     VolumeReadBandwidth, VolumeReadThroughput, VolumeResponseTime, \
     VolumeSize, VolumeTotalBandwidth, VolumeTotalThroughput, \
@@ -522,6 +523,86 @@ class TestUnityClient(unittest.TestCase):
                          obj.get_idx(self.name, self.idx, unity_client))
         unity_client.get_sps.assert_called_once()
 
+    @patches.unity_client
+    def test_sp_fast_cache_read_hit_iops(self, unity_client):
+        unity_client.get_sp_fast_cache_read_hits.return_value = \
+            self.test_string
+        obj = StorageProcessorFastCacheReadHitIOs.\
+            StorageProcessorFastCacheReadHitIOs()
+        self.assertEqual(self.test_string,
+                         obj.read_get(self.name, self.idx, unity_client))
+        unity_client.get_sp_fast_cache_read_hits.assert_called_once_with(
+            self.idx)
+
+    @patches.unity_client
+    def test_sp_fast_cache_read_hit_iops_column(self, unity_client):
+        unity_client.get_sps.return_value = self.test_list
+        obj = StorageProcessorFastCacheReadHitIOs. \
+            StorageProcessorFastCacheReadHitIOsColumn()
+        self.assertEqual(self.test_list,
+                         obj.get_idx(self.name, self.idx, unity_client))
+        unity_client.get_sps.assert_called_once()
+
+    @patches.unity_client
+    def test_sp_fast_cache_write_hit_iops(self, unity_client):
+        unity_client.get_sp_fast_cache_write_hits.return_value = \
+            self.test_string
+        obj = StorageProcessorFastCacheWriteHitIOs. \
+            StorageProcessorFastCacheWriteHitIOs()
+        self.assertEqual(self.test_string,
+                         obj.read_get(self.name, self.idx, unity_client))
+        unity_client.get_sp_fast_cache_write_hits.assert_called_once_with(
+            self.idx)
+
+    @patches.unity_client
+    def test_sp_fast_cache_write_hit_iops_column(self, unity_client):
+        unity_client.get_sps.return_value = self.test_list
+        obj = StorageProcessorFastCacheWriteHitIOs. \
+            StorageProcessorFastCacheWriteHitIOsColumn()
+        self.assertEqual(self.test_list,
+                         obj.get_idx(self.name, self.idx, unity_client))
+        unity_client.get_sps.assert_called_once()
+
+    @patches.unity_client
+    def test_sp_fast_cache_read_hit_rate(self, unity_client):
+        unity_client.get_sp_fast_cache_read_hit_rate.return_value = \
+            self.test_string
+        obj = StorageProcessorFastCacheReadHitRate. \
+            StorageProcessorFastCacheReadHitRate()
+        self.assertEqual(self.test_string,
+                         obj.read_get(self.name, self.idx, unity_client))
+        unity_client.get_sp_fast_cache_read_hit_rate.assert_called_once_with(
+            self.idx)
+
+    @patches.unity_client
+    def test_sp_fast_cache_read_hit_rate_column(self, unity_client):
+        unity_client.get_sps.return_value = self.test_list
+        obj = StorageProcessorFastCacheReadHitRate. \
+            StorageProcessorFastCacheReadHitRateColumn()
+        self.assertEqual(self.test_list,
+                         obj.get_idx(self.name, self.idx, unity_client))
+        unity_client.get_sps.assert_called_once()
+
+    @patches.unity_client
+    def test_sp_fast_cache_write_hit_rate(self, unity_client):
+        unity_client.get_sp_fast_cache_write_hit_rate.return_value = \
+            self.test_string
+        obj = StorageProcessorFastCacheWriteHitRate. \
+            StorageProcessorFastCacheWriteHitRate()
+        self.assertEqual(self.test_string,
+                         obj.read_get(self.name, self.idx, unity_client))
+        unity_client.get_sp_fast_cache_write_hit_rate.assert_called_once_with(
+            self.idx)
+
+    @patches.unity_client
+    def test_sp_fast_cache_write_hit_rate_column(self, unity_client):
+        unity_client.get_sps.return_value = self.test_list
+        obj = StorageProcessorFastCacheWriteHitRate. \
+            StorageProcessorFastCacheWriteHitRateColumn()
+        self.assertEqual(self.test_list,
+                         obj.get_idx(self.name, self.idx, unity_client))
+        unity_client.get_sps.assert_called_once()
+
     # poolTable
     @patches.unity_client
     def test_pool_id(self, unity_client):
@@ -916,45 +997,6 @@ class TestUnityClient(unittest.TestCase):
         unity_client.get_luns.assert_called_once()
 
     @patches.unity_client
-    def test_lun_fast_cache_read_hit_iops(self, unity_client):
-        unity_client.get_lun_fast_cache_read_hits.return_value = \
-            self.test_string
-        obj = VolumeFastCacheReadHitIOs.VolumeFastCacheReadHitIOs()
-        self.assertEqual(self.test_string,
-                         obj.read_get(self.name, self.idx, unity_client))
-        unity_client.get_lun_fast_cache_read_hits.assert_called_once_with(
-            self.idx)
-
-    @patches.unity_client
-    def test_lun_fast_cache_read_hit_iops_column(self, unity_client):
-        unity_client.get_luns.return_value = self.test_list
-        obj = VolumeFastCacheReadHitIOs. \
-            VolumeFastCacheReadHitIOsColumn()
-        self.assertEqual(self.test_list,
-                         obj.get_idx(self.name, self.idx, unity_client))
-        unity_client.get_luns.assert_called_once()
-
-    @patches.unity_client
-    def test_lun_fast_cache_write_hit_iops(self, unity_client):
-        unity_client.get_lun_fast_cache_write_hits.return_value = \
-            self.test_string
-        obj = VolumeFastCacheWriteHitIOs. \
-            VolumeFastCacheWriteHitIOs()
-        self.assertEqual(self.test_string,
-                         obj.read_get(self.name, self.idx, unity_client))
-        unity_client.get_lun_fast_cache_write_hits.assert_called_once_with(
-            self.idx)
-
-    @patches.unity_client
-    def test_lun_fast_cache_write_hit_iops_column(self, unity_client):
-        unity_client.get_luns.return_value = self.test_list
-        obj = VolumeFastCacheWriteHitIOs. \
-            VolumeFastCacheWriteHitIOsColumn()
-        self.assertEqual(self.test_list,
-                         obj.get_idx(self.name, self.idx, unity_client))
-        unity_client.get_luns.assert_called_once()
-
-    @patches.unity_client
     def test_lun_total_byte_rate(self, unity_client):
         unity_client.get_lun_total_byte_rate.return_value = self.test_string
         obj = VolumeTotalBandwidth.VolumeTotalBandwidth()
@@ -998,46 +1040,6 @@ class TestUnityClient(unittest.TestCase):
     def test_lun_write_byte_rate_column(self, unity_client):
         unity_client.get_luns.return_value = self.test_list
         obj = VolumeWriteBandwidth.VolumeWriteBandwidthColumn()
-        self.assertEqual(self.test_list,
-                         obj.get_idx(self.name, self.idx, unity_client))
-        unity_client.get_luns.assert_called_once()
-
-    @patches.unity_client
-    def test_lun_fast_cache_read_hit_rate(self, unity_client):
-        unity_client.get_lun_fast_cache_read_hit_rate.return_value = \
-            self.test_string
-        obj = VolumeFastCacheReadHitRate. \
-            VolumeFastCacheReadHitRate()
-        self.assertEqual(self.test_string,
-                         obj.read_get(self.name, self.idx, unity_client))
-        unity_client.get_lun_fast_cache_read_hit_rate.assert_called_once_with(
-            self.idx)
-
-    @patches.unity_client
-    def test_lun_fast_cache_read_hit_rate_column(self, unity_client):
-        unity_client.get_luns.return_value = self.test_list
-        obj = VolumeFastCacheReadHitRate. \
-            VolumeFastCacheReadHitRateColumn()
-        self.assertEqual(self.test_list,
-                         obj.get_idx(self.name, self.idx, unity_client))
-        unity_client.get_luns.assert_called_once()
-
-    @patches.unity_client
-    def test_lun_fast_cache_write_hit_rate(self, unity_client):
-        unity_client.get_lun_fast_cache_write_hit_rate.return_value = \
-            self.test_string
-        obj = VolumeFastCacheWriteHitRate. \
-            VolumeFastCacheWriteHitRate()
-        self.assertEqual(self.test_string,
-                         obj.read_get(self.name, self.idx, unity_client))
-        unity_client.get_lun_fast_cache_write_hit_rate.assert_called_once_with(
-            self.idx)
-
-    @patches.unity_client
-    def test_lun_fast_cache_write_hit_rate_column(self, unity_client):
-        unity_client.get_luns.return_value = self.test_list
-        obj = VolumeFastCacheWriteHitRate. \
-            VolumeFastCacheWriteHitRateColumn()
         self.assertEqual(self.test_list,
                          obj.get_idx(self.name, self.idx, unity_client))
         unity_client.get_luns.assert_called_once()

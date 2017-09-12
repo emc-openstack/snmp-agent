@@ -2,6 +2,7 @@ import collections
 import csv
 import json
 import logging
+import platform
 import subprocess
 import time
 from datetime import datetime
@@ -44,9 +45,17 @@ def save_to_csv(file_name, data, float_length=3):
         writer.writerow(heads)
 
         for table, results in data.items():
-            rows = [round(results.get(key).get('time'), float_length) for key
-                    in keys]
-            avg = round(sum(float(x) for x in rows) / len(keys), float_length)
+            rows = []
+            for key in keys:
+                if results.get(key).get('return code') == 0:
+                    rows.append(
+                        round(results.get(key).get('time'), float_length))
+                else:
+                    rows.append('ERROR')
+
+            avg = round(sum(
+                float(x) for x in rows if isinstance(x, (int, float))) / len(
+                keys), float_length)
             rows = [table, avg] + rows
 
             writer.writerow(rows)
@@ -94,14 +103,17 @@ if __name__ == '__main__':
               'diskTable', 'volumeTable', 'poolTable',
               'storageProcessorTable']
 
-    cmd_path = r'c:\usr\bin\snmptable.exe'
     agent_ip = '192.168.56.1'
     agent_port = 11161
     times = 10
     prefix = 'perf_test_result'
 
-    perf_rst = run_perf(tables, agent_ip, agent_port, times,
-                        cmd_path=cmd_path)
+    if platform.system() == 'Windows':
+        cmd_path = r'c:\usr\bin\snmptable.exe'
+        perf_rst = run_perf(tables, agent_ip, agent_port, times,
+                            cmd_path=cmd_path)
+    else:
+        perf_rst = run_perf(tables, agent_ip, agent_port, times)
 
     # Save test results
     ts = get_time_stamp()

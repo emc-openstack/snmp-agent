@@ -1,4 +1,5 @@
 import logging
+import platform
 import random
 import time
 import unittest
@@ -66,8 +67,12 @@ class TestTableViewPerf(unittest.TestCase):
         prefix = 'perf_test_result'
         ts = perf.get_time_stamp()
 
-        perf_rst = perf.run_perf(tables, self.agent_ip, self.agent_port, times,
-                                 cmd_path=self.snmptable_path)
+        if platform.system() == 'Windows':
+            perf_rst = perf.run_perf(tables, self.agent_ip, self.agent_port,
+                                     times, cmd_path=self.snmptable_path)
+        else:
+            perf_rst = perf.run_perf(tables, self.agent_ip, self.agent_port,
+                                     times)
 
         perf.save_to_json(
             '{}_{}_{}.json'.format(prefix, ts, str(self.agent_port)), perf_rst)

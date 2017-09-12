@@ -374,6 +374,30 @@ class UnityClient(object):
         sp = self._get_sp(id)
         return sp.block_cache_write_hit_ratio
 
+    @to_string
+    @to_number
+    def get_sp_fast_cache_read_hits(self, id):
+        sp = self._get_sp(id)
+        return sp.fast_cache_read_hits
+
+    @to_string
+    @to_number
+    def get_sp_fast_cache_write_hits(self, id):
+        sp = self._get_sp(id)
+        return sp.fast_cache_write_hits
+
+    @to_string
+    @to_number
+    def get_sp_fast_cache_read_hit_rate(self, id):
+        sp = self._get_sp(id)
+        return sp.fast_cache_read_hit_rate
+
+    @to_string
+    @to_number
+    def get_sp_fast_cache_write_hit_rate(self, id):
+        sp = self._get_sp(id)
+        return sp.fast_cache_write_hit_rate
+
     # poolTable
     def get_pools(self):
         self.pools = {pool.id: pool for pool in self.unity_system.get_pool()}
@@ -555,30 +579,6 @@ class UnityClient(object):
     def get_lun_write_byte_rate(self, id):
         lun = self._get_lun(id)
         return lun.write_byte_rate
-
-    @to_string
-    @to_number
-    def get_lun_fast_cache_read_hits(self, id):
-        lun = self._get_lun(id)
-        return lun.fast_cache_read_hits
-
-    @to_string
-    @to_number
-    def get_lun_fast_cache_write_hits(self, id):
-        lun = self._get_lun(id)
-        return lun.fast_cache_write_hits
-
-    @to_string
-    @to_number
-    def get_lun_fast_cache_read_hit_rate(self, id):
-        lun = self._get_lun(id)
-        return lun.fast_cache_read_hit_rate
-
-    @to_string
-    @to_number
-    def get_lun_fast_cache_write_hit_rate(self, id):
-        lun = self._get_lun(id)
-        return lun.fast_cache_write_hit_rate
 
     @to_string
     @to_number

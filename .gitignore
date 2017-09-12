@@ -102,3 +102,6 @@ run/
 # Performance test result
 perf_test*.json
 perf_test*.csv
+
+# Component test logs
+component*.log*

@@ -469,6 +469,14 @@ class TestUnityMibs(unittest.TestCase):
                 result.get(column_mib('read_cache_state', item.id)))
             self._assert_has_str_value(
                 result.get(column_mib('write_cache_state', item.id)))
+            self._assert_has_str_value(
+                result.get('storageProcessorFastCacheReadHitIOs.' + item.id))
+            self._assert_has_str_value(
+                result.get('storageProcessorFastCacheWriteHitIOs.' + item.id))
+            self._assert_has_str_value(
+                result.get(column_mib('fast_cache_read_hit_rate', item.id)))
+            self._assert_has_str_value(
+                result.get(column_mib('fast_cache_write_hit_rate', item.id)))
 
     def test_pool_table_view(self):
         table_name = 'pool'
@@ -565,19 +573,11 @@ class TestUnityMibs(unittest.TestCase):
             self._assert_has_str_value(
                 result.get(column_mib('write_throughput', item.id)))
             self._assert_has_str_value(
-                result.get('volumeFastCacheReadHitIOs.' + item.id))
-            self._assert_has_str_value(
-                result.get('volumeFastCacheWriteHitIOs.' + item.id))
-            self._assert_has_str_value(
                 result.get(column_mib('total_bandwidth', item.id)))
             self._assert_has_str_value(
                 result.get(column_mib('read_bandwidth', item.id)))
             self._assert_has_str_value(
                 result.get(column_mib('write_bandwidth', item.id)))
-            self._assert_has_str_value(
-                result.get(column_mib('fast_cache_read_hit_rate', item.id)))
-            self._assert_has_str_value(
-                result.get(column_mib('fast_cache_write_hit_rate', item.id)))
             self._assert_has_str_value(
                 result.get(column_mib('utilization', item.id)))
 

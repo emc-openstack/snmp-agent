@@ -50,7 +50,11 @@ class MockUnitySystem(object):
                            write_byte_rate=2568000.5333333333333,
                            block_cache_dirty_size=65,
                            block_cache_read_hit_ratio=100.5333333333333,
-                           block_cache_write_hit_ratio=81.9672131147541
+                           block_cache_write_hit_ratio=81.9672131147541,
+                           fast_cache_read_hits=30.0001,
+                           fast_cache_write_hits=30.0001,
+                           fast_cache_read_hit_rate=30.0001,
+                           fast_cache_write_hit_rate=30.0301
                            ),
                 FakeObject(id='spb',
                            block_total_iops=0,
@@ -61,11 +65,19 @@ class MockUnitySystem(object):
                            write_byte_rate=0,
                            block_cache_dirty_size=0,
                            block_cache_read_hit_ratio=0,
-                           block_cache_write_hit_ratio=0
+                           block_cache_write_hit_ratio=0,
+                           fast_cache_read_hits=0,
+                           fast_cache_write_hits=0,
+                           fast_cache_read_hit_rate=0,
+                           fast_cache_write_hit_rate=0
                            ),
                 FakeObject(id='spc',
                            name='SP C',
                            health=FakeObject(value=FakeObject()),
+                           fast_cache_read_hits='nan',
+                           fast_cache_write_hits='nan',
+                           fast_cache_read_hit_rate='nan',
+                           fast_cache_write_hit_rate='nan',
                            )
                 ]
 
@@ -117,10 +129,6 @@ class MockUnitySystem(object):
                            total_byte_rate=2705.0666666666666,
                            read_byte_rate=136.53333333333333,
                            write_byte_rate=2568.5333333333333,
-                           fast_cache_read_hits=30.0001,
-                           fast_cache_write_hits=30.0001,
-                           fast_cache_read_hit_rate=30.0001,
-                           fast_cache_write_hit_rate=30.0301,
                            utilization=0.08120128718916914,
                            host_access=[FakeObject(host=FakeObject(
                                name='ESD-HOST193221.meng.lab.emc.com')),
@@ -146,10 +154,6 @@ class MockUnitySystem(object):
                            total_byte_rate=0,
                            read_byte_rate=0,
                            write_byte_rate=0,
-                           fast_cache_read_hits=0,
-                           fast_cache_write_hits=0,
-                           fast_cache_read_hit_rate=0,
-                           fast_cache_write_hit_rate=0,
                            utilization=0,
                            host_access=[],
                            ),
@@ -169,10 +173,6 @@ class MockUnitySystem(object):
                            total_byte_rate='nan',
                            read_byte_rate='nan',
                            write_byte_rate='nan',
-                           fast_cache_read_hits='nan',
-                           fast_cache_write_hits='nan',
-                           fast_cache_read_hit_rate='nan',
-                           fast_cache_write_hit_rate='nan',
                            utilization='nan',
                            host_access=[],
                            ),

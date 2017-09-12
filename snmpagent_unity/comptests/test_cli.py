@@ -84,6 +84,7 @@ class SNMPCliTest(unittest.TestCase):
         self.helper.start_service()
         r = self.helper.restart_service()
         self.assertEqual(0, r)
+        self.addCleanup(self.helper.stop_service)
 
     def test_restart_service_no_running(self):
         r = self.helper.restart_service()
