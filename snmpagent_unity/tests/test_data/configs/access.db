@@ -1,0 +1,6 @@
+# model securityName context securityLevel authProto authKey privProto privKey
+SNMPv3  user-md5-des  -  authPriv  md5  authkey1  des  privkey1
+SNMPv3  user-sha-none  -  authNoPriv  sha  dfb3dab997724423864bb271ac68cc83  -  -
+
+# model securityName community
+SNMPv2c user-public public

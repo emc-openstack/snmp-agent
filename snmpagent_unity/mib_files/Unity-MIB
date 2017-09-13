@@ -1,0 +1,1769 @@
+Unity-MIB DEFINITIONS ::= BEGIN
+
+IMPORTS
+	Integer32, OBJECT-TYPE FROM SNMPv2-SMI
+    DisplayString FROM SNMPv2-TC;
+
+	-- 1.3
+	org OBJECT IDENTIFIER ::= { iso 3 }
+	
+	-- 1.3.6
+	dod OBJECT IDENTIFIER ::= { org 6 }
+	
+	-- 1.3.6.1
+	internet OBJECT IDENTIFIER ::= { dod 1 }
+	
+	-- 1.3.6.1.4
+	private OBJECT IDENTIFIER ::= { internet 4 }
+	
+	-- 1.3.6.1.4.1
+	enterprises OBJECT IDENTIFIER ::= { private 1 }
+
+	-- 1.3.6.1.4.1.1139
+	emc OBJECT IDENTIFIER ::= { enterprises 1139 }
+	
+	-- 1.3.6.1.4.1.1139.103
+	unity OBJECT IDENTIFIER ::= { emc 103 }
+	
+	-- 1.3.6.1.4.1.1139.103.1
+	unityObjects OBJECT IDENTIFIER ::= { unity 1 }
+	
+	-- 1.3.6.1.4.1.1139.103.1.19
+	UnityPoll OBJECT IDENTIFIER ::= { unityObjects 19 }
+	
+	-- 1.3.6.1.4.1.1139.103.1.19.1
+	agentVersion OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Version of Unity SNMP Agent."
+		::= { UnityPoll 1 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.2
+	mibVersion OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unity MIB version."
+		::= { UnityPoll 2 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.3
+	manufacturer OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unity manufacturer: Dell EMC."
+		::= { UnityPoll 3 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.4
+	model OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"System model name."
+		::= { UnityPoll 4 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.5
+	serialNumber OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"System product serial number."
+		::= { UnityPoll 5 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.6
+	operationEnvironmentVersion OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"System version."
+		::= { UnityPoll 6 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.7
+	managementIP OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"System management interface IP addresses"
+		::= { UnityPoll 7 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.8
+	currentPower OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Current amount of power used by the system. Unit: Watts."
+		::= { UnityPoll 8 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.9
+	averagePower OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Average amount of power used by the system. The system uses a one hour window of 30-second samples to determine this value. Unit: Watts."
+		::= { UnityPoll 9 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.10
+	numberOfStorageProcessor OBJECT-TYPE
+		SYNTAX Integer32
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Number of storage processor."
+		::= { UnityPoll 10 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.11
+	numberOfEnclosure OBJECT-TYPE
+		SYNTAX Integer32
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Number of enclosure."
+		::= { UnityPoll 11 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.12
+	numberOfPowerSupply OBJECT-TYPE
+		SYNTAX Integer32
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Number of power supply."
+		::= { UnityPoll 12 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.13
+	numberOfFan OBJECT-TYPE
+		SYNTAX Integer32
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Number of fan."
+		::= { UnityPoll 13 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.14
+	numberOfPhysicalDisk OBJECT-TYPE
+		SYNTAX Integer32
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Number of physical disk."
+		::= { UnityPoll 14 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.15
+	numberOfFrontendPort OBJECT-TYPE
+		SYNTAX Integer32
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Number of frontend port."
+		::= { UnityPoll 15 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.16
+	numberOfBackendPort OBJECT-TYPE
+		SYNTAX Integer32
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Number of backend port."
+		::= { UnityPoll 16 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.17
+	totalCapacity OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Total amount of space (used space plus free space) in the pools on the storage system. Unit: GB."
+		::= { UnityPoll 17 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.18
+	usedCapacity OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Amount of used space in the pools on the storage system. Unit: GB."
+		::= { UnityPoll 18 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.19
+	freeCapacity OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Amount of free space available in the pools on the storage system. Unit: GB."
+		::= { UnityPoll 19 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.20
+	totalThroughput OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: IO/s."
+		::= { UnityPoll 20 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.21
+	readThroughput OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: IO/s."
+		::= { UnityPoll 21 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.22
+	writeThroughput OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: IO/s."
+		::= { UnityPoll 22 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.23
+	totalBandwidth OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: MB/s."
+		::= { UnityPoll 23 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.24
+	readBandwidth OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: MB/s."
+		::= { UnityPoll 24 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.25
+	writeBandwidth OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: MB/s."
+		::= { UnityPoll 25 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.26
+	storageProcessorTable OBJECT-TYPE
+		SYNTAX SEQUENCE OF StorageProcessorEntry
+		ACCESS not-accessible
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { UnityPoll 26 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.26.1
+	storageProcessorEntry OBJECT-TYPE
+		SYNTAX StorageProcessorEntry
+		ACCESS not-accessible
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		INDEX { storageProcessorId }
+		::= { storageProcessorTable 1 }
+
+	StorageProcessorEntry ::=
+		SEQUENCE {
+			storageProcessorId                      DisplayString,
+			storageProcessorName                    DisplayString,
+			storageProcessorSerialNumber            DisplayString,
+			storageProcessorOperationalState        DisplayString,
+			storageProcessorCpuUtilization          DisplayString,
+			storageProcessorTotalThroughput         DisplayString,
+			storageProcessorReadThroughput          DisplayString,
+			storageProcessorWriteThroughput         DisplayString,
+			storageProcessorTotalBandwidth          DisplayString,
+			storageProcessorReadBandwidth           DisplayString,
+			storageProcessorWriteBandwidth          DisplayString,
+			storageProcessorCacheDirtySize          DisplayString,
+			storageProcessorReadCacheState          DisplayString,
+			storageProcessorWriteCacheState         DisplayString,
+			storageProcessorFastCacheReadHitIOs     DisplayString,
+			storageProcessorFastCacheWriteHitIOs    DisplayString,
+			storageProcessorFastCacheReadHitRate    DisplayString,
+			storageProcessorFastCacheWriteHitRate   DisplayString
+		 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.26.1.1
+	storageProcessorId OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"SP id."
+		::= { storageProcessorEntry 1 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.26.1.2
+	storageProcessorName OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"SP name."
+		::= { storageProcessorEntry 2 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.26.1.3
+	storageProcessorSerialNumber OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"EMC serial number for the SP."
+		::= { storageProcessorEntry 3 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.26.1.4
+	storageProcessorOperationalState OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Health information for the SP."
+		::= { storageProcessorEntry 4 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.26.1.5
+	storageProcessorCpuUtilization OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { storageProcessorEntry 5 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.26.1.6
+	storageProcessorTotalThroughput OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: IO/s."
+		::= { storageProcessorEntry 6 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.26.1.7
+	storageProcessorReadThroughput OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: IO/s."
+		::= { storageProcessorEntry 7 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.26.1.8
+	storageProcessorWriteThroughput OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: IO/s."
+		::= { storageProcessorEntry 8 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.26.1.9
+	storageProcessorTotalBandwidth OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: MB/s."
+		::= { storageProcessorEntry 9 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.26.1.10
+	storageProcessorReadBandwidth OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: MB/s."
+		::= { storageProcessorEntry 10 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.26.1.11
+	storageProcessorWriteBandwidth OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: MB/s."
+		::= { storageProcessorEntry 11 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.26.1.12
+	storageProcessorCacheDirtySize OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: MB."
+		::= { storageProcessorEntry 12 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.26.1.13
+	storageProcessorReadCacheState OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { storageProcessorEntry 13 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.26.1.14
+	storageProcessorWriteCacheState OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { storageProcessorEntry 14 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.26.1.15
+	storageProcessorFastCacheReadHitIOs OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: IO."
+		::= { storageProcessorEntry 15 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.26.1.16
+	storageProcessorFastCacheWriteHitIOs OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: IO."
+		::= { storageProcessorEntry 16 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.26.1.17
+	storageProcessorFastCacheReadHitRate OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { storageProcessorEntry 17 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.26.1.18
+	storageProcessorFastCacheWriteHitRate OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { storageProcessorEntry 18 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.27
+	poolTable OBJECT-TYPE
+		SYNTAX SEQUENCE OF PoolEntry
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { UnityPoll 27 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.27.1
+	poolEntry OBJECT-TYPE
+		SYNTAX PoolEntry
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		INDEX { poolId }
+		::= { poolTable 1 }
+
+	PoolEntry ::=
+		SEQUENCE {
+			poolId                      DisplayString,
+			poolName                    DisplayString,
+			poolDiskTypes               DisplayString,
+			poolRaidLevels              DisplayString,
+			poolFastCacheStatus         DisplayString,
+			poolNumberOfPhysicalDisk    Integer32,
+			poolTotalCapacity           DisplayString,
+			poolRemainingCapacity       DisplayString,
+			poolUsedCapacity            DisplayString,
+			poolCapacityUtilization     DisplayString
+		 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.27.1.1
+	poolId OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Pool id, unique in the storage system."
+		::= { poolEntry 1 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.27.1.2
+	poolName OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Pool name, unique in the storage system."
+		::= { poolEntry 2 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.27.1.3
+	poolDiskTypes OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { poolEntry 3 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.27.1.4
+	poolRaidLevels OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"RAID type with which the pool is configured. A value of Mixed indicates that the pool consists of multiple RAID types.."
+		::= { poolEntry 4 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.27.1.5
+	poolFastCacheStatus OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"(Applies if FAST Cache is supported on the system and the corresponding license is installed.) Indicates whether the FAST Cache is enabled for the pool. Values are:
+             true - FAST Cache is enabled for the pool.
+             false - FAST Cache is disabled for the pool.
+             FAST Cache is created from Flash SAS drives and applied only to RAID groups created of SAS and NL-SAS hard drives. If the pool is populated by purely Flash drives the FAST Cache is not enabled.."
+		::= { poolEntry 5 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.27.1.6
+	poolNumberOfPhysicalDisk OBJECT-TYPE
+		SYNTAX Integer32
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Number of physical disk in the pool."
+		::= { poolEntry 6 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.27.1.7
+	poolTotalCapacity OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Total size of space (used space plus free space) in the pool. Unit: GB."
+		::= { poolEntry 7 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.27.1.8
+	poolRemainingCapacity OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Size of free space available in the pool. Unit: GB."
+		::= { poolEntry 8 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.27.1.9
+	poolUsedCapacity OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Size of space used by the storage resources allocated in the pool. Unit: GB."
+		::= { poolEntry 9 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.27.1.10
+	poolCapacityUtilization OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { poolEntry 10 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.28
+	volumeTable OBJECT-TYPE
+		SYNTAX SEQUENCE OF VolumeEntry
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { UnityPoll 28 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.28.1
+	volumeEntry OBJECT-TYPE
+		SYNTAX VolumeEntry
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		INDEX { volumeId }
+		::= { volumeTable 1 }
+
+	VolumeEntry ::=
+		SEQUENCE {
+			volumeId                        DisplayString,
+			volumeName                      DisplayString,
+			volumeRaidLevels                DisplayString,
+			volumeAllocatedSize             DisplayString,
+			volumeSize                      DisplayString,
+			volumeOperationalState          DisplayString,
+			volumeFastCacheState            DisplayString,
+			volumeDefaultStorageProcessor   DisplayString,
+			volumeCurrentStorageProcessor   DisplayString,
+			volumeResponseTime              DisplayString,
+			volumeQueueLength               DisplayString,
+			volumeTotalThroughput           DisplayString,
+			volumeReadThroughput            DisplayString,
+			volumeWriteThroughput           DisplayString,
+			volumeTotalBandwidth            DisplayString,
+			volumeReadBandwidth             DisplayString,
+			volumeWriteBandwidth            DisplayString,
+			volumeUtilization               DisplayString,
+			volumeHostInfo                  DisplayString
+		 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.28.1.1
+	volumeId OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unique identifier of the LUN."
+		::= { volumeEntry 1 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.28.1.2
+	volumeName OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Name of the LUN."
+		::= { volumeEntry 2 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.28.1.3
+	volumeRaidLevels OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { volumeEntry 3 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.28.1.4
+	volumeAllocatedSize OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Size of space actually allocated in the pool for the LUN:
+             For thin-provisioned LUNs this as a rule is less than the sizeTotal attribute until the LUN is not fully populated with user data.
+             For not thin-provisioned LUNs this is approximately equal to the sizeTotal.
+             Unit: GB."
+		::= { volumeEntry 4 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.28.1.5
+	volumeSize OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"LUN size that the system presents to the host or end user. Unit: GB."
+		::= { volumeEntry 5 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.28.1.6
+	volumeOperationalState OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Health information for the LUN."
+		::= { volumeEntry 6 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.28.1.7
+	volumeFastCacheState OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { volumeEntry 7 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.28.1.8
+	volumeDefaultStorageProcessor OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"The storage processor that is the default owner of this LUN.."
+		::= { volumeEntry 8 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.28.1.9
+	volumeCurrentStorageProcessor OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"The storage processor that is the current owner of this LUN.."
+		::= { volumeEntry 9 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.28.1.10
+	volumeResponseTime OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: ms."
+		::= { volumeEntry 10 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.28.1.11
+	volumeQueueLength OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { volumeEntry 11 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.28.1.12
+	volumeTotalThroughput OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: IO/s."
+		::= { volumeEntry 12 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.28.1.13
+	volumeReadThroughput OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: IO/s."
+		::= { volumeEntry 13 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.28.1.14
+	volumeWriteThroughput OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: IO/s."
+		::= { volumeEntry 14 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.28.1.15
+	volumeTotalBandwidth OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: MB/s."
+		::= { volumeEntry 15 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.28.1.16
+	volumeReadBandwidth OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: MB/s."
+		::= { volumeEntry 16 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.28.1.17
+	volumeWriteBandwidth OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: MB/s."
+		::= { volumeEntry 17 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.28.1.18
+	volumeUtilization OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { volumeEntry 18 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.28.1.19
+	volumeHostInfo OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Host access permissions for the LUN."
+		::= { volumeEntry 19 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.29
+	diskTable OBJECT-TYPE
+		SYNTAX SEQUENCE OF DiskEntry
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { UnityPoll 29 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.29.1
+	diskEntry OBJECT-TYPE
+		SYNTAX DiskEntry
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		INDEX { diskId }
+		::= { diskTable 1 }
+
+	DiskEntry ::=
+		SEQUENCE {
+			diskId                  DisplayString,
+			diskName                DisplayString,
+			diskModel               DisplayString,
+			diskSerialNumber        DisplayString,
+			diskFirmwareVersion     DisplayString,
+			diskType                DisplayString,
+			diskPhysicalLocation    DisplayString,
+			diskStatus              DisplayString,
+			diskRawCapacity         DisplayString,
+			diskCurrentPool         DisplayString,
+			diskResponseTime        DisplayString,
+			diskQueueLength         DisplayString,
+			diskTotalThroughput     DisplayString,
+			diskReadThroughput      DisplayString,
+			diskWriteThroughput     DisplayString,
+			diskTotalBandwidth      DisplayString,
+			diskReadBandwidth       DisplayString,
+			diskWriteBandwidth      DisplayString,
+			diskUtilization         DisplayString
+		 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.29.1.1
+	diskId OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Drive id."
+		::= { diskEntry 1 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.29.1.2
+	diskName OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Drive name. Modifiable for virtual drives only."
+		::= { diskEntry 2 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.29.1.3
+	diskModel OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Manufacturer model number."
+		::= { diskEntry 3 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.29.1.4
+	diskSerialNumber OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"EMC serial number."
+		::= { diskEntry 4 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.29.1.5
+	diskFirmwareVersion OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Manufacturer version number."
+		::= { diskEntry 5 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.29.1.6
+	diskType OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Drive type."
+		::= { diskEntry 6 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.29.1.7
+	diskPhysicalLocation OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Slot where the drive is located in the parent enclosure."
+		::= { diskEntry 7 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.29.1.8
+	diskStatus OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Health information of the drive instance."
+		::= { diskEntry 8 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.29.1.9
+	diskRawCapacity OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Raw (unformatted) capacity."
+		::= { diskEntry 9 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.29.1.10
+	diskCurrentPool OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { diskEntry 10 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.29.1.11
+	diskResponseTime OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: ms."
+		::= { diskEntry 11 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.29.1.12
+	diskQueueLength OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { diskEntry 12 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.29.1.13
+	diskTotalThroughput OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: IO/s."
+		::= { diskEntry 13 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.29.1.14
+	diskReadThroughput OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: IO/s."
+		::= { diskEntry 14 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.29.1.15
+	diskWriteThroughput OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: IO/s."
+		::= { diskEntry 15 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.29.1.16
+	diskTotalBandwidth OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: MB/s."
+		::= { diskEntry 16 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.29.1.17
+	diskReadBandwidth OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: MB/s."
+		::= { diskEntry 17 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.29.1.18
+	diskWriteBandwidth OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: MB/s."
+		::= { diskEntry 18 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.29.1.19
+	diskUtilization OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { diskEntry 19 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.30
+	frontendPortTable OBJECT-TYPE
+		SYNTAX SEQUENCE OF FrontendPortEntry
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { UnityPoll 30 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.30.1
+	frontendPortEntry OBJECT-TYPE
+		SYNTAX FrontendPortEntry
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		INDEX { frontendPortId }
+		::= { frontendPortTable 1 }
+
+	FrontendPortEntry ::=
+		SEQUENCE {
+			frontendPortId              DisplayString,
+			frontendPortName            DisplayString,
+			frontendPortAddress         DisplayString,
+			frontendPortType            DisplayString,
+			frontendPortCurrentSpeed    DisplayString,
+			frontendPortSupportedSpeed  DisplayString,
+			frontendPortStatus          DisplayString,
+			frontendPortTotalThroughput DisplayString,
+			frontendPortReadThroughput  DisplayString,
+			frontendPortWriteThroughput DisplayString,
+			frontendPortTotalBandwidth  DisplayString,
+			frontendPortReadBandwidth   DisplayString,
+			frontendPortWriteBandwidth  DisplayString
+		 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.30.1.1
+	frontendPortId OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { frontendPortEntry 1 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.30.1.2
+	frontendPortName OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { frontendPortEntry 2 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.30.1.3
+	frontendPortAddress OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { frontendPortEntry 3 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.30.1.4
+	frontendPortType OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { frontendPortEntry 4 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.30.1.5
+	frontendPortCurrentSpeed OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { frontendPortEntry 5 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.30.1.6
+	frontendPortSupportedSpeed OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { frontendPortEntry 6 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.30.1.7
+	frontendPortStatus OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { frontendPortEntry 7 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.30.1.8
+	frontendPortTotalThroughput OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: IO/s."
+		::= { frontendPortEntry 8 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.30.1.9
+	frontendPortReadThroughput OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: IO/s."
+		::= { frontendPortEntry 9 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.30.1.10
+	frontendPortWriteThroughput OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: IO/s."
+		::= { frontendPortEntry 10 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.30.1.11
+	frontendPortTotalBandwidth OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: MB/s."
+		::= { frontendPortEntry 11 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.30.1.12
+	frontendPortReadBandwidth OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: MB/s"
+		::= { frontendPortEntry 12 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.30.1.13
+	frontendPortWriteBandwidth OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Unit: MB/s."
+		::= { frontendPortEntry 13 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.31
+	backendPortTable OBJECT-TYPE
+		SYNTAX SEQUENCE OF BackendPortEntry
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { UnityPoll 31 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.31.1
+	backendPortEntry OBJECT-TYPE
+		SYNTAX BackendPortEntry
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		INDEX { backendPortId }
+		::= { backendPortTable 1 }
+
+	BackendPortEntry ::=
+		SEQUENCE {
+			backendPortId                       DisplayString,
+			backendPortName                     DisplayString,
+			backendPortType                     DisplayString,
+			backendPortPortNumber               DisplayString,
+			backendPortCurrentSpeed             DisplayString,
+			backendPortParentIoModule           DisplayString,
+			backendPortParentStorageProcessor   DisplayString,
+			backendPortStatus                   DisplayString
+		 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.31.1.1
+	backendPortId OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { backendPortEntry 1 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.31.1.2
+	backendPortName OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { backendPortEntry 2 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.31.1.3
+	backendPortType OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { backendPortEntry 3 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.31.1.4
+	backendPortPortNumber OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { backendPortEntry 4 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.31.1.5
+	backendPortCurrentSpeed OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { backendPortEntry 5 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.31.1.6
+	backendPortParentIoModule OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { backendPortEntry 6 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.31.1.7
+	backendPortParentStorageProcessor OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { backendPortEntry 7 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.31.1.8
+	backendPortStatus OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { backendPortEntry 8 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.32
+	hostTable OBJECT-TYPE
+		SYNTAX SEQUENCE OF HostEntry
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { UnityPoll 32 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.32.1
+	hostEntry OBJECT-TYPE
+		SYNTAX HostEntry
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		INDEX { hostId }
+		::= { hostTable 1 }
+
+	HostEntry ::=
+		SEQUENCE {
+			hostId                      DisplayString,
+			hostName                    DisplayString,
+			hostNetworkAddress          DisplayString,
+			hostInitiators              DisplayString,
+			hostOperationSystemVersion  DisplayString,
+			hostAssignedStorageVolumes  DisplayString
+		 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.32.1.1
+	hostId OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Host id."
+		::= { hostEntry 1 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.32.1.2
+	hostName OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Host name:
+             For an automatically-managed ESX server through vCenter, this is the display name in the vCenter GUI.
+             For a manually-created host, this is the host name entered by the user."
+		::= { hostEntry 2 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.32.1.3
+	hostNetworkAddress OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { hostEntry 3 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.32.1.4
+	hostInitiators OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { hostEntry 4 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.32.1.5
+	hostOperationSystemVersion OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Operating system running on the host."
+		::= { hostEntry 5 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.32.1.6
+	hostAssignedStorageVolumes OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { hostEntry 6 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.33
+	enclosureTable OBJECT-TYPE
+		SYNTAX SEQUENCE OF EnclosureEntry
+		ACCESS not-accessible
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { UnityPoll 33 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.33.1
+	enclosureEntry OBJECT-TYPE
+		SYNTAX EnclosureEntry
+		ACCESS not-accessible
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		INDEX { enclosureId }
+		::= { enclosureTable 1 }
+
+	EnclosureEntry ::=
+		SEQUENCE {
+			enclosureId                     DisplayString,
+			enclosureName                   DisplayString,
+			enclosureModel                  DisplayString,
+			enclosureSerialNumber           DisplayString,
+			enclosurePartNumber             DisplayString,
+			enclosureHealthStatus           DisplayString,
+			enclosureCurrentPower           DisplayString,
+			enclosureAveragePower           DisplayString,
+			enclosureMaxPower               DisplayString,
+			enclosureCurrentTemperature     DisplayString,
+			enclosureAverageTemperature     DisplayString,
+			enclosureMaxTemperature         DisplayString
+		 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.33.1.1
+	enclosureId OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { enclosureEntry 1 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.33.1.2
+	enclosureName OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { enclosureEntry 2 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.33.1.3
+	enclosureModel OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { enclosureEntry 3 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.33.1.4
+	enclosureSerialNumber OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { enclosureEntry 4 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.33.1.5
+	enclosurePartNumber OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { enclosureEntry 5 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.33.1.6
+	enclosureHealthStatus OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { enclosureEntry 6 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.33.1.7
+	enclosureCurrentPower OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { enclosureEntry 7 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.33.1.8
+	enclosureAveragePower OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { enclosureEntry 8 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.33.1.9
+	enclosureMaxPower OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { enclosureEntry 9 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.33.1.10
+	enclosureCurrentTemperature OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { enclosureEntry 10 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.33.1.11
+	enclosureAverageTemperature OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { enclosureEntry 11 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.33.1.12
+	enclosureMaxTemperature OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { enclosureEntry 12 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.34
+	powerSupplyTable OBJECT-TYPE
+		SYNTAX SEQUENCE OF PowerSupplyEntry
+		ACCESS not-accessible
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { UnityPoll 34 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.34.1
+	powerSupplyEntry OBJECT-TYPE
+		SYNTAX PowerSupplyEntry
+		ACCESS not-accessible
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		INDEX { powerSupplyId }
+		::= { powerSupplyTable 1 }
+
+	PowerSupplyEntry ::=
+		SEQUENCE {
+			powerSupplyId               DisplayString,
+			powerSupplyName             DisplayString,
+			powerSupplyManufacturer     DisplayString,
+			powerSupplyModel            DisplayString,
+			powerSupplyFirmwareVersion  DisplayString,
+			powerSupplyParentEnclosure  DisplayString,
+			powerSupplyStorageProcessor DisplayString,
+			powerSupplyHealthStatus     DisplayString
+		 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.34.1.1
+	powerSupplyId OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Power supply id."
+		::= { powerSupplyEntry 1 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.34.1.2
+	powerSupplyName OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Power supply name."
+		::= { powerSupplyEntry 2 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.34.1.3
+	powerSupplyManufacturer OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Manufacturer of the power supply."
+		::= { powerSupplyEntry 3 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.34.1.4
+	powerSupplyModel OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Manufacturer's model number for the power supply."
+		::= { powerSupplyEntry 4 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.34.1.5
+	powerSupplyFirmwareVersion OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Firmware version number for the power supply."
+		::= { powerSupplyEntry 5 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.34.1.6
+	powerSupplyParentEnclosure OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Parent Enclosures (DAE or DPE) of the power supply."
+		::= { powerSupplyEntry 6 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.34.1.7
+	powerSupplyStorageProcessor OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Storage Processor that the power supply is associated to."
+		::= { powerSupplyEntry 7 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.34.1.8
+	powerSupplyHealthStatus OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Health information for the power supply."
+		::= { powerSupplyEntry 8 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.35
+	fanTable OBJECT-TYPE
+		SYNTAX SEQUENCE OF FanEntry
+		ACCESS not-accessible
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { UnityPoll 35}
+
+	-- 1.3.6.1.4.1.1139.103.1.19.35.1
+	fanEntry OBJECT-TYPE
+		SYNTAX FanEntry
+		ACCESS not-accessible
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		INDEX { fanId }
+		::= { fanTable 1 }
+
+	FanEntry ::=
+		SEQUENCE {
+			fanId               DisplayString,
+			fanName             DisplayString,
+			fanSlotNumber       DisplayString,
+			fanParentEnclosure  DisplayString,
+			fanHealthStatus     DisplayString
+		 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.35.1.1
+	fanId OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Fan id."
+		::= { fanEntry 1 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.35.1.2
+	fanName OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Fan name."
+		::= { fanEntry 2 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.35.1.3
+	fanSlotNumber OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Slot where the fan is located in the parent enclosure."
+		::= { fanEntry 3 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.35.1.4
+	fanParentEnclosure OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Parent Enclosures (DAE or DPE) of the power supply."
+		::= { fanEntry 4 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.35.1.5
+	fanHealthStatus OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Health information for the fan."
+		::= { fanEntry 5 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.36
+	bbuTable OBJECT-TYPE
+		SYNTAX SEQUENCE OF BBUEntry
+		ACCESS not-accessible
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		::= { UnityPoll 36}
+
+	-- 1.3.6.1.4.1.1139.103.1.19.36.1
+	bbuEntry OBJECT-TYPE
+		SYNTAX BBUEntry
+		ACCESS not-accessible
+		STATUS mandatory
+		DESCRIPTION
+			"Description."
+		INDEX { bbuId }
+		::= { bbuTable 1 }
+
+	BBUEntry ::=
+		SEQUENCE {
+			bbuId                       DisplayString,
+			bbuName                     DisplayString,
+			bbuManufacturer             DisplayString,
+			bbuModel                    DisplayString,
+			bbuFirmwareVersion          DisplayString,
+			bbuParentStorageProcessor   DisplayString,
+			bbuHealthStatus             DisplayString
+		 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.36.1.1
+	bbuId OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Battery id."
+		::= { bbuEntry 1 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.36.1.2
+	bbuName OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Battery name."
+		::= { bbuEntry 2 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.36.1.3
+	bbuManufacturer OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Manufacturer of the battery."
+		::= { bbuEntry 3 }
+
+    -- 1.3.6.1.4.1.1139.103.1.19.36.1.4
+	bbuModel OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Manufacturer's model number for the battery."
+		::= { bbuEntry 4 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.36.1.5
+	bbuFirmwareVersion OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Firmware version number for the battery."
+		::= { bbuEntry 5 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.36.1.6
+	bbuParentStorageProcessor OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Parent Storage Processor of the battery."
+		::= { bbuEntry 6 }
+
+	-- 1.3.6.1.4.1.1139.103.1.19.36.1.7
+	bbuHealthStatus OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Health information for the battery."
+		::= { bbuEntry 7 }
+END

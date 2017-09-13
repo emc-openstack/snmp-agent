@@ -1,0 +1,6 @@
+docopt>=0.6.2 # MIT
+psutil>=5.2.2 # BSD
+pycrypto>=2.6.1 # Public Domain
+pysnmp>=4.3.8 # BSD
+six>=1.9.0 # MIT
+storops>=0.5.2 # Apache
