@@ -11,7 +11,6 @@ def read(filename):
 
 COMMAND_NAME = 'snmpagent-unity'
 
-
 setup(
     name=COMMAND_NAME,
     version=__import__('snmpagent_unity').__version__,
@@ -25,7 +24,8 @@ setup(
     maintainer_email='yong.huang@dell.com',
     license='Apache Software License',
     package_data={'snmpagent_unity': ['mib_files/*']},
-    packages=find_packages(exclude=('snmpagent_unity.tests',)),
+    packages=find_packages(exclude=('snmpagent_unity.tests',
+                                    'snmpagent_unity.comptests')),
     platforms=["all"],
     url='http://github.com/emc-openstack/{}'.format(COMMAND_NAME),
     classifiers=[
