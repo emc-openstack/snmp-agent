@@ -1146,3 +1146,24 @@ class UnityClient(object):
     def get_bbu_health_status(self, id):
         bbu = self._get_bbu(id)
         return bbu.health.value.name
+
+    @to_string
+    def get_system_description(self):
+        return 'Dell EMC Unity'
+
+    @to_string
+    def get_system_object_id(self):
+        return 'Dell EMC Unity SERIAL NUMBER'
+
+    @to_string
+    def get_system_contact(self):
+        return 'support@dell.com'
+
+    @to_string
+    def get_system_name(self):
+        return 'Dell EMC Unity'
+
+    @to_string
+    def get_system_location(self):
+        return 'Hop'
+
