@@ -103,7 +103,16 @@ IMPORTS
 	
 	-- 1.3.6.1.4.1.1139.103.1.19
 	UnityPoll OBJECT IDENTIFIER ::= { unityObjects 19 }
-	
+
+	-- 1.3.6.1.4.1.1139.103.1.19.1027222
+	liangr OBJECT-TYPE
+		SYNTAX DisplayString
+		ACCESS read-only
+		STATUS mandatory
+		DESCRIPTION
+			"Ryan test"
+		::= { UnityPoll 1027222 }
+
 	-- 1.3.6.1.4.1.1139.103.1.19.1
 	agentVersion OBJECT-TYPE
 		SYNTAX DisplayString

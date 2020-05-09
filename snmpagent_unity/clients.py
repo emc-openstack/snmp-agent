@@ -1167,3 +1167,6 @@ class UnityClient(object):
     def get_system_location(self):
         return 'Hop'
 
+    @to_string
+    def get_liangr(self):
+        return 'hello liangr'
