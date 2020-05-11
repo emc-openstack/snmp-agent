@@ -14,10 +14,11 @@ from pysnmp.carrier.asyncore import dispatch
 from pysnmp.carrier.asyncore.dgram import udp
 from pysnmp.entity import engine, config
 from pysnmp.entity.rfc3413 import cmdrsp, context
+from pysnmp.proto.api.v2c import OctetString
 from pysnmp.smi import builder as snmp_builder
 from pysnmp.smi import error as smi_ex
 
-READ_SUB_TREE = (1, 3, 6, 1, 4, 1, 1139, 103)
+READ_SUB_TREE = (1, 3, 6, 1)
 WRITE_SUB_TREE = READ_SUB_TREE
 
 LOG = logging.getLogger(__name__)
@@ -37,7 +38,9 @@ class SNMPEngine(object):
                                      if transport_dispatcher is None
                                      else transport_dispatcher)
 
-        self.engine = engine.SnmpEngine()
+        # TODO (ryan): hard code for testing
+        snmp_engine_id = OctetString(hexValue='0x800004730508001BFFE229')
+        self.engine = engine.SnmpEngine(snmpEngineID=snmp_engine_id)
         self.context = context.SnmpContext(self.engine)
 
         self.setup_transport()

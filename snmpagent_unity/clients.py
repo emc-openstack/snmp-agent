@@ -1153,7 +1153,7 @@ class UnityClient(object):
 
     @to_string
     def get_system_object_id(self):
-        return 'Dell EMC Unity SERIAL NUMBER'
+        return '1.3.6.1.4.1.1139.103.1.19'
 
     @to_string
     def get_system_contact(self):
